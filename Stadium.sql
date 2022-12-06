@@ -291,47 +291,133 @@ INNER JOIN
 ClubRepresentative cr
 ON h.club_representative_id = cr.ID
 
--- 2.3 part (iv)
+
+-- 2.3 part (iii)
 GO
 CREATE VIEW clubsWithNoMatches AS
-SELECT C.name 
-FROM Club C
+SELECT name 
+FROM Club 
 EXCEPT (
+		SELECT * 
+		FROM Club 
+		INNER JOIN Match
+		ON Club.id = Match.host_id
+		
+		UNION
+
 		SELECT *
 		FROM Club
-		WHERE Club.id = Match.club_1_id
-		OR Club.id = Match.club_2_id
-)
+		INNER JOIN Match
+		ON Club.id = Match.guest_id
+		)
 
---------------------------------------------------
---2.3  All Other Requirements
 
--- Stored Procedures
+
+-------------------------------------------------
+--2.3  All Other Requirements 
+
+--- Stored Procedures (Parts (i) - (xiii)) ---
 
 -- (i)
 GO
 CREATE PROCEDURE addAssociationManager (@name VARCHAR(20), @username VARCHAR(20), @password VARCHAR(20)) AS
+	INSERT INTO SportAssociationManager (name, username, password) VALUES (@name, @username, @password)
 
-	INSERT INTO SportAssociationManager (name,  username,  password) VALUES (@name,  @username,  @password)
 
 -- (ii)
 GO
-CREATE PROCEDURE addNewMatch (@firstClubName VARCHAR(20),  @secondClubName VARCHAR(20),  @hostClubName VARCHAR(20),  @startTime DATETIME) AS
-	DECLARE @host_id VARCHAR(20), @guest_id	VARCHAR(20)
+CREATE PROCEDURE addNewMatch (@firstClubName VARCHAR(20), @secondClubName VARCHAR(20), @hostClubName VARCHAR(20), @startTime DATETIME) AS
+	DECLARE @hostID INT, @guestID INT
 
-	SELECT @host_id = C.id
-	FROM Club C
-	WHERE C.name = @hostClubName
+	SELECT @hostID = id
+	FROM Club 
+	WHERE name = @hostClubName
 	
 
-	SELECT @guest_id = C.id
-	FROM Club C
-	WHERE (C.name = @secondClubName AND C.name <> @hostClubName) OR (C.name = @firstClubName AND C.name <> @hostClubName) 
+	SELECT @guestID = id
+	FROM Club
+	WHERE (name = @secondClubName AND name <> @hostClubName) OR (name = @firstClubName AND name <> @hostClubName) 
 	
-	INSERT INTO Match (host_id, guest_id, start_time) VALUES (@host_id, @guest_id, @startTime) 
+	INSERT INTO Match (host_id, guest_id, start_time) VALUES (@hostID, @guestID, @startTime) 
 
 
--- (iii)
+-- (iv) [Part (iii) is a view. You can find it with the views above.]
 GO
+CREATE PROCEDURE deleteMatch (@firstClubName VARCHAR(20),  @secondClubName VARCHAR(20), @hostClubName VARCHAR(20)) AS
+	DECLARE @hostID INT, @guestID INT
+
+	SELECT @hostID = id
+	FROM Club
+	WHERE name = @hostClubName
+	
+
+	SELECT @guestID = id
+	FROM Club
+	WHERE (name = @secondClubName AND name <> @hostClubName) OR (name = @firstClubName AND name <> @hostClubName) 
+	
+	DELETE FROM Match 
+	WHERE (host_id = @hostID AND guestID = @guestID)
+
+
+-- (v)
+GO
+CREATE PROCEDURE deleteMatchesOnStadium (@stadiumName VARCHAR(20)) AS
+	DECLARE @stadiumID INT
+
+	SELECT @stadiumID = id
+	FROM Stadium
+	WHERE id = @stadiumID
+
+	DELETE FROM Match WHERE stadium_id = @stadiumID
+
+-- (vi)
+GO
+CREATE PROCEDURE addClub (@clubName VARCHAR(20)) AS
+	INSERT INTO Club (name) VALUES (@clubName)
+
+
+-- (vii)
+GO
+CREATE PROCEDURE addTicket (@hostClubName VARCHAR(20), @competingClubName VARCHAR(20), @startTime DATETIME) AS
+	DECLARE @hostClubID INT, @competingClubID INT, @matchID INT
+
+	SELECT @hostClubID = id
+	FROM Club
+	WHERE name = @hostClubName
+
+	SELECT @competingClubID = id
+	FROM Club
+	WHERE name = @competingClubName
+
+	SELECT @matchID = id
+	FROM Match
+	WHERE host_id = @hostClubID AND guest_id = @competingClubID
+
+
+	INSERT INTO Ticket (match_id, status) VALUES (@matchID, 1)
+
+
+-- (viii)
+GO
+CREATE PROCEDURE deleteClub (@clubName VARCHAR(20)) AS
+	DELETE FROM Club 
+	WHERE name = @clubName
+	
+
+-- (ix)
+GO
+CREATE PROCEDURE addStadium (@stadiumName VARCHAR(20), @stadiumLocation VARCHAR(20), @stadiumCapacity VARCHAR(20)) AS
+	INSERT INTO Stadium VALUES (@stadiumName, @stadiumLocation, 1, @stadiumCapacity)
+
+
+-- (x)
+GO
+CREATE PROCEDURE deleteStadium (@stadiumName VARCHAR(20)) AS
+	DELETE FROM Stadium WHERE name = @stadiumName
+
+
+
+
+
 
 
