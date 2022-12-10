@@ -1,5 +1,5 @@
 ﻿CREATE DATABASE SportsDB;
-
+use SportsDB;
 --2.1 BASic Structure of the DatabASe
 --Part a
 
@@ -50,9 +50,9 @@ national_id INT PRIMARY KEY,
 username VARCHAR(20),
 name VARCHAR(20),
 phone_number INT,
-birthdate DATE,
+birthdate DATETIME,
 address VARCHAR(20),
-status BIT,
+status BIT default 0,			-- 0 for unblocked , 1 for blocked
 FOREIGN KEY (username) REFERENCES SystemUser(username),
 );
 
@@ -417,7 +417,26 @@ CREATE PROCEDURE deleteStadium (@stadiumName VARCHAR(20)) AS
 
 
 
+-------------------------------malek part
+-- (XXi)
+go
+create procedure addFan (@name VARCHAR(20),@national_id VARCHAR(20),@birth_date datetime,@address VARCHAR(20),@phone_number int) as	-- I did not add username yet
+	insert into Fan (national_id,name,phone_number,birthdate,address)values(@national_id,@name,@phone_number,@birth_date,@address)
+	
+--exec addFan 'mlek','13','1-10-2002','here','1012'
 
+-- (XXV)
+go
+create procedure updateMatchHost (@hosting_club VARCHAR(20),@competing_club VARCHAR(20),@date datetime) as
+	declare @tmp_host_id int;
+	declare @tmp_guest_id int;
+	select  @tmp_host_id = id from club
+	where name like @hosting_club;
+	select  @tmp_guest_id = id from club
+	where name like @competing_club;
+	update match
+	set host_id=@tmp_guest_id,guest_id=@tmp_host_id
+	where @date = start_time
 
-
-
+--exec updateMatchHost 'mohamed','malek','1-10-2023'
+go
