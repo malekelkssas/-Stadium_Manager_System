@@ -379,6 +379,7 @@ CREATE PROCEDURE addClub (@clubName VARCHAR(20)) AS
 
 -- (vii)
 GO
+
 CREATE PROCEDURE addTicket (@hostClubName VARCHAR(20), @competingClubName VARCHAR(20), @startTime DATETIME) AS
 	DECLARE @hostClubID INT, @competingClubID INT, @matchID INT
 
@@ -428,6 +429,7 @@ create procedure addFan (@name VARCHAR(20),@national_id VARCHAR(20),@birth_date 
 
 -- (XXV)
 go
+
 create procedure updateMatchHost (@hosting_club VARCHAR(20),@competing_club VARCHAR(20),@date datetime) as
 	declare @tmp_host_id int;
 	declare @tmp_guest_id int;
@@ -437,7 +439,7 @@ create procedure updateMatchHost (@hosting_club VARCHAR(20),@competing_club VARC
 	where name like @competing_club;
 	update match
 	set host_id=@tmp_guest_id,guest_id=@tmp_host_id
-	where @date = date(start_time)
+	where @date = start_time
 
 --exec updateMatchHost 'mohamed','malek','1-11-2023'
 
@@ -462,16 +464,23 @@ create procedure purchaseTicket (@national_id int,@hosting_club varchar(20),@com
 	declare @competing_club_id varchar(20);
 	declare @match_id int;
 	declare @ticket_id int;
+	declare @state bit;
 	select @hosting_club_id = id from Club where name like @hosting_club;
 	select @competing_club_id = id from Club where name like @competing_club;
-	select @match_id=id from match where date(start_time) = @date and host_id=@hosting_club_id and guest_id=@competing_club_id;
+	select @match_id=id from match where @date = start_time and @hosting_club_id = host_id and @competing_club_id = guest_id;
+	select @state = status from fan where national_id = @national_id;
 	select top 1 @ticket_id = id from Ticket
 	where match_id = @match_id and status = 0;
+	if @state=0
+	begin
 	update Ticket
 	set status = 1, fan_id = @national_id , match_id = @match_id
 	where id = @ticket_id;
-
+	end
 go
+--exec purchaseTicket 13,'mohamed','malek','2002-01-10 00:00:00.000'
+
+
 
 
 
