@@ -17,7 +17,7 @@ CREATE TABLE Stadium (
 id INT IDENTITY PRIMARY KEY,
 name VARCHAR(20),
 location  VARCHAR(20),
-status BIT,
+status BIT default 0,
 capacity INT,
 );
 
@@ -93,9 +93,10 @@ FOREIGN KEY (host_id) REFERENCES Club(id),--relatiON 1 to many between Club & Ma
 FOREIGN KEY (guest_id) REFERENCES Club(id),--relatiON 1 to many between Club & Match
 );
 
+
 CREATE TABLE Ticket (
 id INT IDENTITY PRIMARY KEY,
-status BIT,
+status BIT default 0,					-- 0 for available , 1 for sold
 fan_id INT,
 match_id INT,
 FOREIGN KEY (fan_id) REFERENCES Fan (national_id),
@@ -394,7 +395,7 @@ CREATE PROCEDURE addTicket (@hostClubName VARCHAR(20), @competingClubName VARCHA
 	WHERE host_id = @hostClubID AND guest_id = @competingClubID
 
 
-	INSERT INTO Ticket (match_id, status) VALUES (@matchID, 1)
+	INSERT INTO Ticket (match_id, status) VALUES (@matchID, 0)
 
 
 -- (viii)
@@ -436,7 +437,43 @@ create procedure updateMatchHost (@hosting_club VARCHAR(20),@competing_club VARC
 	where name like @competing_club;
 	update match
 	set host_id=@tmp_guest_id,guest_id=@tmp_host_id
-	where @date = start_time
+	where @date = date(start_time)
 
---exec updateMatchHost 'mohamed','malek','1-10-2023'
+--exec updateMatchHost 'mohamed','malek','1-11-2023'
+
 go
+
+-- (XXVi)
+create procedure deleteMatchesOnStadium (@stadium_name varchar(20)) as
+	declare @stadium_id int;
+	select @stadium_id=id from Stadium
+	where name like @stadium_name;
+	delete from Match
+	where stadium_id like @stadium_id and start_time>CURRENT_TIMESTAMP;
+
+
+--exec deleteMatchesOnStadium 'm'
+
+-- (xxiv)
+go
+
+create procedure purchaseTicket (@national_id int,@hosting_club varchar(20),@competing_club varchar(20),@date datetime) as
+	declare @hosting_club_id varchar(20);
+	declare @competing_club_id varchar(20);
+	declare @match_id int;
+	declare @ticket_id int;
+	select @hosting_club_id = id from Club where name like @hosting_club;
+	select @competing_club_id = id from Club where name like @competing_club;
+	select @match_id=id from match where date(start_time) = @date and host_id=@hosting_club_id and guest_id=@competing_club_id;
+	select top 1 @ticket_id = id from Ticket
+	where match_id = @match_id and status = 0;
+	update Ticket
+	set status = 1, fan_id = @national_id , match_id = @match_id
+	where id = @ticket_id;
+
+go
+
+
+
+
+
