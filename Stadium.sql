@@ -340,7 +340,7 @@ CREATE PROCEDURE addNewMatch (@firstClubName VARCHAR(20), @secondClubName VARCHA
 	WHERE (name = @secondClubName AND name <> @hostClubName) OR (name = @firstClubName AND name <> @hostClubName) 
 	
 	INSERT INTO Match (host_id, guest_id, start_time) VALUES (@hostID, @guestID, @startTime) 
-
+go
 
 -- (iv) [Part (iii) is a view. You can find it with the views above.]
 GO
@@ -427,9 +427,48 @@ create procedure addFan (@name VARCHAR(20),@national_id VARCHAR(20),@birth_date 
 	
 --exec addFan 'mlek','13','1-10-2002','here','1012'
 
+-- (XXII)
+go
+CREATE FUNCTION upcomingMatchesOfClub (@club_name varchar(20))
+	returns @table table(club_name varchar(20),
+						 competing_club_name varchar(20),
+						 starting_time datetime,
+						  stadium varchar(20))
+	as
+		begin
+			insert into @table
+			select  C1.name club_name, C2.name competing_club_name, Match.start_time starting_time, stadium.name stadium from  match,club C1,club C2,Stadium
+			where match.host_id=C1.id and match.guest_id=C2.id and Match.stadium_id=Stadium.id and @club_name like C1.name and Match.start_time>=CURRENT_TIMESTAMP
+		return
+	end;
+
+
+--select * from  upcomingMatchesOfClub('malek')
+
 -- (XXV)
 go
+CREATE FUNCTION availableMatchesToAttend (@date date)
+	returns @table table(
+		host_club_name	varchar(20),
+		 competing_club_name varchar(20),
+		  starting_time datetime,
+		   stadium varchar(20)
+	)
+	as
+		begin
+			insert into @table
+			select  C1.name club_name, C2.name competing_club_name, Match.start_time starting_time, stadium.name stadium from  match,club C1,club C2,Stadium
+			where match.host_id=C1.id and match.guest_id=C2.id and Match.stadium_id=Stadium.id and  cast(Match.start_time as date)>=@date
+					and exists(select T.id from Ticket T
+								where T.match_id=match.id and T.status=0)
+		return
+	end;
+go
 
+--select * from  availableMatchesToAttend('1-10-2022')
+
+-- (xxv)
+go
 create procedure updateMatchHost (@hosting_club VARCHAR(20),@competing_club VARCHAR(20),@date datetime) as
 	declare @tmp_host_id int;
 	declare @tmp_guest_id int;
