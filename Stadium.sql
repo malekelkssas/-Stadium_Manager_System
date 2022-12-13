@@ -434,15 +434,17 @@ CREATE PROCEDURE deleteStadium (@stadiumName VARCHAR(20)) AS
 ------------------------------- END OF OMAR'S PART ------------------------------------------------
 
 -------------------------------malek part
--- (XXi)
+-- (XXi)	
 go
-create procedure addFan (@name VARCHAR(20),@username VARCHAR(20),@password VARCHAR(20),@national_id VARCHAR(20),@birth_date datetime,@address VARCHAR(20),@phone_number int) as	-- I did not add username yet
+create procedure addFan (@name VARCHAR(20),@username VARCHAR(20),@password VARCHAR(20),@national_id VARCHAR(20),@birth_date datetime,@address VARCHAR(20),@phone_number int) as	
 	--insert into SystemUser values
-	insert into Fan (national_id,name,phone_number,birthdate,address)values(@national_id,@name,@phone_number,@birth_date,@address)
-	
---exec addFan 'mlek','13','1-10-2002','here','1012'
+	insert into SystemUser values(@username,@password)
+	insert into Fan  values(@national_id,@username,@name,@phone_number,@birth_date,@address,1);
+go	
+--exec addFan 'mlek','Luka','pass123','13','1-10-2002','here','1012'
 
--- (XXII)
+
+-- (XXII) 
 go
 CREATE FUNCTION upcomingMatchesOfClub (@club_name varchar(20))
 	returns @table table(club_name varchar(20),
@@ -453,16 +455,16 @@ CREATE FUNCTION upcomingMatchesOfClub (@club_name varchar(20))
 		begin
 			insert into @table
 			select  C1.name club_name, C2.name competing_club_name, Match.start_time starting_time, stadium.name stadium from  match,club C1,club C2,Stadium
-			where match.host_id=C1.id and match.guest_id=C2.id and Match.stadium_id=Stadium.id and @club_name like C1.name and Match.start_time>=CURRENT_TIMESTAMP
+			where match.host_id=C1.id and match.guest_id=C2.id and Match.stadium_id=Stadium.id and (@club_name like C1.name or @club_name like C2.name ) and Match.start_time>CURRENT_TIMESTAMP
 		return
 	end;
 
 
 --select * from  upcomingMatchesOfClub('malek')
 
--- (XXV)
+-- (XXIII)
 go
-CREATE FUNCTION availableMatchesToAttend (@date date)
+CREATE FUNCTION availableMatchesToAttend (@date datetime)
 	returns @table table(
 		host_club_name	varchar(20),
 		 competing_club_name varchar(20),
@@ -473,42 +475,14 @@ CREATE FUNCTION availableMatchesToAttend (@date date)
 		begin
 			insert into @table
 			select  C1.name club_name, C2.name competing_club_name, Match.start_time starting_time, stadium.name stadium from  match,club C1,club C2,Stadium
-			where match.host_id=C1.id and match.guest_id=C2.id and Match.stadium_id=Stadium.id and  cast(Match.start_time as date)>=@date
+			where match.host_id=C1.id and match.guest_id=C2.id and Match.stadium_id=Stadium.id and  Match.start_time>=@date
 					and exists(select T.id from Ticket T
-								where T.match_id=match.id and T.status=0)
+								where T.match_id=match.id and T.status=1)
 		return
 	end;
 go
 
 --select * from  availableMatchesToAttend('1-10-2022')
-
--- (xxv)
-go
-create procedure updateMatchHost (@hosting_club VARCHAR(20),@competing_club VARCHAR(20),@date datetime) as
-	declare @tmp_host_id int;
-	declare @tmp_guest_id int;
-	select  @tmp_host_id = id from club
-	where name like @hosting_club;
-	select  @tmp_guest_id = id from club
-	where name like @competing_club;
-	update match
-	set host_id=@tmp_guest_id,guest_id=@tmp_host_id
-	where @date = start_time
-
---exec updateMatchHost 'mohamed','malek','1-11-2023'
-
-go
-
--- (XXVi)
-create procedure deleteMatchesOnStadium (@stadium_name varchar(20)) as
-	declare @stadium_id int;
-	select @stadium_id=id from Stadium
-	where name like @stadium_name;
-	delete from Match
-	where stadium_id like @stadium_id and start_time>CURRENT_TIMESTAMP;
-
-
---exec deleteMatchesOnStadium 'm'
 
 -- (xxiv)
 go
@@ -524,19 +498,153 @@ create procedure purchaseTicket (@national_id int,@hosting_club varchar(20),@com
 	select @match_id=id from match where @date = start_time and @hosting_club_id = host_id and @competing_club_id = guest_id;
 	select @state = status from fan where national_id = @national_id;
 	select top 1 @ticket_id = id from Ticket
-	where match_id = @match_id and status = 0;
-	if @state=0
+	where match_id = @match_id and status = 1;
+	if @state=1
 	begin
 	update Ticket
-	set status = 1, fan_id = @national_id , match_id = @match_id
+	set status = 0
 	where id = @ticket_id;
+	insert into Ticket_Buying_Transactions values (@national_id,@ticket_id);
 	end
 go
 --exec purchaseTicket 13,'mohamed','malek','2002-01-10 00:00:00.000'
 
 
+-- (xxv)
+go
+create procedure updateMatchHost (@hosting_club VARCHAR(20),@competing_club VARCHAR(20),@date datetime) as
+	declare @tmp_host_id int;
+	declare @tmp_guest_id int;
+	declare @match_id int;
+	select  @tmp_host_id = id from club
+	where name like @hosting_club;
+	select  @tmp_guest_id = id from club
+	where name like @competing_club;
+	select @match_id=id from Match
+	where host_id=@tmp_host_id and guest_id =@tmp_guest_id and start_time = @date;
+	update match
+	set host_id=@tmp_guest_id,guest_id=@tmp_host_id
+	where id = @match_id
+
+--exec updateMatchHost 'mohamed','malek','1-11-2023'
+
+go
+
+-- (XXVi)
+create view matchesPerTeam as
+ select C3.name , COUNT(C3.id) number_of_matches from (select Match.host_id,Match.guest_id,Match.end_time from club C1,club C2,Match
+	where Match.host_id=C1.id and Match.guest_id = C2.id) table1 , Club C3
+	where (C3.id = table1.host_id or C3.id = table1.guest_id) and CURRENT_TIMESTAMP>table1.end_time
+	group by C3.name
+--select * from matchesPerTeam
+go
+-- (XXVII)
+create view clubsNeverMatched as
+	select C1.name First_club ,C2.name Second_club 
+	from Club C1,Club C2
+	where C1.id != C2.id and C1.id>C2.id and 
+	C1.name not in 
+	(
+		select C4.name from Club C3,Club C4,Match
+		where Match.host_id=C3.id and Match.guest_id=C4.id and C3.id = C2.id
+	)
+	and
+	C2.name not in
+	(
+		select C4.name from Club C3,Club C4,Match
+		where Match.host_id=C3.id and Match.guest_id=C4.id and C3.id = C1.id
+	)
+go
+select * from clubsNeverMatched
+
+-- (xxviii)							
+go
+CREATE FUNCTION clubsNeverPlayed (@representing varchar(20))    ---------> NOT TESTED 
+	returns @table table(
+						club_name varchar(20)
+	)
+	as
+		begin
+			insert into @table 
+				select name from club cl
+				where cl.id not in
+				(
+				select Match.host_id 
+				from (select Club.id from Club, ClubRepresentative
+				where Club.id=ClubRepresentative.club_id and @representing like ClubRepresentative.name) t1 , Match
+				where Match.host_id != t1.id and Match.guest_id = t1.id and CURRENT_TIMESTAMP>=Match.end_time
+			union
+				select Match.guest_id 
+				from (select Club.id from Club, ClubRepresentative
+				where Club.id=ClubRepresentative.club_id and @representing like ClubRepresentative.name) t1 , Match
+				where Match.guest_id != t1.id and Match.host_id = t1.id and CURRENT_TIMESTAMP>=Match.end_time				
+				) 
+				and cl.id not in (select Club.id from Club, ClubRepresentative
+				where Club.id=ClubRepresentative.club_id and @representing = ClubRepresentative.name)
+		return
+	end;
+go
+
+-- (xxix)
+go
+
+CREATE FUNCTION matchWithHighestAttendance ()
+	returns @table table(
+						host_club varchar(20),
+						guest_club varchar(20)
+	)
+	as
+		begin
+			insert into @table 
+			select top 1 club_name, competing_club_name
+			from(
+			select  C1.name club_name, C2.name competing_club_name ,count(tick.match_id) cou from  match,club C1,club C2 , Ticket tick
+			where match.host_id=C1.id and match.guest_id=C2.id and CURRENT_TIMESTAMP>=Match.end_time and tick.match_id=match.id and tick.status = 0 
+			group by C1.name,C2.name
+			) t1
+			order by cou 
+		return
+	end;
+go
+--select * from matchWithHighestAttendance()
+-- (xxx) 
+go
+CREATE FUNCTION matchesRankedByAttendance ()
+	returns @table table(host_club varchar(20),
+						guest_club varchar(20)
+	)
+	as
+		begin
+			insert into @table 
+			select club_name, competing_club_name
+			from(
+			select  C1.name club_name, C2.name competing_club_name ,count(tick.match_id) cou from  match,club C1,club C2 , Ticket tick
+			where match.host_id=C1.id and match.guest_id=C2.id and CURRENT_TIMESTAMP>=Match.end_time and tick.match_id=match.id and tick.status = 0 
+			group by C1.name,C2.name
+			) t1
+			order by cou desc
+		return
+	end;
 
 
+go
+--select * from  matchesRankedByAttendance()
 
+--(XXXi)
+
+
+CREATE FUNCTION requestsFromClub (@stadium_name varchar(20),@club_name varchar(20))			-- Not Tested
+	returns @table table(
+		host_club varchar(20),
+		guest_club varchar(20)
+	)
+	as
+		begin
+			insert into @table 
+			select matches.host_club,matches.guest_club from (select Match.id match_id, ClubRepresentative.id ClubRepresentative_id ,C1.name host_club , C2.name guest_club, Stadium.name Stadium_name from match,Club C1 , Club C2, ClubRepresentative , Stadium
+							where Match.host_id=C1.id and Match.guest_id = C2.id and ClubRepresentative.club_id = C1.id and Match.stadium_id = Stadium.id) matches inner join HostRequest on HostRequest.match_id=matches.match_id and HostRequest.club_representative_id = matches.ClubRepresentative_id
+							where @club_name=matches.host_club and @stadium_name=matches.Stadium_name
+		return
+	end;
 
 
