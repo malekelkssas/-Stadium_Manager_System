@@ -1,4 +1,4 @@
-﻿--- Database Control Functions --
+--- Database Control Functions ---
 CREATE DATABASE SportsDB;
 use SportsDB;
 
@@ -25,7 +25,7 @@ CREATE TABLE Stadium (
 id INT IDENTITY PRIMARY KEY,
 name VARCHAR(20),
 location  VARCHAR(20),
-status BIT default 0,
+status BIT default 1 ,-- 0 unavailable , 1 available
 capacity INT,
 );
 
@@ -60,7 +60,7 @@ name VARCHAR(20),
 phone_number INT,
 birthdate DATETIME,
 address VARCHAR(20),
-status BIT default 0,			-- 0 for unblocked , 1 for blocked
+status BIT default 1,			-- 1 for unblocked , 0 for blocked
 FOREIGN KEY (username) REFERENCES SystemUser(username),
 );
 
@@ -79,17 +79,6 @@ FOREIGN KEY (username) REFERENCES SystemUser(username),
 );
 
 
-CREATE TABLE HostRequest (
-id INT IDENTITY PRIMARY KEY,
-status VARCHAR(20), --unhandled, accepted or rejected
-match_id INT,
-stadium_manager_id INT,
-club_representative_id INT,
-FOREIGN KEY (match_id) REFERENCES Match(id),--added nardy
-FOREIGN KEY (stadium_manager_id) REFERENCES StadiumManager(id),
-FOREIGN KEY (club_representative_id) REFERENCES ClubRepresentative(id),
-);
-
 CREATE TABLE Match (
 id INT IDENTITY PRIMARY KEY,
 start_time DATETIME,
@@ -103,6 +92,17 @@ FOREIGN KEY (guest_id) REFERENCES Club(id),--relatiON 1 to many between Club & M
 );
 
 
+CREATE TABLE HostRequest (
+id INT IDENTITY PRIMARY KEY,
+status VARCHAR(20), --unhandled, accepted or rejected
+match_id INT,
+stadium_manager_id INT,
+club_representative_id INT,
+FOREIGN KEY (match_id) REFERENCES Match(id),--added nardy
+FOREIGN KEY (stadium_manager_id) REFERENCES StadiumManager(id),
+FOREIGN KEY (club_representative_id) REFERENCES ClubRepresentative(id),
+);
+
 CREATE TABLE Ticket (
 id INT IDENTITY PRIMARY KEY,
 match_id INT,
@@ -115,6 +115,7 @@ fan_id INT,
 FOREIGN KEY (fan_id) REFERENCES Fan (national_id),
 FOREIGN KEY (ticket_id) REFERENCES Ticket(id),
 );
+
 
 --------------------------------------------------
 --Part b
@@ -133,7 +134,6 @@ DROP TABLE Club
 DROP TABLE StadiumManager
 DROP TABLE Stadium
 DROP TABLE SystemUser
-
 --------------------------------------------------
 --Part c
 GO
@@ -204,31 +204,31 @@ TRUNCATE TABLE SystemUser;
 --Part a
 GO
 CREATE VIEW allAssocManagers AS
-SELECT sam.username,sam.name,su.password 
-FROM SportAssociationManager sam LEFT OUTER JOIN SystemUser su
+SELECT sam.username,su.password,sam.name
+FROM SportAssociationManager sam INNER JOIN SystemUser su
 ON sam.username =su.username
 
 --Part b
 
 GO
 CREATE VIEW allClubRepresentatives AS
-SELECT CR.username,CR.name,C.name AS Club ,su.password
-FROM Club C LEFT OUTER JOIN SystemUser su  ON C.username =su.username
+SELECT CR.username,su.password,CR.name,C.name AS Club 
+FROM Club C INNER JOIN SystemUser su  ON C.username =su.username
 INNER JOIN ClubRepresentative CR ON C.id = CR.club_id;
 
 --Part c
 
 GO
 CREATE VIEW allStadiumManagers AS
-SELECT SM.Username,SM.name,S.name AS Stadium, su.password
-FROM Stadium S LEFT OUTER JOIN SystemUser su  ON S.username =su.username INNER JOIN StadiumManager SM ON S.id = SM.stadium_id;
+SELECT SM.Username, su.password ,SM.name,S.name AS Stadium
+FROM Stadium S INNER JOIN SystemUser su  ON S.username =su.username INNER JOIN StadiumManager SM ON S.id = SM.stadium_id;
 
 --Part d
 
 GO
 CREATE VIEW allFans AS
-SELECT F.name, F.national_id, F.birthdate, F.status ,F.username,su.password
-FROM Fan F LEFT OUTER JOIN SystemUser su  ON F.username =su.username
+SELECT F.username,su.password,F.name, F.national_id, F.birthdate, F.status
+FROM Fan F INNER JOIN SystemUser su  ON F.username =su.username
 
 --Part e
 
@@ -273,7 +273,7 @@ FROM Stadium
 --part i
 GO
 CREATE VIEW allRequests AS
-SELECT h.status,s.name AS StadiumManager,cr.name AS ClubRepresentative,cr.username AS ClubRepresentative_username,s.username AS StadiumManager_username
+SELECT cr.username AS ClubRepresentative_username,s.name AS StadiumManager,s.username AS StadiumManager_username, h.status
 FROM HostRequest h
 INNER JOIN StadiumManager s
 ON h.stadium_manager_id = s.ID
@@ -436,7 +436,8 @@ CREATE PROCEDURE deleteStadium (@stadiumName VARCHAR(20)) AS
 -------------------------------malek part
 -- (XXi)
 go
-create procedure addFan (@name VARCHAR(20),@national_id VARCHAR(20),@birth_date datetime,@address VARCHAR(20),@phone_number int) as	-- I did not add username yet
+create procedure addFan (@name VARCHAR(20),@username VARCHAR(20),@password VARCHAR(20),@national_id VARCHAR(20),@birth_date datetime,@address VARCHAR(20),@phone_number int) as	-- I did not add username yet
+	--insert into SystemUser values
 	insert into Fan (national_id,name,phone_number,birthdate,address)values(@national_id,@name,@phone_number,@birth_date,@address)
 	
 --exec addFan 'mlek','13','1-10-2002','here','1012'
