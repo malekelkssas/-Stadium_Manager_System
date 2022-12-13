@@ -1,12 +1,20 @@
-﻿CREATE DATABASE SportsDB;
+﻿--- Database Control Functions --
+CREATE DATABASE SportsDB;
 use SportsDB;
+
+--- Create DB ---
+EXEC createAllTables
+
+--- Drop DB ---
+EXEC dropAllTables
+EXEC dropAllProceduresFunctionsViews
+
+
 --2.1 BASic Structure of the DatabASe
 --Part a
 
 GO
-
 CREATE PROCEDURE createAllTables AS
-BEGIN
 
 CREATE TABLE SystemUser (
 username VARCHAR(20) PRIMARY KEY,
@@ -97,108 +105,87 @@ FOREIGN KEY (guest_id) REFERENCES Club(id),--relatiON 1 to many between Club & M
 
 CREATE TABLE Ticket (
 id INT IDENTITY PRIMARY KEY,
-status BIT default 0,					-- 0 for available , 1 for sold
 match_id INT,
-FOREIGN KEY (match_id) REFERENCES Match (id),
+FOREIGN KEY (match_id) REFERENCES Match(id),
 );
 
-CREATE TABLE Ticket_Buying_Transactions (
-ticket_id INT ,
+CREATE TABLE TicketBuyingTransactions (
+ticket_ INT,
 fan_id INT,
 FOREIGN KEY (fan_id) REFERENCES Fan (national_id),
-FOREIGN KEY (ticket_id) REFERENCES Ticket (id),
+FOREIGN KEY (ticket_id) REFERENCES Ticket(id),
 );
-END;
-
-EXEC createAllTables;
 
 --------------------------------------------------
 --Part b
 
 GO
-
-CREATE PROCEDURE dropAllTables
-AS
-BEGIN
-
-DROP TABLE SystemAdmin;
-DROP TABLE Ticket_Buying_Transactions;
-DROP TABLE SportAssociationManager;
-DROP TABLE HostRequest;
-DROP TABLE Ticket;
-DROP TABLE Match;
-DROP TABLE Fan;
-DROP TABLE ClubRepresentative;
-DROP TABLE Club;
-DROP TABLE StadiumManager;
-DROP TABLE Stadium;
-DROP TABLE SystemUser;
-END;
-
-GO;
-
-EXEC dropAllTables;
+CREATE PROCEDURE dropAllTables AS
+DROP TABLE SystemAdmin
+DROP TABLE Ticket_Buying_Transactions
+DROP TABLE SportAssociationManager
+DROP TABLE HostRequest
+DROP TABLE Ticket
+DROP TABLE Match
+DROP TABLE Fan
+DROP TABLE ClubRepresentative
+DROP TABLE Club
+DROP TABLE StadiumManager
+DROP TABLE Stadium
+DROP TABLE SystemUser
 
 --------------------------------------------------
 --Part c
 GO
-CREATE PROCEDURE dropAllProceduresFunctionsViews
-AS
-BEGIN
-DROP PROCEDURE createAllTables;
-DROP PROCEDURE dropAllTables;
-DROP PROCEDURE clearAllTables;
-DROP PROCEDURE addAssociationManager;
-DROP PROCEDURE addNewMatch;
-DROP PROCEDURE deleteMatch;
-DROP PROCEDURE deleteMatchesOnStadium;
-DROP PROCEDURE addClub;
-DROP PROCEDURE AddTicket;
-DROP PROCEDURE deleteClub;
-DROP PROCEDURE addStadium;
-DROP PROCEDURE deleteStadium;
-DROP PROCEDURE blockFan;
+CREATE PROCEDURE dropAllProceduresFunctionsViews AS
+DROP PROCEDURE createAllTables
+DROP PROCEDURE dropAllTables
+DROP PROCEDURE clearAllTables
+DROP PROCEDURE addAssociationManager
+DROP PROCEDURE addNewMatch
+DROP PROCEDURE deleteMatch
+DROP PROCEDURE deleteMatchesOnStadium
+DROP PROCEDURE addClub
+DROP PROCEDURE AddTicket
+DROP PROCEDURE deleteClub
+DROP PROCEDURE addStadium
+DROP PROCEDURE deleteStadium
+DROP PROCEDURE blockFan
 DROP PROCEDURE unblockFan;
-DROP PROCEDURE addRepresentative;
-DROP PROCEDURE addHostRequest;
-DROP PROCEDURE addStadiumManager;
-DROP PROCEDURE acceptRequest;
-DROP PROCEDURE RejectRequest;
-DROP PROCEDURE addFan;
-DROP PROCEDURE purchaseTicket;
-DROP PROCEDURE updateMatchHost;
-DROP VIEW allAssocManagers;
-DROP VIEW allClubRepresentatives;
-DROP VIEW allStadiumManagers;
-DROP VIEW allFans;
-DROP VIEW allMatches;
-DROP VIEW allTickets;
-DROP VIEW allCLubs;
-DROP VIEW allStadiums;
-DROP VIEW allRequests;
-DROP VIEW clubsWithNoMatches;
-DROP VIEW matchesPerTeam;
-DROP VIEW clubsNeverMatched;
-DROP FUNCTION viewAvailableStadiumsOn;
-DROP FUNCTION allUnassignedMatches;
-DROP FUNCTION allPendingRequests;
-DROP FUNCTION upcomingMatchesOfClub;
-DROP FUNCTION availableMatchesToAttend;
-DROP FUNCTION clubsNeverPlayed;
-DROP FUNCTION matchWithHighestAttendance;
-DROP FUNCTION matchesRankedByAttendance;
-DROP FUNCTION requestsFromClub;
-END;
-GO;
-
-EXEC dropAllProceduresFunctionsViews;
-
+DROP PROCEDURE addRepresentative
+DROP PROCEDURE addHostRequest
+DROP PROCEDURE addStadiumManager
+DROP PROCEDURE acceptRequest
+DROP PROCEDURE RejectRequest
+DROP PROCEDURE addFan
+DROP PROCEDURE purchaseTicket
+DROP PROCEDURE updateMatchHost
+DROP VIEW allAssocManagers
+DROP VIEW allClubRepresentatives
+DROP VIEW allStadiumManagers
+DROP VIEW allFans
+DROP VIEW allMatches
+DROP VIEW allTickets
+DROP VIEW allCLubs
+DROP VIEW allStadiums
+DROP VIEW allRequests
+DROP VIEW clubsWithNoMatches
+DROP VIEW matchesPerTeam
+DROP VIEW clubsNeverMatched
+DROP FUNCTION viewAvailableStadiumsOn
+DROP FUNCTION allUnassignedMatches
+DROP FUNCTION allPendingRequests
+DROP FUNCTION upcomingMatchesOfClub
+DROP FUNCTION availableMatchesToAttend
+DROP FUNCTION clubsNeverPlayed
+DROP FUNCTION matchWithHighestAttendance
+DROP FUNCTION matchesRankedByAttendance
+DROP FUNCTION requestsFromClub
 --------------------------------------------------
 --Part d
 GO
-CREATE PROCEDURE clearAllTables
-AS
-BEGIN
+CREATE PROCEDURE clearAllTables AS
+
 TRUNCATE TABLE SystemAdmin;
 TRUNCATE TABLE Ticket_Buying_Transactions;
 TRUNCATE TABLE SportAssociationManager;
@@ -212,11 +199,6 @@ TRUNCATE TABLE Club;
 TRUNCATE TABLE StadiumManager;
 TRUNCATE TABLE Stadium;
 TRUNCATE TABLE SystemUser;
---
-END;
-GO;
-
-EXEC clearAllTables;
 --------------------------------------------------
 --2.2 Basic Data Retrieval
 --Part a
@@ -324,6 +306,8 @@ EXCEPT (
 -------------------------------------------------
 --2.3  All Other Requirements 
 
+------------------------------ START OF OMAR'S PART ----------------------------------------
+
 --- Stored Procedures (Parts (i) - (xiii)) ---
 
 -- (i)
@@ -334,7 +318,7 @@ CREATE PROCEDURE addAssociationManager (@name VARCHAR(20), @username VARCHAR(20)
 
 -- (ii)
 GO
-CREATE PROCEDURE addNewMatch (@firstClubName VARCHAR(20), @secondClubName VARCHAR(20), @hostClubName VARCHAR(20), @startTime DATETIME) AS
+CREATE PROCEDURE addNewMatch (@hostClubName VARCHAR(20), @guestClubName VARCHAR(20), @startTime DATETIME, @endTime DATETIME) AS
 	DECLARE @hostID INT, @guestID INT
 
 	SELECT @hostID = id
@@ -344,15 +328,16 @@ CREATE PROCEDURE addNewMatch (@firstClubName VARCHAR(20), @secondClubName VARCHA
 
 	SELECT @guestID = id
 	FROM Club
-	WHERE (name = @secondClubName AND name <> @hostClubName) OR (name = @firstClubName AND name <> @hostClubName) 
+	WHERE name = @guestClubName
 	
-	INSERT INTO Match (host_id, guest_id, start_time) VALUES (@hostID, @guestID, @startTime) 
-go
 
--- (iv) [Part (iii) is a view. You can find it with the views above.]
+	INSERT INTO Match (host_id, guest_id, start_time, end_time) VALUES (@hostID, @guestID, @startTime, @endTime) 
+
+
+-- (iv) [Part (iii) is a view. You can find it with the views above
 GO
-CREATE PROCEDURE deleteMatch (@firstClubName VARCHAR(20),  @secondClubName VARCHAR(20), @hostClubName VARCHAR(20)) AS
-	DECLARE @hostID INT, @guestID INT
+CREATE PROCEDURE deleteMatch (@hostClubName VARCHAR(20), @guestClubName VARCHAR(20)) AS
+	DECLARE @hostID INT, @guestID INT, @matchID INT
 
 	SELECT @hostID = id
 	FROM Club
@@ -361,22 +346,44 @@ CREATE PROCEDURE deleteMatch (@firstClubName VARCHAR(20),  @secondClubName VARCH
 
 	SELECT @guestID = id
 	FROM Club
-	WHERE (name = @secondClubName AND name <> @hostClubName) OR (name = @firstClubName AND name <> @hostClubName) 
+	WHERE name = @guestClubName
 	
-	DELETE FROM Match 
-	WHERE (host_id = @hostID AND guestID = @guestID)
 
+	DELETE FROM Match 
+	WHERE host_id = @hostID AND guest_id = @guestID
+
+
+	-- Delete the match's tickets
+	SELECT @matchID = id
+	FROM Match 
+	WHERE host_id = @hostID AND guest_id = @guestID 
+
+
+	DELETE FROM Ticket 
+	WHERE match_id = @matchID 
 
 -- (v)
 GO
 CREATE PROCEDURE deleteMatchesOnStadium (@stadiumName VARCHAR(20)) AS
-	DECLARE @stadiumID INT
+	DECLARE @stadiumID INT, @matchID INT, @currentDate DATETIME
+	SET @currentDate = GETDATE();
 
 	SELECT @stadiumID = id
 	FROM Stadium
 	WHERE id = @stadiumID
 
-	DELETE FROM Match WHERE stadium_id = @stadiumID
+
+	DELETE FROM Match 
+	WHERE stadium_id = @stadiumID AND start_time < @currentDate
+
+	-- Delete the match's tickets
+	SELECT @matchID = id
+	FROM Match 
+	WHERE stadium_id = @stadiumID AND start_time < @currentDate
+
+
+	DELETE FROM Ticket 
+	WHERE match_id = @matchID 
 
 -- (vi)
 GO
@@ -386,24 +393,24 @@ CREATE PROCEDURE addClub (@clubName VARCHAR(20)) AS
 
 -- (vii)
 GO
-
-CREATE PROCEDURE addTicket (@hostClubName VARCHAR(20), @competingClubName VARCHAR(20), @startTime DATETIME) AS
-	DECLARE @hostClubID INT, @competingClubID INT, @matchID INT
+CREATE PROCEDURE addTicket (@hostClubName VARCHAR(20), @guestClubName VARCHAR(20), @startTime DATETIME) AS
+	DECLARE @hostClubID INT, @guestClubID INT, @matchID INT
 
 	SELECT @hostClubID = id
 	FROM Club
 	WHERE name = @hostClubName
 
-	SELECT @competingClubID = id
+	SELECT @guestClubID = id
 	FROM Club
-	WHERE name = @competingClubName
+	WHERE name = @guestClubName
 
 	SELECT @matchID = id
 	FROM Match
-	WHERE host_id = @hostClubID AND guest_id = @competingClubID
+	WHERE host_id = @hostClubID AND guest_id = @competingClubID AND start_time = @startTime
 
 
-	INSERT INTO Ticket (match_id, status) VALUES (@matchID, 0)
+	INSERT INTO Ticket VALUES (1, @matchID)
+
 
 
 -- (viii)
@@ -424,7 +431,7 @@ GO
 CREATE PROCEDURE deleteStadium (@stadiumName VARCHAR(20)) AS
 	DELETE FROM Stadium WHERE name = @stadiumName
 
-
+------------------------------- END OF OMAR'S PART ------------------------------------------------
 
 -------------------------------malek part
 -- (XXi)
