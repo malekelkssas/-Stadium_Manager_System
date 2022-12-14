@@ -384,8 +384,8 @@ CREATE PROCEDURE deleteMatchesOnStadium (@stadiumName VARCHAR(20)) AS
 
 -- (vi)
 GO
-CREATE PROCEDURE addClub (@clubName VARCHAR(20)) AS
-	INSERT INTO Club (name) VALUES (@clubName)
+CREATE PROCEDURE addClub (@clubName VARCHAR(20), @clubLocation VARCHAR(20)) AS
+	INSERT INTO Club (name, location) VALUES (@clubName, @clubLocation)
 
 
 -- (vii)
