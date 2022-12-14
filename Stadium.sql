@@ -350,9 +350,9 @@ CREATE VIEW clubsWithNoMatches AS
 
 SELECT name
 FROM Club 
-LEFT OUTER JOIN Match M1
+FULL OUTER JOIN Match M1
 ON Club.id = M1.host_id 
-LEFT OUTER JOIN Match M2
+FULL OUTER JOIN Match M2
 ON Club.id = M2.guest_id
 WHERE M1.host_id IS NULL AND M1.guest_id IS NULL AND M2.host_id IS NULL AND M2.guest_id IS NULL
 
