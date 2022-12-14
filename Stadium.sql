@@ -18,7 +18,7 @@ CREATE PROCEDURE createAllTables AS
 
 CREATE TABLE SystemUser (
 username VARCHAR(20) PRIMARY KEY,
-password VARCHAR(20),
+password VARCHAR(20) NOT NULL,
 );
 
 CREATE TABLE Stadium (
@@ -32,10 +32,10 @@ capacity INT,
 CREATE TABLE StadiumManager (
 id INT IDENTITY PRIMARY KEY,
 name VARCHAR(20),
-username VARCHAR(20),
+username VARCHAR(20) UNIQUE NOT NULL,
 stadium_id INT,
-FOREIGN KEY (username) REFERENCES SystemUser(username),
-FOREIGN KEY (stadium_id) REFERENCES Stadium(ID), --relatiON 1 to 1 between stadium & stadium manager
+CONSTRAINT SM_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT SM_FK2 FOREIGN KEY (stadium_id) REFERENCES Stadium(ID) ON DELETE CASCADE ON UPDATE CASCADE,
 );
 
 CREATE TABLE Club (
@@ -47,35 +47,35 @@ location VARCHAR(20),
 CREATE TABLE ClubRepresentative (
 id INT IDENTITY PRIMARY KEY,
 name VARCHAR(20),
-username VARCHAR(20),
+username VARCHAR(20) UNIQUE NOT NULL,
 club_id INT,
-FOREIGN KEY (username) REFERENCES SystemUser(username),
-FOREIGN KEY (club_id) REFERENCES Club(id),--relatiON 1 to 1 between club & ClubRepresentative
+CONSTRAINT CR_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT CR_FK2 FOREIGN KEY (club_id) REFERENCES Club(id) ON DELETE CASCADE ON UPDATE CASCADE,
 );
 
 CREATE TABLE Fan (
 national_id INT PRIMARY KEY,
-username VARCHAR(20),
+username VARCHAR(20) UNIQUE NOT NULL,
 name VARCHAR(20),
 phone_number INT,
 birthdate DATETIME,
 address VARCHAR(20),
 status BIT default 1,			-- 1 for unblocked , 0 for blocked
-FOREIGN KEY (username) REFERENCES SystemUser(username),
+CONSTRAINT F_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE,
 );
 
 CREATE TABLE SportAssociationManager (
 id INT IDENTITY PRIMARY KEY,
 name VARCHAR(20),
-username VARCHAR(20),
-FOREIGN KEY (username) REFERENCES SystemUser(username),
+username VARCHAR(20) UNIQUE NOT NULL,
+CONSTRAINT SAM_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE,
 );
 
 CREATE TABLE SystemAdmin (
 id INT IDENTITY PRIMARY KEY,
 name VARCHAR(20),
-username VARCHAR(20),
-FOREIGN KEY (username) REFERENCES SystemUser(username),
+username VARCHAR(20) UNIQUE NOT NULL,
+CONSTRAINT SA_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE,
 );
 
 
@@ -86,9 +86,9 @@ end_time DATETIME,
 host_id INT,
 guest_id INT,
 stadium_id INT,
-FOREIGN KEY (stadium_id) REFERENCES Stadium(id),--relatiON 1 to many between Stadium & Match
-FOREIGN KEY (host_id) REFERENCES Club(id),--relatiON 1 to many between Club & Match
-FOREIGN KEY (guest_id) REFERENCES Club(id),--relatiON 1 to many between Club & Match
+CONSTRAINT M_FK1 FOREIGN KEY (stadium_id) REFERENCES Stadium(id) ON DELETE SET NULL,--relatiON 1 to many between Stadium & Match
+CONSTRAINT M_FK2 FOREIGN KEY (host_id) REFERENCES Club(id) ON DELETE SET NULL,--relatiON 1 to many between Club & Match
+CONSTRAINT M_FK3 FOREIGN KEY (guest_id) REFERENCES Club(id),--relatiON 1 to many between Club & Match
 );
 
 
@@ -98,22 +98,23 @@ status VARCHAR(20), --unhandled, accepted or rejected
 match_id INT,
 stadium_manager_id INT,
 club_representative_id INT,
-FOREIGN KEY (match_id) REFERENCES Match(id),--added nardy
-FOREIGN KEY (stadium_manager_id) REFERENCES StadiumManager(id),
-FOREIGN KEY (club_representative_id) REFERENCES ClubRepresentative(id),
+CONSTRAINT HR_FK1 FOREIGN KEY (match_id) REFERENCES Match(id) ON DELETE CASCADE ON UPDATE CASCADE,--added nardy
+CONSTRAINT HR_FK2 FOREIGN KEY (stadium_manager_id) REFERENCES StadiumManager(id),
+CONSTRAINT HR_FK3 FOREIGN KEY (club_representative_id) REFERENCES ClubRepresentative(id),
 );
 
 CREATE TABLE Ticket (
 id INT IDENTITY PRIMARY KEY,
+status BIT DEFAULT 1,
 match_id INT,
-FOREIGN KEY (match_id) REFERENCES Match(id),
+CONSTRAINT T_FK1 FOREIGN KEY (match_id) REFERENCES Match(id) ON DELETE CASCADE ON UPDATE CASCADE,
 );
 
 CREATE TABLE TicketBuyingTransactions (
 ticket_id INT,
 fan_id INT,
-FOREIGN KEY (fan_id) REFERENCES Fan (national_id),
-FOREIGN KEY (ticket_id) REFERENCES Ticket(id),
+CONSTRAINT TBT_FK1 FOREIGN KEY (fan_id) REFERENCES Fan (national_id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT TBT_FK2 FOREIGN KEY (ticket_id) REFERENCES Ticket(id) ON DELETE CASCADE ON UPDATE CASCADE,
 );
 
 
@@ -387,7 +388,6 @@ GO
 CREATE PROCEDURE addClub (@clubName VARCHAR(20), @clubLocation VARCHAR(20)) AS
 	INSERT INTO Club (name, location) VALUES (@clubName, @clubLocation)
 
-
 -- (vii)
 GO
 CREATE PROCEDURE addTicket (@hostClubName VARCHAR(20), @guestClubName VARCHAR(20), @startTime DATETIME) AS
@@ -493,10 +493,7 @@ RETURN
 	WHERE S.status = 1
 
 GO
-drop function viewAvailableStadiumsOn
-select * from stadium
-select * from match
-SELECT * FROM viewAvailableStadiumsOn('2022-12-15 02:00:00')
+
 
 -- (xv)                           
 GO
