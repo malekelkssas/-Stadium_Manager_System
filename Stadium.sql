@@ -499,7 +499,7 @@ INSERT INTO ClubRepresentative
 VALUES(@name,@userName,@clubID)
 END
 
--- (xiv) -- not complete yet
+-- (xiv) -- not sure need to check for dates
 GO
 CREATE FUNCTION viewAvailableStadiumsOn
 (@date DATETIME)
@@ -508,14 +508,11 @@ AS
 RETURN
 	SELECT S.name,S.location,S.capacity
 	FROM Stadium S
-	INNER JOIN Match M ON S.id = M.stadium_id
-	WHERE @date NOT BETWEEN M.start_time AND M.end_time
-
-	UNION 
-
-	SELECT S.name,S.location,S.capacity
-	FROM Stadium S
-	WHERE S.status = 1
+	WHERE S.status = 1 AND NOT EXISTS(
+		SELECT S2.name,S2.location,S2.capacity
+		FROM Stadium S2 INNER JOIN Match M ON M.stadium_id = S2.id
+		WHERE S.name = S2.name AND @date BETWEEN M.start_time AND M.end_time
+	)  
 
 GO
 
