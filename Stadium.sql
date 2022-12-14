@@ -9,6 +9,36 @@ EXEC createAllTables
 EXEC dropAllTables
 EXEC dropAllProceduresFunctionsViews
 
+---------------- TEST DATA ----------------------
+
+INSERT INTO SystemUser VALUES ('Mohammed', 'mopassword'),
+							  ('Malek', null),
+							  ('Omar', 'omarPass'),
+							  ('Ahmed', 'ahmedPass'),
+							  ('FanOne', 'FPass')
+
+
+
+INSERT INTO Stadium (name, location, capacity) VALUES ('Stad al Kahera', 'Cairo', 50),
+													  ('Monroe Stadium', 'USA', 100),
+													  ('Reuben Arena', 'Germany', 150),
+													  ('Maxwell Plaza', 'Switzerland', 500)
+
+
+INSERT INTO StadiumManager (name, username) VALUES ('MoSalah', 'Mohammed')
+
+INSERT INTO Club (name, location) VALUES ('New York Jets', 'USA'),
+										 ('Ahly', 'Cairo'),
+										 ('Zamalek', 'Cairo'),
+										 ('FC Bayern', 'Germany')
+
+INSERT INTO ClubRepresentative (name, username, club_id) VALUES ('Omariko', 'Omar', 1)
+
+INSERT INTO Fan (username, name, phone_number, birthdate, address) VALUES ('FanOne', 'FavFan', 018572398, 22-03-2022, '14 Gomhoreya St.')
+INSERT INTO SportAssociationManager (name, username) VALUES ('ManagerMo', 'Mohammed')
+INSERT INTO SystemAdmin (name, username) VALUES ('OmarMgr', 'Omar')
+INSERT INTO Match (start_time, end_time, host_id, guest_id) VALUES ('2015-01-01 08:22:13', '2015-03-05 17:56:31', 2, 3);
+
 
 --2.1 BASic Structure of the DatabASe
 --Part a
@@ -292,7 +322,8 @@ ON h.club_representative_id = cr.ID
 -- (i)
 GO
 CREATE PROCEDURE addAssociationManager (@name VARCHAR(20), @username VARCHAR(20), @password VARCHAR(20)) AS
-	INSERT INTO SportAssociationManager (name, username, password) VALUES (@name, @username, @password)
+	INSERT INTO SystemUser VALUES (@username, @password)
+	INSERT INTO SportAssociationManager (name, username) VALUES (@name, @username)
 
 
 -- (ii)
@@ -315,21 +346,15 @@ CREATE PROCEDURE addNewMatch (@hostClubName VARCHAR(20), @guestClubName VARCHAR(
 -- (iii)
 GO
 CREATE VIEW clubsWithNoMatches AS
-SELECT name 
-FROM Club 
-EXCEPT (
-		SELECT * 
-		FROM Club 
-		INNER JOIN Match
-		ON Club.id = Match.host_id
-		
-		UNION
 
-		SELECT *
-		FROM Club
-		INNER JOIN Match
-		ON Club.id = Match.guest_id
-		)
+SELECT name
+FROM Club 
+LEFT OUTER JOIN Match M1
+ON Club.id = M1.host_id 
+LEFT OUTER JOIN Match M2
+ON Club.id = M2.guest_id
+WHERE M1.host_id IS NULL AND M1.guest_id IS NULL AND M2.host_id IS NULL AND M2.guest_id IS NULL
+
 
 -- (iv)
 GO
@@ -403,7 +428,7 @@ CREATE PROCEDURE addTicket (@hostClubName VARCHAR(20), @guestClubName VARCHAR(20
 
 	SELECT @matchID = id
 	FROM Match
-	WHERE host_id = @hostClubID AND guest_id = @competingClubID AND start_time = @startTime
+	WHERE host_id = @hostClubID AND guest_id = @guestClubID AND start_time = @startTime
 
 
 	INSERT INTO Ticket VALUES (1, @matchID)
@@ -833,5 +858,3 @@ CREATE FUNCTION requestsFromClub (@stadium_name varchar(20),@club_name varchar(2
 							where @club_name=matches.host_club and @stadium_name=matches.Stadium_name
 		return
 	end;
-
-
