@@ -110,7 +110,7 @@ FOREIGN KEY (match_id) REFERENCES Match(id),
 );
 
 CREATE TABLE TicketBuyingTransactions (
-ticket_ INT,
+ticket_id INT,
 fan_id INT,
 FOREIGN KEY (fan_id) REFERENCES Fan (national_id),
 FOREIGN KEY (ticket_id) REFERENCES Ticket(id),
@@ -123,16 +123,16 @@ FOREIGN KEY (ticket_id) REFERENCES Ticket(id),
 GO
 CREATE PROCEDURE dropAllTables AS
 DROP TABLE SystemAdmin
-DROP TABLE Ticket_Buying_Transactions
+DROP TABLE TicketBuyingTransactions
 DROP TABLE SportAssociationManager
 DROP TABLE HostRequest
 DROP TABLE Ticket
 DROP TABLE Match
-DROP TABLE Fan
 DROP TABLE ClubRepresentative
 DROP TABLE Club
 DROP TABLE StadiumManager
 DROP TABLE Stadium
+DROP TABLE Fan
 DROP TABLE SystemUser
 --------------------------------------------------
 --Part c
@@ -282,27 +282,6 @@ ClubRepresentative cr
 ON h.club_representative_id = cr.ID
 
 
--- 2.3 part (iii)
-GO
-CREATE VIEW clubsWithNoMatches AS
-SELECT name 
-FROM Club 
-EXCEPT (
-		SELECT * 
-		FROM Club 
-		INNER JOIN Match
-		ON Club.id = Match.host_id
-		
-		UNION
-
-		SELECT *
-		FROM Club
-		INNER JOIN Match
-		ON Club.id = Match.guest_id
-		)
-
-
-
 -------------------------------------------------
 --2.3  All Other Requirements 
 
@@ -333,8 +312,26 @@ CREATE PROCEDURE addNewMatch (@hostClubName VARCHAR(20), @guestClubName VARCHAR(
 
 	INSERT INTO Match (host_id, guest_id, start_time, end_time) VALUES (@hostID, @guestID, @startTime, @endTime) 
 
+-- (iii)
+GO
+CREATE VIEW clubsWithNoMatches AS
+SELECT name 
+FROM Club 
+EXCEPT (
+		SELECT * 
+		FROM Club 
+		INNER JOIN Match
+		ON Club.id = Match.host_id
+		
+		UNION
 
--- (iv) [Part (iii) is a view. You can find it with the views above
+		SELECT *
+		FROM Club
+		INNER JOIN Match
+		ON Club.id = Match.guest_id
+		)
+
+-- (iv)
 GO
 CREATE PROCEDURE deleteMatch (@hostClubName VARCHAR(20), @guestClubName VARCHAR(20)) AS
 	DECLARE @hostID INT, @guestID INT, @matchID INT
@@ -432,6 +429,196 @@ CREATE PROCEDURE deleteStadium (@stadiumName VARCHAR(20)) AS
 	DELETE FROM Stadium WHERE name = @stadiumName
 
 ------------------------------- END OF OMAR'S PART ------------------------------------------------
+
+-- (xi)                                           
+GO
+CREATE PROCEDURE blockFan
+@nationalID VARCHAR(20)
+AS
+BEGIN
+UPDATE Fan
+SET Status  = 0
+WHERE Fan.National_ID = @nationalID
+END
+
+-- (xii)                           
+GO
+CREATE PROCEDURE unblockFan
+@nationalID VARCHAR(20)
+AS
+BEGIN
+UPDATE Fan
+SET Status  = 1
+WHERE Fan.National_ID = @nationalID
+END
+
+-- (xiii)                          
+GO
+CREATE PROCEDURE addRepresentative
+@name VARCHAR(20),
+@clubName VARCHAR(20),
+@userName VARCHAR(20),
+@password VARCHAR(20)
+AS
+BEGIN
+
+INSERT INTO SystemUser
+VALUES (@userName,@password)
+
+DECLARE @clubID INT
+SELECT @clubID = Club.ID
+FROM Club
+WHERE Club.Name = @clubName
+
+INSERT INTO ClubRepresentative
+VALUES(@name,@userName,@clubID)
+END
+
+-- (xiv) -- not complete yet
+GO
+CREATE FUNCTION viewAvailableStadiumsOn
+(@date DATETIME)
+RETURNS TABLE
+AS
+RETURN
+	SELECT S.name,S.location,S.capacity
+	FROM Stadium S
+	INNER JOIN Match M ON S.id = M.stadium_id
+	WHERE @date NOT BETWEEN M.start_time AND M.end_time
+
+	UNION 
+
+	SELECT S.name,S.location,S.capacity
+	FROM Stadium S
+	WHERE S.status = 1
+
+GO
+drop function viewAvailableStadiumsOn
+select * from stadium
+select * from match
+SELECT * FROM viewAvailableStadiumsOn('2022-12-15 02:00:00')
+
+-- (xv)                           
+GO
+CREATE PROCEDURE addHostRequest
+@clubName VARCHAR(20),
+@stadiumName VARCHAR(20),
+@startTime DATETIME
+AS
+BEGIN
+
+DECLARE @clubRepID INT
+DECLARE @stadiumManID INT
+DECLARE @matchID INT
+
+SELECT @clubRepID = CR.id, @matchID = M.id
+FROM Match M
+INNER JOIN Club H ON M.host_id = H.id
+INNER JOIN ClubRepresentative CR ON CR.club_id = H.id
+WHERE H.name = @clubName AND M.start_time = @startTime
+
+SELECT @stadiumManID = SM.id
+FROM Stadium S 
+INNER JOIN StadiumManager SM ON SM.stadium_id = S.id
+WHERE S.name = @stadiumName
+
+INSERT INTO HostRequest
+VALUES('unhandled',@MatchID,@StadiumManID,@ClubRepID)
+END
+
+-- (xvi)                           
+GO
+CREATE FUNCTION  allUnassignedMatches
+(@clubName VARCHAR(20))
+RETURNS TABLE
+AS
+RETURN 
+	SELECT G.name,M.start_time
+	FROM Club H
+	INNER JOIN Match M ON M.host_id = H.id
+	INNER JOIN Club G ON M.guest_id = G.id
+	WHERE H.name = @clubName AND M.stadium_id IS NULL
+
+-- (xvii)                           
+GO
+CREATE PROCEDURE addStadiumManager
+@name VARCHAR(20),
+@stadiumName VARCHAR(20),
+@userName VARCHAR(20),
+@password VARCHAR(20)
+AS
+BEGIN
+
+INSERT INTO SystemUser
+VALUES (@userName,@password)
+
+DECLARE @stadiumID INT
+SELECT @stadiumID = Stadium.ID
+FROM Stadium
+WHERE Stadium.Name = @stadiumName
+
+INSERT INTO StadiumManager
+VALUES(@name,@userName,@stadiumID)
+END
+
+-- (xviii)                           
+GO
+CREATE FUNCTION allPendingRequests
+(@stadiumManUsername VARCHAR(20))
+RETURNS TABLE
+AS
+RETURN
+	SELECT CR.name AS ClubRepresentative,G.name AS Guest,M.start_time
+	FROM HostRequest HR 
+	INNER JOIN StadiumManager SM ON HR.stadium_manager_id = SM.id
+	INNER JOIN Match M ON HR.match_id = M.id
+	INNER JOIN ClubRepresentative CR ON HR.club_representative_id = CR.id
+	INNER JOIN Club G ON M.guest_id = G.id
+	WHERE SM.username = @stadiumManUsername AND HR.status = 'unhandled'
+
+-- (xix)
+GO
+CREATE PROCEDURE acceptRequest
+@stadiumManUsername VARCHAR(20),
+@hostClubName VARCHAR(20),
+@guestClubName VARCHAR(20),
+@startTime DATETIME
+AS
+BEGIN
+DECLARE @matchID INT
+SELECT @matchID = M.id
+FROM Match M 
+INNER JOIN Club H ON M.host_id = H.id
+INNER JOIN Club G ON M.guest_id = G.id
+WHERE H.name = @hostClubName AND G.name = @guestClubName AND M.start_time = @startTime
+
+UPDATE HostRequest
+SET status = 'accepted'
+WHERE stadium_manager_id = (SELECT SM.id FROM StadiumManager SM WHERE SM.username = @stadiumManUsername) AND match_id = @matchID
+
+UPDATE Match
+SET stadium_id = (SELECT SM.stadium_id FROM StadiumManager SM WHERE SM.username = @stadiumManUsername)
+WHERE id = @matchID
+END
+
+-- (xx)
+GO
+CREATE PROCEDURE rejectRequest
+@stadiumManUsername VARCHAR(20),
+@hostClubName VARCHAR(20),
+@guestClubName VARCHAR(20),
+@startTime DATETIME
+AS
+BEGIN
+UPDATE HostRequest
+SET status = 'rejected'
+WHERE stadium_manager_id = (SELECT SM.id FROM StadiumManager SM WHERE SM.username = @stadiumManUsername)
+AND match_id = (SELECT M.id
+				FROM Match M 
+				INNER JOIN Club H ON M.host_id = H.id
+				INNER JOIN Club G ON M.guest_id = G.id
+				WHERE H.name = @hostClubName AND G.name = @guestClubName AND M.start_time = @startTime)
+END
 
 -------------------------------malek part
 -- (XXi)	
