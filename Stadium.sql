@@ -1,6 +1,7 @@
 --- Database Control Functions ---
 CREATE DATABASE SportsDB;
-use SportsDB;
+USE SportsDB;
+DROP DATABASE SportsDB;
 
 --- Create DB ---
 EXEC createAllTables
@@ -8,37 +9,64 @@ EXEC createAllTables
 --- Drop DB ---
 EXEC dropAllTables
 EXEC dropAllProceduresFunctionsViews
+exec clearAllTables
 
 ---------------- TEST DATA ----------------------
 
-INSERT INTO SystemUser VALUES ('Mohammed', 'mopassword'),
-							  ('Malek', null),
-							  ('Omar', 'omarPass'),
-							  ('Ahmed', 'ahmedPass'),
-							  ('FanOne', 'FPass')
+--INSERT INTO SystemUser VALUES ('Mohammed', 'mopassword'),
+--							  ('Malek', '123'),
+--							  ('Omar', 'omarPass'),
+--							  ('Ahmed', 'ahmedPass'),
+--							  ('FanOne', 'FPass')
 
 
 
-INSERT INTO Stadium (name, location, capacity) VALUES ('Stad al Kahera', 'Cairo', 50),
-													  ('Monroe Stadium', 'USA', 100),
-													  ('Reuben Arena', 'Germany', 150),
-													  ('Maxwell Plaza', 'Switzerland', 500)
+--INSERT INTO Stadium (name, location, capacity) VALUES ('Stad al Kahera', 'Cairo', 50),
+			--										  ('Monroe Stadium', 'USA', 100),
+		--											  ('Reuben Arena', 'Germany', 150),
+	--												  ('Maxwell Plaza', 'Switzerland', 500)
 
 
-INSERT INTO StadiumManager (name, username) VALUES ('MoSalah', 'Mohammed')
+--INSERT INTO StadiumManager (name, username) VALUES ('MoSalah', 'Mohammed')
 
-INSERT INTO Club (name, location) VALUES ('New York Jets', 'USA'),
-										 ('Ahly', 'Cairo'),
-										 ('Zamalek', 'Cairo'),
-										 ('FC Bayern', 'Germany')
+--INSERT INTO Club (name, location) VALUES ('New York Jets', 'USA'),
+	--									 ('Ahly', 'Cairo'),
+		--								 ('Zamalek', 'Cairo'),
+			--							 ('FC Bayern', 'Germany')
 
-INSERT INTO ClubRepresentative (name, username, club_id) VALUES ('Omariko', 'Omar', 1)
+--INSERT INTO ClubRepresentative (name, username, club_id) VALUES ('Omariko', 'Omar', 1)
 
-INSERT INTO Fan (username, name, phone_number, birthdate, address) VALUES ('FanOne', 'FavFan', 018572398, 22-03-2022, '14 Gomhoreya St.')
-INSERT INTO SportAssociationManager (name, username) VALUES ('ManagerMo', 'Mohammed')
-INSERT INTO SystemAdmin (name, username) VALUES ('OmarMgr', 'Omar')
-INSERT INTO Match (start_time, end_time, host_id, guest_id) VALUES ('2015-01-01 08:22:13', '2015-03-05 17:56:31', 2, 3);
+--INSERT INTO Fan (username,national_id,name, phone_number, birthdate, address) VALUES ('FanOne', '54321','FavFan', 018572398, 22-03-2022, '14 Gomhoreya St.')
+--INSERT INTO SportAssociationManager (name, username) VALUES ('ManagerMo', 'Mohammed')
+--INSERT INTO SystemAdmin (name, username) VALUES ('OmarMgr', 'Omar')
+--INSERT INTO Match (start_time, end_time, host_id, guest_id) VALUES ('2015-01-01 08:22:13', '2015-03-05 17:56:31', 2, 3);
 
+insert into SystemUser values('meky',1),('omar',2),('hima',3),('malek',4),('user1',5),('user2',6),('user3',7),('admin',8),('abdo',9),('user4',10);
+INSERT INTO Stadium values ('yehiastadium','Egypt',1 , 20000)
+INSERT INTO Club values ('ahly','Egypt')
+insert into Club values ('zamlek', 'Egypt')
+insert into Club values ('club3', 'Egypt')
+insert into Club values ('club4', 'Egypt')
+insert into StadiumManager values ('yehia', 'abdo',1)
+insert into ClubRepresentative values ('meky', 'meky', 1)
+insert into ClubRepresentative values ('omar', 'omar', 3)
+insert into ClubRepresentative values ('hima', 'hima', 2)
+insert into ClubRepresentative values ('malek', 'malek', 4)
+insert into Fan values ('1234','user1','mosha8b','12','2002-1-2 01:10:59','ad1',1)
+insert into Fan values ('123','user2','mosha8b1','1','2002-1-3 01:10:59','ad2',1)
+insert into Fan values ('12','user3','mosha8b12','14','2002-1-3 01:10:59','ad2',0)
+insert into SportAssociationManager values ('manager1', 'user4')
+insert into SystemAdmin values ('ana', 'admin')
+insert into Match values ('2022-12-15 01:00:00', '2022-12-15 03:00:00', 2, 3,1)
+insert into Match values ('2021-12-15 01:00:00', '2021-12-15 03:00:00', 1, 3,1)
+insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 1, 4,1)
+insert into HostRequest values (1, 1, 1, 2)
+insert into HostRequest values (1, 2, 1, 3)
+insert into Ticket values (1, 2)
+insert into Ticket values (1, 2)
+insert into Ticket values (1, 1)
+insert into Ticket values (1, 1)
+select * from Ticket
 
 --2.1 BASic Structure of the DatabASe
 --Part a
@@ -48,7 +76,7 @@ CREATE PROCEDURE createAllTables AS
 
 CREATE TABLE SystemUser (
 username VARCHAR(20) PRIMARY KEY,
-password VARCHAR(20) NOT NULL,
+password VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE Stadium (
@@ -56,7 +84,7 @@ id INT IDENTITY PRIMARY KEY,
 name VARCHAR(20),
 location  VARCHAR(20),
 status BIT default 1 ,-- 0 unavailable , 1 available
-capacity INT,
+capacity INT
 );
 
 CREATE TABLE StadiumManager (
@@ -65,13 +93,13 @@ name VARCHAR(20),
 username VARCHAR(20) UNIQUE NOT NULL,
 stadium_id INT,
 CONSTRAINT SM_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE,
-CONSTRAINT SM_FK2 FOREIGN KEY (stadium_id) REFERENCES Stadium(ID) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT SM_FK2 FOREIGN KEY (stadium_id) REFERENCES Stadium(ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Club (
 id INT IDENTITY PRIMARY KEY,
 name VARCHAR(20),
-location VARCHAR(20),
+location VARCHAR(20)
 );
 
 CREATE TABLE ClubRepresentative (
@@ -80,7 +108,7 @@ name VARCHAR(20),
 username VARCHAR(20) UNIQUE NOT NULL,
 club_id INT,
 CONSTRAINT CR_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE,
-CONSTRAINT CR_FK2 FOREIGN KEY (club_id) REFERENCES Club(id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT CR_FK2 FOREIGN KEY (club_id) REFERENCES Club(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Fan (
@@ -91,21 +119,21 @@ phone_number INT,
 birthdate DATETIME,
 address VARCHAR(20),
 status BIT default 1,			-- 1 for unblocked , 0 for blocked
-CONSTRAINT F_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT F_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE SportAssociationManager (
 id INT IDENTITY PRIMARY KEY,
 name VARCHAR(20),
 username VARCHAR(20) UNIQUE NOT NULL,
-CONSTRAINT SAM_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT SAM_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE SystemAdmin (
 id INT IDENTITY PRIMARY KEY,
 name VARCHAR(20),
 username VARCHAR(20) UNIQUE NOT NULL,
-CONSTRAINT SA_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT SA_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -118,7 +146,7 @@ guest_id INT,
 stadium_id INT,
 CONSTRAINT M_FK1 FOREIGN KEY (stadium_id) REFERENCES Stadium(id) ON DELETE SET NULL,--relatiON 1 to many between Stadium & Match
 CONSTRAINT M_FK2 FOREIGN KEY (host_id) REFERENCES Club(id) ON DELETE SET NULL,--relatiON 1 to many between Club & Match
-CONSTRAINT M_FK3 FOREIGN KEY (guest_id) REFERENCES Club(id),--relatiON 1 to many between Club & Match
+CONSTRAINT M_FK3 FOREIGN KEY (guest_id) REFERENCES Club(id)--relatiON 1 to many between Club & Match
 );
 
 
@@ -130,21 +158,21 @@ stadium_manager_id INT,
 club_representative_id INT,
 CONSTRAINT HR_FK1 FOREIGN KEY (match_id) REFERENCES Match(id) ON DELETE CASCADE ON UPDATE CASCADE,--added nardy
 CONSTRAINT HR_FK2 FOREIGN KEY (stadium_manager_id) REFERENCES StadiumManager(id),
-CONSTRAINT HR_FK3 FOREIGN KEY (club_representative_id) REFERENCES ClubRepresentative(id),
+CONSTRAINT HR_FK3 FOREIGN KEY (club_representative_id) REFERENCES ClubRepresentative(id)
 );
 
 CREATE TABLE Ticket (
 id INT IDENTITY PRIMARY KEY,
 status BIT DEFAULT 1,
 match_id INT,
-CONSTRAINT T_FK1 FOREIGN KEY (match_id) REFERENCES Match(id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT T_FK1 FOREIGN KEY (match_id) REFERENCES Match(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE TicketBuyingTransactions (
 ticket_id INT,
 fan_id INT,
 CONSTRAINT TBT_FK1 FOREIGN KEY (fan_id) REFERENCES Fan (national_id) ON DELETE CASCADE ON UPDATE CASCADE,
-CONSTRAINT TBT_FK2 FOREIGN KEY (ticket_id) REFERENCES Ticket(id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT TBT_FK2 FOREIGN KEY (ticket_id) REFERENCES Ticket(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -214,15 +242,27 @@ DROP FUNCTION matchesRankedByAttendance
 DROP FUNCTION requestsFromClub
 --------------------------------------------------
 --Part d
+
 GO
+
 CREATE PROCEDURE clearAllTables AS
 
+
+ALTER TABLE StadiumManager DROP CONSTRAINT SM_FK1,SM_FK2;
+ALTER TABLE ClubRepresentative DROP CONSTRAINT CR_FK1,CR_FK2;			
+ALTER TABLE Fan DROP CONSTRAINT F_FK1;
+ALTER TABLE SportAssociationManager DROP CONSTRAINT SAM_FK1;
+ALTER TABLE SystemAdmin DROP CONSTRAINT SA_FK1;
+ALTER TABLE Match DROP CONSTRAINT M_FK1,M_FK2,M_FK3;
+ALTER TABLE HostRequest DROP CONSTRAINT HR_FK1,HR_FK2,HR_FK3;
+ALTER TABLE Ticket DROP CONSTRAINT T_FK1;
+ALTER TABLE TicketBuyingTransactions DROP CONSTRAINT TBT_FK1,TBT_FK2;
+
 TRUNCATE TABLE SystemAdmin;
-TRUNCATE TABLE Ticket_Buying_Transactions;
+TRUNCATE TABLE TicketBuyingTransactions;
 TRUNCATE TABLE SportAssociationManager;
 TRUNCATE TABLE HostRequest;
 TRUNCATE TABLE Ticket;
--- Cannot truncate : ( 
 TRUNCATE TABLE Match;
 TRUNCATE TABLE Fan;
 TRUNCATE TABLE ClubRepresentative;
@@ -230,7 +270,34 @@ TRUNCATE TABLE Club;
 TRUNCATE TABLE StadiumManager;
 TRUNCATE TABLE Stadium;
 TRUNCATE TABLE SystemUser;
+
+ALTER TABLE StadiumManager add constraint SM_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE StadiumManager add constraint SM_FK2 FOREIGN KEY (stadium_id) REFERENCES Stadium(ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE ClubRepresentative add constraint CR_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE ClubRepresentative add constraint  CR_FK2 FOREIGN KEY (club_id) REFERENCES Club(id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE Fan add constraint F_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE SportAssociationManager add constraint SAM_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE SystemAdmin add constraint SA_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE Match add constraint M_FK1 FOREIGN KEY (stadium_id) REFERENCES Stadium(id) ON DELETE SET NULL;										--(1)	these three need to be checked
+ALTER TABLE Match add constraint M_FK2 FOREIGN KEY (host_id) REFERENCES Club(id) ON DELETE SET NULL;											--(2)
+ALTER TABLE Match add constraint M_FK3 FOREIGN KEY (guest_id) REFERENCES Club(id);																--(3)
+
+ALTER TABLE HostRequest add constraint HR_FK1 FOREIGN KEY (match_id) REFERENCES Match(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE HostRequest add constraint HR_FK2 FOREIGN KEY (stadium_manager_id) REFERENCES StadiumManager(id);									--check this 
+ALTER TABLE HostRequest add constraint HR_FK3 FOREIGN KEY (club_representative_id) REFERENCES ClubRepresentative(id);
+
+ALTER TABLE Ticket add constraint  T_FK1 FOREIGN KEY (match_id) REFERENCES Match(id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE TicketBuyingTransactions ADD CONSTRAINT TBT_FK1 FOREIGN KEY (fan_id) REFERENCES Fan (national_id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE TicketBuyingTransactions ADD CONSTRAINT TBT_FK2 FOREIGN KEY (ticket_id) REFERENCES Ticket(id) ON DELETE CASCADE ON UPDATE CASCADE;
+
 --------------------------------------------------
+
 --2.2 Basic Data Retrieval
 --Part a
 GO
@@ -691,8 +758,13 @@ go
 --select * from  availableMatchesToAttend('1-10-2022')
 
 -- (xxiv)
+select * from Match
+select * from Club
+select * from Ticket
+select * from TicketBuyingTransactions
+drop procedure purchaseTicket
 go
-
+exec purchaseTicket '1234','ahly','zamlek','2022-12-15 01:00:00.000'
 create procedure purchaseTicket (@national_id int,@hosting_club varchar(20),@competing_club varchar(20),@date datetime) as
 	declare @hosting_club_id varchar(20);
 	declare @competing_club_id varchar(20);
@@ -705,12 +777,12 @@ create procedure purchaseTicket (@national_id int,@hosting_club varchar(20),@com
 	select @state = status from fan where national_id = @national_id;
 	select top 1 @ticket_id = id from Ticket
 	where match_id = @match_id and status = 1;
-	if @state=1
+	if @state=1 and @ticket_id is not null
 	begin
 	update Ticket
 	set status = 0
 	where id = @ticket_id;
-	insert into Ticket_Buying_Transactions values (@national_id,@ticket_id);
+	insert into TicketBuyingTransactions values (@ticket_id,@national_id);
 	end
 go
 --exec purchaseTicket 13,'mohamed','malek','2002-01-10 00:00:00.000'
@@ -775,15 +847,19 @@ CREATE FUNCTION clubsNeverPlayed (@representing varchar(20))    ---------> NOT T
 				select name from club cl
 				where cl.id not in
 				(
+				(
 				select Match.host_id 
 				from (select Club.id from Club, ClubRepresentative
 				where Club.id=ClubRepresentative.club_id and @representing like ClubRepresentative.name) t1 , Match
 				where Match.host_id != t1.id and Match.guest_id = t1.id and CURRENT_TIMESTAMP>=Match.end_time
+				)
 			union
+				(
 				select Match.guest_id 
 				from (select Club.id from Club, ClubRepresentative
 				where Club.id=ClubRepresentative.club_id and @representing like ClubRepresentative.name) t1 , Match
 				where Match.guest_id != t1.id and Match.host_id = t1.id and CURRENT_TIMESTAMP>=Match.end_time				
+				)
 				) 
 				and cl.id not in (select Club.id from Club, ClubRepresentative
 				where Club.id=ClubRepresentative.club_id and @representing = ClubRepresentative.name)
@@ -852,3 +928,15 @@ CREATE FUNCTION requestsFromClub (@stadium_name varchar(20),@club_name varchar(2
 							where @club_name=matches.host_club and @stadium_name=matches.Stadium_name
 		return
 	end;
+go
+select * from dbo.upcomingMatchesOfClub('club4')
+select * from dbo.availableMatchesToAttend('2021-12-15 01:00:00')
+select * from matchesPerTeam
+exec purchaseTicket '1234', 'ahly',  'club3',  '2021-12-15 01:00:00'
+exec updateMatchHost 'ahly','club3','2021-12-15 01:00:00'
+select * from clubsNeverMatched
+select * from clubsNeverPlayed('club4') -- NOt working corectly results (club3,zamalek)
+select * from matchesRankedByAttendance()
+select * from matchWithHighestAttendance()
+select * from Ticket
+select * from requestsFromClub('yehiastadium','zamalek')
