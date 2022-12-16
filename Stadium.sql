@@ -715,7 +715,7 @@ RETURN
 	INNER JOIN Match M ON HR.match_id = M.id
 	INNER JOIN ClubRepresentative CR ON HR.club_representative_id = CR.id
 	INNER JOIN Club G ON M.guest_id = G.id
-	WHERE SM.username = @stadiumManUsername AND HR.status = 'unhandled'
+	WHERE SM.username = @stadiumManUsername AND M.stadium_id = SM.stadium_id AND M.host_id = CR.club_id AND HR.status = 'unhandled'
 
 -- (xix)
 GO
