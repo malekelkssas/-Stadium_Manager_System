@@ -41,36 +41,80 @@ exec clearAllTables
 --INSERT INTO SystemAdmin (name, username) VALUES ('OmarMgr', 'Omar')
 --INSERT INTO Match (start_time, end_time, host_id, guest_id) VALUES ('2015-01-01 08:22:13', '2015-03-05 17:56:31', 2, 3);
 
-insert into SystemUser values('meky',1),('omar',2),('hima',3),('malek',4),('user1',5),('user2',6),('user3',7),('admin',8),('abdo',9),('user4',10);
-INSERT INTO Stadium values ('yehiastadium','Egypt',1 , 20000)
-INSERT INTO Club values ('ahly','Egypt')
-insert into Club values ('zamlek', 'Egypt')
+
+--insert into SystemUser values('meky',1),('omar',2),('hima',3),('malek',4),('user1',5),('user2',6),('user3',7),('admin',8),('abdo',9),('user4',10);
+--INSERT INTO Stadium values ('yehiastadium','Egypt',1 , 20000)
+--INSERT INTO Club values ('ahly','Egypt')
+--insert into Club values ('zamlek', 'Egypt')
+--insert into Club values ('club3', 'Egypt')
+--insert into Club values ('club4', 'Egypt')
+--insert into StadiumManager values ('yehia', 'abdo',1)
+--insert into ClubRepresentative values ('meky', 'meky', 1)
+--insert into ClubRepresentative values ('omar', 'omar', 3)
+--insert into ClubRepresentative values ('hima', 'hima', 2)
+--insert into ClubRepresentative values ('malek', 'malek', 4)
+--insert into Fan values ('1234','user1','mosha8b','12','2002-1-2 01:10:59','ad1',1)
+--insert into Fan values ('123','user2','mosha8b1','1','2002-1-3 01:10:59','ad2',1)
+--insert into Fan values ('12','user3','mosha8b12','14','2002-1-3 01:10:59','ad2',0)
+--insert into SportAssociationManager values ('manager1', 'user4')
+--insert into SystemAdmin values ('ana', 'admin')
+--insert into Match values ('2022-12-15 01:00:00', '2022-12-15 03:00:00', 2, 3,1)
+--insert into Match values ('2021-12-15 01:00:00', '2021-12-15 03:00:00', 1, 3,1)
+--insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 1, 4,1)
+--insert into HostRequest values (1, 1, 1, 2)
+--insert into HostRequest values (1, 2, 1, 3)
+--insert into Ticket values (1, 2)
+--insert into Ticket values (1, 2)
+--insert into Ticket values (1, 1)
+--insert into Ticket values (1, 1)
+--select * from Ticket
+
+INSERT INTO Stadium values ('stadium1','Cairo',1,20000)
+INSERT INTO Stadium values ('stadium2','Alex',1,30000)
+INSERT INTO Stadium values ('stadium3','Suez',0,30000)
+
+insert into SystemUser values ('manager1username',1),('manager2username',1),('manager3username',1)
+insert into StadiumManager values ('manager1', 'manager1username',1)
+insert into StadiumManager values ('manager2', 'manager2username',2)
+insert into StadiumManager values ('manager3', 'manager3username',3)
+
+INSERT INTO Club values ('club1','Egypt')
+insert into Club values ('club2', 'Egypt')
 insert into Club values ('club3', 'Egypt')
 insert into Club values ('club4', 'Egypt')
-insert into StadiumManager values ('yehia', 'abdo',1)
-insert into ClubRepresentative values ('meky', 'meky', 1)
-insert into ClubRepresentative values ('omar', 'omar', 3)
-insert into ClubRepresentative values ('hima', 'hima', 2)
-insert into ClubRepresentative values ('malek', 'malek', 4)
-insert into Fan values ('1234','user1','mosha8b','12','2002-1-2 01:10:59','ad1',1)
-insert into Fan values ('123','user2','mosha8b1','1','2002-1-3 01:10:59','ad2',1)
-insert into Fan values ('12','user3','mosha8b12','14','2002-1-3 01:10:59','ad2',0)
-insert into SportAssociationManager values ('manager1', 'user4')
-insert into SystemAdmin values ('ana', 'admin')
-insert into Match values ('2022-12-15 01:00:00', '2022-12-15 03:00:00', 2, 3,1)
-insert into Match values ('2021-12-15 01:00:00', '2021-12-15 03:00:00', 1, 3,1)
-insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 1, 4,1)
-insert into HostRequest values (1, 1, 1, 2)
-insert into HostRequest values (1, 2, 1, 3)
-insert into Ticket values (1, 2)
-insert into Ticket values (1, 2)
-insert into Ticket values (1, 1)
-insert into Ticket values (1, 1)
-select * from Ticket
+insert into Club values ('club5', 'Egypt')
+
+insert into SystemUser values ('rep1username',1),('rep2username',1),('rep3username',1),('rep4username',1)
+insert into ClubRepresentative values ('representative1', 'rep1username',  1)
+insert into ClubRepresentative values ('representative2', 'rep2username',  3)
+insert into ClubRepresentative values ('representative3', 'rep3username',  2)
+insert into ClubRepresentative values ('representative4', 'rep4username',  4)
+
+insert into SystemUser values ('fan1username',1),('fan2username',1),('fan3username',1)
+insert into Fan values ('1','fan1username','fan1',123,'2002-1-2 01:10:59','address1',1)
+insert into Fan values  ('2','fan2username','fan2',456,'2002-1-3 01:10:59','address2',1)
+insert into Fan values  ('3','fan3username','fan3',789,'2002-1-3 01:10:59','address3',0)
+
+insert into SystemUser values ('managerusername',1)
+insert into SportAssociationManager values ('manager1', 'managerusername')
+
+insert into SystemUser values ('adminUsername',1)
+insert into SystemAdmin values ('adminName', 'adminUsername')
+
+insert into Match values ('2022-12-15 01:00:00', '2022-12-15 03:00:00', 2,3,1)
+insert into Match values ('2021-12-15 01:00:00', '2021-12-15 03:00:00', 1,3,2)
+insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 1,4,1)
+insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 4,2,null)
+insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 3,4,null)
+
+insert into HostRequest values ('accepted', 3, 1, 2)
+insert into HostRequest values ('unhandled', 4, 1, 3)
+insert into HostRequest values ('rejected', 5, 1, 1)
+
+insert into TicketBuyingTransactions values (1,'1'),(2,'2'),(3,'3')
 
 --2.1 BASic Structure of the DatabASe
 --Part a
-
 GO
 CREATE PROCEDURE createAllTables AS
 
@@ -87,6 +131,7 @@ status BIT default 1 ,-- 0 unavailable , 1 available
 capacity INT
 );
 
+
 CREATE TABLE StadiumManager (
 id INT IDENTITY PRIMARY KEY,
 name VARCHAR(20),
@@ -96,11 +141,13 @@ CONSTRAINT SM_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELE
 CONSTRAINT SM_FK2 FOREIGN KEY (stadium_id) REFERENCES Stadium(ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+
 CREATE TABLE Club (
 id INT IDENTITY PRIMARY KEY,
 name VARCHAR(20),
 location VARCHAR(20)
 );
+
 
 CREATE TABLE ClubRepresentative (
 id INT IDENTITY PRIMARY KEY,
@@ -110,6 +157,7 @@ club_id INT,
 CONSTRAINT CR_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE,
 CONSTRAINT CR_FK2 FOREIGN KEY (club_id) REFERENCES Club(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
 
 CREATE TABLE Fan (
 national_id INT PRIMARY KEY,
@@ -122,6 +170,7 @@ status BIT default 1,			-- 1 for unblocked , 0 for blocked
 CONSTRAINT F_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+
 CREATE TABLE SportAssociationManager (
 id INT IDENTITY PRIMARY KEY,
 name VARCHAR(20),
@@ -129,12 +178,15 @@ username VARCHAR(20) UNIQUE NOT NULL,
 CONSTRAINT SAM_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+
+
 CREATE TABLE SystemAdmin (
 id INT IDENTITY PRIMARY KEY,
 name VARCHAR(20),
 username VARCHAR(20) UNIQUE NOT NULL,
 CONSTRAINT SA_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
 
 
 CREATE TABLE Match (
@@ -145,9 +197,10 @@ host_id INT,
 guest_id INT,
 stadium_id INT,
 CONSTRAINT M_FK1 FOREIGN KEY (stadium_id) REFERENCES Stadium(id) ON DELETE SET NULL,--relatiON 1 to many between Stadium & Match
-CONSTRAINT M_FK2 FOREIGN KEY (host_id) REFERENCES Club(id) ON DELETE SET NULL,--relatiON 1 to many between Club & Match
-CONSTRAINT M_FK3 FOREIGN KEY (guest_id) REFERENCES Club(id)--relatiON 1 to many between Club & Match
+CONSTRAINT M_FK2 FOREIGN KEY (host_id) REFERENCES Club(id) ,--relatiON 1 to many between Club & Match
+CONSTRAINT M_FK3 FOREIGN KEY (guest_id) REFERENCES Club(id)  --relatiON 1 to many between Club & Match
 );
+
 
 
 CREATE TABLE HostRequest (
@@ -161,12 +214,19 @@ CONSTRAINT HR_FK2 FOREIGN KEY (stadium_manager_id) REFERENCES StadiumManager(id)
 CONSTRAINT HR_FK3 FOREIGN KEY (club_representative_id) REFERENCES ClubRepresentative(id)
 );
 
+
+
 CREATE TABLE Ticket (
 id INT IDENTITY PRIMARY KEY,
 status BIT DEFAULT 1,
 match_id INT,
 CONSTRAINT T_FK1 FOREIGN KEY (match_id) REFERENCES Match(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+insert into Ticket values (1, 2)
+insert into Ticket values (1, 2)
+insert into Ticket values (0, 1)
+insert into Ticket values (0, 1)
+
 
 CREATE TABLE TicketBuyingTransactions (
 ticket_id INT,
@@ -424,6 +484,7 @@ ON Club.id = M2.guest_id
 WHERE M1.host_id IS NULL AND M1.guest_id IS NULL AND M2.host_id IS NULL AND M2.guest_id IS NULL AND name IS NOT NULL
 
 
+
 -- (iv)
 GO
 CREATE PROCEDURE deleteMatch (@hostClubName VARCHAR(20), @guestClubName VARCHAR(20)) AS
@@ -452,28 +513,21 @@ CREATE PROCEDURE deleteMatch (@hostClubName VARCHAR(20), @guestClubName VARCHAR(
 	DELETE FROM Ticket 
 	WHERE match_id = @matchID 
 
+
+
 -- (v)
 GO
+
 CREATE PROCEDURE deleteMatchesOnStadium (@stadiumName VARCHAR(20)) AS
-	DECLARE @stadiumID INT, @matchID INT, @currentDate DATETIME
-	SET @currentDate = GETDATE();
+	DECLARE @stadiumID INT, @matchID INT
 
 	SELECT @stadiumID = id
 	FROM Stadium
-	WHERE id = @stadiumID
-
+	WHERE name = @stadiumName
 
 	DELETE FROM Match 
-	WHERE stadium_id = @stadiumID AND start_time < @currentDate
-
-	-- Delete the match's tickets
-	SELECT @matchID = id
-	FROM Match 
-	WHERE stadium_id = @stadiumID AND start_time < @currentDate
-
-
-	DELETE FROM Ticket 
-	WHERE match_id = @matchID 
+	WHERE stadium_id = @stadiumID AND start_time > CURRENT_TIMESTAMP
+ 
 
 -- (vi)
 GO
@@ -533,6 +587,7 @@ SET Status  = 0
 WHERE Fan.National_ID = @nationalID
 END
 
+
 -- (xii)                           
 GO
 CREATE PROCEDURE unblockFan
@@ -583,7 +638,6 @@ RETURN
 
 GO
 
-
 -- (xv)                           
 GO
 CREATE PROCEDURE addHostRequest
@@ -611,6 +665,7 @@ WHERE S.name = @stadiumName
 INSERT INTO HostRequest
 VALUES('unhandled',@MatchID,@StadiumManID,@ClubRepID)
 END
+
 
 -- (xvi)                           
 GO
@@ -687,6 +742,8 @@ SET stadium_id = (SELECT SM.stadium_id FROM StadiumManager SM WHERE SM.username 
 WHERE id = @matchID
 END
 
+
+
 -- (xx)
 GO
 CREATE PROCEDURE rejectRequest
@@ -706,15 +763,14 @@ AND match_id = (SELECT M.id
 				WHERE H.name = @hostClubName AND G.name = @guestClubName AND M.start_time = @startTime)
 END
 
+
 -------------------------------malek part
 -- (XXi)	
 go
 create procedure addFan (@name VARCHAR(20),@username VARCHAR(20),@password VARCHAR(20),@national_id VARCHAR(20),@birth_date datetime,@address VARCHAR(20),@phone_number int) as	
-	--insert into SystemUser values
 	insert into SystemUser values(@username,@password)
 	insert into Fan  values(@national_id,@username,@name,@phone_number,@birth_date,@address,1);
 go	
---exec addFan 'mlek','Luka','pass123','13','1-10-2002','here','1012'
 
 
 -- (XXII) 
@@ -733,7 +789,6 @@ CREATE FUNCTION upcomingMatchesOfClub (@club_name varchar(20))
 	end;
 
 
---select * from  upcomingMatchesOfClub('malek')
 
 -- (XXIII)
 go
@@ -755,16 +810,12 @@ CREATE FUNCTION availableMatchesToAttend (@date datetime)
 	end;
 go
 
---select * from  availableMatchesToAttend('1-10-2022')
+
 
 -- (xxiv)
-select * from Match
-select * from Club
-select * from Ticket
-select * from TicketBuyingTransactions
-drop procedure purchaseTicket
+
 go
-exec purchaseTicket '1234','ahly','zamlek','2022-12-15 01:00:00.000'
+
 create procedure purchaseTicket (@national_id int,@hosting_club varchar(20),@competing_club varchar(20),@date datetime) as
 	declare @hosting_club_id varchar(20);
 	declare @competing_club_id varchar(20);
@@ -804,7 +855,7 @@ create procedure updateMatchHost (@hosting_club VARCHAR(20),@competing_club VARC
 	set host_id=@tmp_guest_id,guest_id=@tmp_host_id
 	where id = @match_id
 
---exec updateMatchHost 'mohamed','malek','1-11-2023'
+--exec updateMatchHost 'club2','club3','2022-12-15 01:00:00.000'
 
 go
 
@@ -814,28 +865,26 @@ create view matchesPerTeam as
 	where Match.host_id=C1.id and Match.guest_id = C2.id) table1 , Club C3
 	where (C3.id = table1.host_id or C3.id = table1.guest_id) and CURRENT_TIMESTAMP>table1.end_time
 	group by C3.name
---select * from matchesPerTeam
 go
 -- (XXVII)
 create view clubsNeverMatched as
+	
 	select C1.name First_club ,C2.name Second_club 
 	from Club C1,Club C2
-	where C1.id != C2.id and C1.id>C2.id and 
-	C1.name not in 
+	where C1.id<C2.id
+	except
 	(
-		select C4.name from Club C3,Club C4,Match
-		where Match.host_id=C3.id and Match.guest_id=C4.id and C3.id = C2.id
+	select c3.name c33 ,c4.name c44
+	from Match , club c3 , club c4
+	where host_id in (c3.id,c4.id)  and guest_id in (c4.id,c3.id) and CURRENT_TIMESTAMP >= Match.end_time
 	)
-	and
-	C2.name not in
-	(
-		select C4.name from Club C3,Club C4,Match
-		where Match.host_id=C3.id and Match.guest_id=C4.id and C3.id = C1.id
-	)
-go
-select * from clubsNeverMatched
 
--- (xxviii)							
+go
+
+
+
+-- (xxviii)	
+
 go
 CREATE FUNCTION clubsNeverPlayed (@representing varchar(20))    ---------> NOT TESTED 
 	returns @table table(
@@ -845,24 +894,17 @@ CREATE FUNCTION clubsNeverPlayed (@representing varchar(20))    ---------> NOT T
 		begin
 			insert into @table 
 				select name from club cl
-				where cl.id not in
-				(
-				(
-				select Match.host_id 
-				from (select Club.id from Club, ClubRepresentative
-				where Club.id=ClubRepresentative.club_id and @representing like ClubRepresentative.name) t1 , Match
-				where Match.host_id != t1.id and Match.guest_id = t1.id and CURRENT_TIMESTAMP>=Match.end_time
+				where name <> @representing
+				except (
+				select c3.name from Match , club c2 , club c3
+				where Match.host_id in (c2.id,c3.id) and Match.guest_id in (c2.id,c3.id)
+				and c2.name = @representing and c3.name <> @representing and CURRENT_TIMESTAMP >= Match.end_time
+				union
+				select c2.name from Match , club c2 , club c3
+				where Match.host_id in (c2.id,c3.id) and Match.guest_id in (c2.id,c3.id)
+				and c2.name <> @representing and c3.name = @representing and CURRENT_TIMESTAMP >= Match.end_time
 				)
-			union
-				(
-				select Match.guest_id 
-				from (select Club.id from Club, ClubRepresentative
-				where Club.id=ClubRepresentative.club_id and @representing like ClubRepresentative.name) t1 , Match
-				where Match.guest_id != t1.id and Match.host_id = t1.id and CURRENT_TIMESTAMP>=Match.end_time				
-				)
-				) 
-				and cl.id not in (select Club.id from Club, ClubRepresentative
-				where Club.id=ClubRepresentative.club_id and @representing = ClubRepresentative.name)
+				
 		return
 	end;
 go
@@ -888,7 +930,7 @@ CREATE FUNCTION matchWithHighestAttendance ()
 		return
 	end;
 go
---select * from matchWithHighestAttendance()
+
 -- (xxx) 
 go
 CREATE FUNCTION matchesRankedByAttendance ()
@@ -910,10 +952,8 @@ CREATE FUNCTION matchesRankedByAttendance ()
 
 
 go
---select * from  matchesRankedByAttendance()
 
 --(XXXi)
-
 
 CREATE FUNCTION requestsFromClub (@stadium_name varchar(20),@club_name varchar(20))			-- Not Tested
 	returns @table table(
@@ -923,20 +963,17 @@ CREATE FUNCTION requestsFromClub (@stadium_name varchar(20),@club_name varchar(2
 	as
 		begin
 			insert into @table 
-			select matches.host_club,matches.guest_club from (select Match.id match_id, ClubRepresentative.id ClubRepresentative_id ,C1.name host_club , C2.name guest_club, Stadium.name Stadium_name from match,Club C1 , Club C2, ClubRepresentative , Stadium
-							where Match.host_id=C1.id and Match.guest_id = C2.id and ClubRepresentative.club_id = C1.id and Match.stadium_id = Stadium.id) matches inner join HostRequest on HostRequest.match_id=matches.match_id and HostRequest.club_representative_id = matches.ClubRepresentative_id
-							where @club_name=matches.host_club and @stadium_name=matches.Stadium_name
+			select matches.host_club,matches.guest_club from 
+			(select ma.id match_id , C1.name host_club , C2.name guest_club, Sta.name Stadium_name from match ma,Club C1 , Club C2 , Stadium sta
+			where ma.host_id=C1.id and ma.guest_id = C2.id and ma.stadium_id = Sta.id) matches
+			
+			inner join 
+
+			(select c3.name clu3, HostRequest.match_id mat2  from HostRequest,ClubRepresentative ,Club C3
+			where C3.id = ClubRepresentative.club_id and HostRequest.club_representative_id = ClubRepresentative.id
+			)rep
+			on  clu3=matches.host_club and mat2 = matches.match_id
+			where @club_name like matches.host_club and @stadium_name like matches.Stadium_name
 		return
 	end;
 go
-select * from dbo.upcomingMatchesOfClub('club4')
-select * from dbo.availableMatchesToAttend('2021-12-15 01:00:00')
-select * from matchesPerTeam
-exec purchaseTicket '1234', 'ahly',  'club3',  '2021-12-15 01:00:00'
-exec updateMatchHost 'ahly','club3','2021-12-15 01:00:00'
-select * from clubsNeverMatched
-select * from clubsNeverPlayed('club4') -- NOt working corectly results (club3,zamalek)
-select * from matchesRankedByAttendance()
-select * from matchWithHighestAttendance()
-select * from Ticket
-select * from requestsFromClub('yehiastadium','zamalek')
