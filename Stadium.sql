@@ -102,16 +102,15 @@ insert into SystemUser values ('adminUsername',1)
 insert into SystemAdmin values ('adminName', 'adminUsername')
 
 
-insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 1,4,1)
-insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 4,2,1)
-insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 3,4,1)
+insert into Match values ('2022-12-15 01:00:00', '2022-12-15 03:00:00', 2, 3,1)
+insert into Match values ('2021-12-15 01:00:00', '2021-12-15 03:00:00', 1, 3,1)
+insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 1, 4,1)
 
 
 
 insert into HostRequest values ('accepted', 1, 1, 2)
 insert into HostRequest values ('unhandled', 2, 1, 3)
 insert into HostRequest values ('rejected', 3, 1, 1)
-
 
 insert into Ticket values (1, 2)
 insert into Ticket values (1, 2)
@@ -146,7 +145,7 @@ name VARCHAR(20),
 username VARCHAR(20) UNIQUE NOT NULL,
 stadium_id INT,
 CONSTRAINT SM_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE,
-CONSTRAINT SM_FK2 FOREIGN KEY (stadium_id) REFERENCES Stadium(ID) ON DELETE CASCADE ON UPDATE CASCADE
+CONSTRAINT SM_FK2 FOREIGN KEY (stadium_id) REFERENCES Stadium(ID) ON DELETE set null -- ON UPDATE CASCADE
 );
 
 
@@ -163,7 +162,7 @@ name VARCHAR(20),
 username VARCHAR(20) UNIQUE NOT NULL,
 club_id INT,
 CONSTRAINT CR_FK1 FOREIGN KEY (username) REFERENCES SystemUser(username) ON DELETE CASCADE ON UPDATE CASCADE,
-CONSTRAINT CR_FK2 FOREIGN KEY (club_id) REFERENCES Club(id) ON DELETE CASCADE ON UPDATE CASCADE
+CONSTRAINT CR_FK2 FOREIGN KEY (club_id) REFERENCES Club(id) ON DELETE set null -- ON UPDATE CASCADE
 );
 
 
@@ -205,7 +204,7 @@ host_id INT,
 guest_id INT,
 stadium_id INT,
 CONSTRAINT M_FK1 FOREIGN KEY (stadium_id) REFERENCES Stadium(id) ON DELETE SET NULL,--relatiON 1 to many between Stadium & Match
-CONSTRAINT M_FK2 FOREIGN KEY (host_id) REFERENCES Club(id) ,--relatiON 1 to many between Club & Match
+CONSTRAINT M_FK2 FOREIGN KEY (host_id) REFERENCES Club(id),--relatiON 1 to many between Club & Match
 CONSTRAINT M_FK3 FOREIGN KEY (guest_id) REFERENCES Club(id)  --relatiON 1 to many between Club & Match
 );
 
@@ -509,8 +508,6 @@ CREATE PROCEDURE deleteMatch (@hostClubName VARCHAR(20), @guestClubName VARCHAR(
 	WHERE host_id = @hostID AND guest_id = @guestID
 
 
-
-
 -- (v)
 GO
 
@@ -520,11 +517,9 @@ CREATE PROCEDURE deleteMatchesOnStadium (@stadiumName VARCHAR(20)) AS
 	SELECT @stadiumID = id
 	FROM Stadium
 	WHERE name = @stadiumName
-
 	DELETE FROM Match 
 	WHERE stadium_id = @stadiumID AND start_time > CURRENT_TIMESTAMP
  
-
 -- (vi)
 GO
 CREATE PROCEDURE addClub (@clubName VARCHAR(20), @clubLocation VARCHAR(20)) AS
@@ -555,9 +550,12 @@ CREATE PROCEDURE addTicket (@hostClubName VARCHAR(20), @guestClubName VARCHAR(20
 -- (viii)
 GO
 CREATE PROCEDURE deleteClub (@clubName VARCHAR(20)) AS
+	declare @club_id int;
+	select @club_id = id from Club where name = @clubName;
+	DELETE FROM Match 
+	where host_id = @club_id or guest_id = @club_id;
 	DELETE FROM Club 
-	WHERE name = @clubName
-	
+	WHERE name = @clubName;
 
 -- (ix)
 GO
@@ -569,7 +567,6 @@ CREATE PROCEDURE addStadium (@stadiumName VARCHAR(20), @stadiumLocation VARCHAR(
 GO
 CREATE PROCEDURE deleteStadium (@stadiumName VARCHAR(20)) AS
 	DELETE FROM Stadium WHERE name = @stadiumName
-
 
 -- (xi)                                           
 GO
@@ -616,7 +613,7 @@ INSERT INTO ClubRepresentative
 VALUES(@name,@userName,@clubID)
 END
 
--- (xiv) -- not sure need to check for dates
+-- (xiv)
 GO
 CREATE FUNCTION viewAvailableStadiumsOn
 (@date DATETIME)
@@ -628,8 +625,8 @@ RETURN
 	WHERE S.status = 1 AND NOT EXISTS(
 		SELECT S2.name,S2.location,S2.capacity
 		FROM Stadium S2 INNER JOIN Match M ON M.stadium_id = S2.id
-		WHERE S.name = S2.name AND @date BETWEEN M.start_time AND M.end_time
-	)  
+		WHERE S.name = S2.name AND DATEADD(MI,90,@date) BETWEEN M.start_time AND M.end_time
+	) 
 
 GO
 
@@ -710,7 +707,7 @@ RETURN
 	INNER JOIN Match M ON HR.match_id = M.id
 	INNER JOIN ClubRepresentative CR ON HR.club_representative_id = CR.id
 	INNER JOIN Club G ON M.guest_id = G.id
-	WHERE SM.username = @stadiumManUsername AND M.stadium_id = SM.stadium_id AND M.host_id = CR.club_id AND HR.status = 'unhandled'
+	WHERE SM.username = @stadiumManUsername AND HR.status = 'unhandled'
 
 -- (xix)
 GO
