@@ -101,20 +101,28 @@ insert into SportAssociationManager values ('manager1', 'managerusername')
 insert into SystemUser values ('adminUsername',1)
 insert into SystemAdmin values ('adminName', 'adminUsername')
 
-insert into Match values ('2022-12-15 01:00:00', '2022-12-15 03:00:00', 2,3,1)
-insert into Match values ('2021-12-15 01:00:00', '2021-12-15 03:00:00', 1,3,2)
-insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 1,4,1)
-insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 4,2,null)
-insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 3,4,null)
 
-insert into HostRequest values ('accepted', 3, 1, 2)
-insert into HostRequest values ('unhandled', 4, 1, 3)
-insert into HostRequest values ('rejected', 5, 1, 1)
+insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 1,4,1)
+insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 4,2,1)
+insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 3,4,1)
+
+
+
+insert into HostRequest values ('accepted', 1, 1, 2)
+insert into HostRequest values ('unhandled', 2, 1, 3)
+insert into HostRequest values ('rejected', 3, 1, 1)
+
+
+insert into Ticket values (1, 2)
+insert into Ticket values (1, 2)
+insert into Ticket values (0, 1)
+insert into Ticket values (0, 1)
 
 insert into TicketBuyingTransactions values (1,'1'),(2,'2'),(3,'3')
 
 --2.1 BASic Structure of the DatabASe
 --Part a
+drop PROCEDURE createAllTables
 GO
 CREATE PROCEDURE createAllTables AS
 
@@ -222,10 +230,7 @@ status BIT DEFAULT 1,
 match_id INT,
 CONSTRAINT T_FK1 FOREIGN KEY (match_id) REFERENCES Match(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-insert into Ticket values (1, 2)
-insert into Ticket values (1, 2)
-insert into Ticket values (0, 1)
-insert into Ticket values (0, 1)
+
 
 
 CREATE TABLE TicketBuyingTransactions (
@@ -504,15 +509,6 @@ CREATE PROCEDURE deleteMatch (@hostClubName VARCHAR(20), @guestClubName VARCHAR(
 	WHERE host_id = @hostID AND guest_id = @guestID
 
 
-	-- Delete the match's tickets
-	SELECT @matchID = id
-	FROM Match 
-	WHERE host_id = @hostID AND guest_id = @guestID 
-
-
-	DELETE FROM Ticket 
-	WHERE match_id = @matchID 
-
 
 
 -- (v)
@@ -574,7 +570,6 @@ GO
 CREATE PROCEDURE deleteStadium (@stadiumName VARCHAR(20)) AS
 	DELETE FROM Stadium WHERE name = @stadiumName
 
-------------------------------- END OF OMAR'S PART ------------------------------------------------
 
 -- (xi)                                           
 GO
@@ -764,7 +759,6 @@ AND match_id = (SELECT M.id
 END
 
 
--------------------------------malek part
 -- (XXi)	
 go
 create procedure addFan (@name VARCHAR(20),@username VARCHAR(20),@password VARCHAR(20),@national_id VARCHAR(20),@birth_date datetime,@address VARCHAR(20),@phone_number int) as	
@@ -836,7 +830,6 @@ create procedure purchaseTicket (@national_id int,@hosting_club varchar(20),@com
 	insert into TicketBuyingTransactions values (@ticket_id,@national_id);
 	end
 go
---exec purchaseTicket 13,'mohamed','malek','2002-01-10 00:00:00.000'
 
 
 -- (xxv)
@@ -855,7 +848,6 @@ create procedure updateMatchHost (@hosting_club VARCHAR(20),@competing_club VARC
 	set host_id=@tmp_guest_id,guest_id=@tmp_host_id
 	where id = @match_id
 
---exec updateMatchHost 'club2','club3','2022-12-15 01:00:00.000'
 
 go
 
@@ -911,7 +903,6 @@ go
 
 -- (xxix)
 go
-
 CREATE FUNCTION matchWithHighestAttendance ()
 	returns @table table(
 						host_club varchar(20),
@@ -920,13 +911,16 @@ CREATE FUNCTION matchWithHighestAttendance ()
 	as
 		begin
 			insert into @table 
-			select top 1 club_name, competing_club_name
-			from(
-			select  C1.name club_name, C2.name competing_club_name ,count(tick.match_id) cou from  match,club C1,club C2 , Ticket tick
-			where match.host_id=C1.id and match.guest_id=C2.id and CURRENT_TIMESTAMP>=Match.end_time and tick.match_id=match.id and tick.status = 0 
-			group by C1.name,C2.name
-			) t1
-			order by cou 
+			select club_name,competing_club_name
+			from (
+			select club_name, competing_club_name , DENSE_RANK() over(order by cou desc) ran
+				from(
+				select  C1.name club_name, C2.name competing_club_name ,Match.start_time,count(tick.match_id) cou from  match,club C1,club C2 , Ticket tick
+				where match.host_id=C1.id and match.guest_id=C2.id and CURRENT_TIMESTAMP>=Match.end_time and tick.match_id=match.id and tick.status = 0 
+				group by C1.name,C2.name,Match.start_time
+				) t1
+			) t2
+			where t2.ran = 1
 		return
 	end;
 go
@@ -977,3 +971,8 @@ CREATE FUNCTION requestsFromClub (@stadium_name varchar(20),@club_name varchar(2
 		return
 	end;
 go
+
+select * from HostRequest
+select * from Match
+select * from Ticket
+delete from club where id = 4
