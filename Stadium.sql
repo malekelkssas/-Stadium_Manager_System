@@ -121,7 +121,6 @@ insert into TicketBuyingTransactions values (1,'1'),(2,'2'),(3,'3')
 
 --2.1 BASic Structure of the DatabASe
 --Part a
-drop PROCEDURE createAllTables
 GO
 CREATE PROCEDURE createAllTables AS
 
@@ -375,15 +374,16 @@ ON sam.username =su.username
 GO
 CREATE VIEW allClubRepresentatives AS
 SELECT CR.username,su.password,CR.name,C.name AS Club 
-FROM Club C INNER JOIN SystemUser su  ON C.username =su.username
-INNER JOIN ClubRepresentative CR ON C.id = CR.club_id;
+FROM Club C INNER JOIN ClubRepresentative CR ON C.id = CR.club_id
+INNER JOIN SystemUser su  ON CR.username =su.username;
 
 --Part c
 
 GO
 CREATE VIEW allStadiumManagers AS
 SELECT SM.Username, su.password ,SM.name,S.name AS Stadium
-FROM Stadium S INNER JOIN SystemUser su  ON S.username =su.username INNER JOIN StadiumManager SM ON S.id = SM.stadium_id;
+FROM Stadium S INNER JOIN StadiumManager SM ON S.id = SM.stadium_id
+INNER JOIN SystemUser su  ON SM.username =su.username;
 
 --Part d
 
@@ -969,7 +969,3 @@ CREATE FUNCTION requestsFromClub (@stadium_name varchar(20),@club_name varchar(2
 	end;
 go
 
-select * from HostRequest
-select * from Match
-select * from Ticket
-delete from club where id = 4
