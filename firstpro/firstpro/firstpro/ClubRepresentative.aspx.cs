@@ -10,10 +10,9 @@ namespace firstpro
     
     public partial class ClubRepresentative : System.Web.UI.Page
     {
-        string username;
         protected void Page_Load(object sender, EventArgs e)
         {
-            username = Request.QueryString["username"];
+            //(string)Session["UserName"]  <<-- this is how to get the username
         }
     }
 }

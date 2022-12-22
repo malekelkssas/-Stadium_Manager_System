@@ -52,6 +52,8 @@ namespace firstpro
             }
             if (exist == 1)
             {
+                Session["IsLoggedIn"] = true;
+                Session["UserName"] = username;
                 exist = 0;
                 connection.Open();
                 Tmp = new DataTable();
@@ -119,13 +121,13 @@ namespace firstpro
                 connection.Close();
                 if (exist == 1)
                     Response.Redirect("/SystemAdmin.aspx?username=" + username);
-                else if(exist == 2)
+                else if (exist == 2)
                     Response.Redirect("/SportsAssociationManager.aspx?username=" + username);
-                else if(exist == 3)
+                else if (exist == 3)
                     Response.Redirect("/ClubRepresentative.aspx?username=" + username);
-                else if(exist == 4)
+                else if (exist == 4)
                     Response.Redirect("/StadiumManager.aspx?username=" + username);
-                else if(exist == 5)
+                else if (exist == 5)
                     Response.Redirect("/Fan.aspx?username=" + username);
             }
         }
