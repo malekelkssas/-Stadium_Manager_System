@@ -9,9 +9,10 @@ namespace firstpro
 {
     public partial class SystemAdmin : System.Web.UI.Page
     {
+        string username;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            username = Request.QueryString["username"];
         }
     }
 }

@@ -9,9 +9,10 @@ namespace firstpro
 {
     public partial class StadiumManager : System.Web.UI.Page
     {
+        String username;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            username = Request.QueryString["username"];
         }
     }
 }

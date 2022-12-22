@@ -118,15 +118,15 @@ namespace firstpro
                 }
                 connection.Close();
                 if (exist == 1)
-                    Response.Redirect("/SystemAdmin.aspx");
+                    Response.Redirect("/SystemAdmin.aspx?username=" + username);
                 else if(exist == 2)
-                    Response.Redirect("/SportsAssociationManager.aspx");
+                    Response.Redirect("/SportsAssociationManager.aspx?username=" + username);
                 else if(exist == 3)
-                    Response.Redirect("/ClubRepresentative.aspx");
+                    Response.Redirect("/ClubRepresentative.aspx?username=" + username);
                 else if(exist == 4)
-                    Response.Redirect("/StadiumManager.aspx");
+                    Response.Redirect("/StadiumManager.aspx?username=" + username);
                 else if(exist == 5)
-                    Response.Redirect("/Fan.aspx");
+                    Response.Redirect("/Fan.aspx?username=" + username);
             }
         }
     }
