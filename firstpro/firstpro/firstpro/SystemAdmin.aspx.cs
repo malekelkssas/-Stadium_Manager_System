@@ -11,7 +11,12 @@ namespace firstpro
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //(string)Session["UserName"]  <<-- this is how to get the username
+           
+        }
+
+        protected void AddClub(object sender, EventArgs e)
+        {
+
         }
     }
 }
