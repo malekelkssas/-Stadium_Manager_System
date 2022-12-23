@@ -11,7 +11,7 @@ namespace firstpro
 {
 
 
-    public partial class AddStadium
+    public partial class BlockFan
     {
 
         /// <summary>
@@ -24,48 +24,30 @@ namespace firstpro
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// StadiumNameTB control.
+        /// FanID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox StadiumNameTB;
+        protected global::System.Web.UI.WebControls.TextBox FanID;
 
         /// <summary>
-        /// StadiumLocationTB control.
+        /// blockFanB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox StadiumLocationTB;
+        protected global::System.Web.UI.WebControls.Button blockFanB;
 
         /// <summary>
-        /// StadiumCapacityTB control.
+        /// homeB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox StadiumCapacityTB;
-
-        /// <summary>
-        /// addStaduimB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button addStaduimB;
-
-        /// <summary>
-        /// HomeB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button HomeB;
+        protected global::System.Web.UI.WebControls.Button homeB;
     }
 }

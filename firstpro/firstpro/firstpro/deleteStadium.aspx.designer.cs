@@ -11,7 +11,7 @@ namespace firstpro
 {
 
 
-    public partial class AddStadium
+    public partial class deleteStadium
     {
 
         /// <summary>
@@ -24,40 +24,22 @@ namespace firstpro
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// StadiumNameTB control.
+        /// StaduimNameTB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox StadiumNameTB;
+        protected global::System.Web.UI.WebControls.TextBox StaduimNameTB;
 
         /// <summary>
-        /// StadiumLocationTB control.
+        /// deleteB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox StadiumLocationTB;
-
-        /// <summary>
-        /// StadiumCapacityTB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox StadiumCapacityTB;
-
-        /// <summary>
-        /// addStaduimB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button addStaduimB;
+        protected global::System.Web.UI.WebControls.Button deleteB;
 
         /// <summary>
         /// HomeB control.

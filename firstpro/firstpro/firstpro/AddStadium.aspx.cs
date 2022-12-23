@@ -26,38 +26,51 @@ namespace firstpro
             string staduimName = StadiumNameTB.Text;
             string staduimLocation = StadiumLocationTB.Text;
             int staduimCapacity=-1;
-            try
+            if (staduimName.Length == 0 || staduimLocation.Length == 0)
             {
-                staduimCapacity = Int16.Parse(StadiumCapacityTB.Text);
-                if (staduimCapacity <= 0) throw new Exception();
+                Response.Write("Please enter Staduim Name and Location");
             }
-            catch (Exception ex)
+            else
             {
-                Response.Write("staduim Capacity must be a positive number");
-            }
-
-            if (staduimCapacity > 0)
-            {
-                addStaduimproc.Parameters.Add(new SqlParameter("@stadiumName", staduimName));
-                addStaduimproc.Parameters.Add(new SqlParameter("@stadiumLocation", staduimLocation));
-                addStaduimproc.Parameters.Add(new SqlParameter("@stadiumCapacity", staduimCapacity));
-
-                connection.Open();
                 try
                 {
-                    addStaduimproc.ExecuteNonQuery();
-                    Response.Write(staduimName + " added succefully");
+                    staduimCapacity = Int16.Parse(StadiumCapacityTB.Text);
+                    if (staduimCapacity <= 0) throw new Exception();
                 }
-                catch (SqlException ex)
+                catch (Exception ex)
                 {
+                    staduimCapacity = -1;
+                    Response.Write("staduim Capacity must be a positive number");
+                }
 
-                    Response.Write("Can not insert doublicate staduim names");
-                }
-                finally
+                if (staduimCapacity != -1)
                 {
-                    connection.Close();
+                    addStaduimproc.Parameters.Add(new SqlParameter("@stadiumName", staduimName));
+                    addStaduimproc.Parameters.Add(new SqlParameter("@stadiumLocation", staduimLocation));
+                    addStaduimproc.Parameters.Add(new SqlParameter("@stadiumCapacity", staduimCapacity));
+
+                    connection.Open();
+                    try
+                    {
+                        addStaduimproc.ExecuteNonQuery();
+                        Response.Write(staduimName + " added succefully");
+                    }
+                    catch (SqlException ex)
+                    {
+
+                        Response.Write("Can not insert doublicate staduim names");
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
                 }
             }
+        }
+
+        protected void Home(object sender, EventArgs e)
+        {
+            Response.Redirect("/SystemAdmin.aspx");
         }
     }
 }

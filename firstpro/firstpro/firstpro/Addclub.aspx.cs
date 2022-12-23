@@ -25,23 +25,37 @@ namespace firstpro
 
             String clubname = clubName.Text;
             string clublocation = clubLocation.Text;
-
-            addClubproc.Parameters.Add(new SqlParameter("@clubName", clubname));
-            addClubproc.Parameters.Add(new SqlParameter("@clubLocation", clublocation));
-
-
-            connection.Open();
-            try { 
-                addClubproc.ExecuteNonQuery();
-                Response.Write(clubname + " added succefully");
-            }
-            catch (SqlException ex)
+            if (clubname.Length == 0 || clublocation.Length == 0)
             {
-                Response.Write("Can not insert doublicate Club names");
+                Response.Write("Please enter Club name and location");
             }
-            finally{
-                connection.Close();
+            else
+            {
+
+                addClubproc.Parameters.Add(new SqlParameter("@clubName", clubname));
+                addClubproc.Parameters.Add(new SqlParameter("@clubLocation", clublocation));
+
+
+                connection.Open();
+                try
+                {
+                    addClubproc.ExecuteNonQuery();
+                    Response.Write(clubname + " added succefully");
+                }
+                catch (SqlException ex)
+                {
+                    Response.Write("Can not insert doublicate Club names");
+                }
+                finally
+                {
+                    connection.Close();
+                }
             }
+        }
+
+        protected void Home(object sender, EventArgs e)
+        {
+            Response.Redirect("/SystemAdmin.aspx");
         }
     }
 }

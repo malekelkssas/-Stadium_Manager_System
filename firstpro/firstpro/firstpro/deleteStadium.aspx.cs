@@ -10,53 +10,52 @@ using System.Web.UI.WebControls;
 
 namespace firstpro
 {
-    public partial class deleteClub : System.Web.UI.Page
+    public partial class deleteStadium : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
 
-        protected void deleteClubB_Click(object sender, EventArgs e)
+        protected void deleteClub(object sender, EventArgs e)
         {
             string connString = WebConfigurationManager.ConnectionStrings["MyDB"].ToString();
             SqlConnection connection = new SqlConnection(connString);
-            SqlCommand deleteClubproc = new SqlCommand("deleteClub", connection);
-            deleteClubproc.CommandType = System.Data.CommandType.StoredProcedure;
+            SqlCommand deleteStadiumproc = new SqlCommand("deleteStadium", connection);
+            deleteStadiumproc.CommandType = System.Data.CommandType.StoredProcedure;
 
-            String clubname = ClubName.Text;
+            String staduimname = StaduimNameTB.Text;
 
-            if (clubname.Length == 0)
+            if (staduimname.Length == 0)
             {
-                Response.Write("Please enter club name");
+                Response.Write("Please enter Staduim name");
             }
             else
             {
-                deleteClubproc.Parameters.Add(new SqlParameter("@clubName", clubname));
+                deleteStadiumproc.Parameters.Add(new SqlParameter("@stadiumName", staduimname));
                 int exists = 0;
                 DataTable Tmp = new DataTable();
                 connection.Open();
-                new SqlDataAdapter("select * from allCLubs", connection).Fill(Tmp);
+                new SqlDataAdapter("select * from allStadiums", connection).Fill(Tmp);
                 connection.Close();
                 foreach (DataRow row in Tmp.Rows)
                 {
-                    if (row[0].Equals(clubname))
+                    if (row[0].Equals(staduimname))
                     {
                         exists = 1;
                         break;
                     }
                 }
                 if (exists == 0)
-                    Response.Write(clubname + " club deosn't exist");
+                    Response.Write(staduimname + " staduim deosn't exist");
                 else
                 {
                     connection.Open();
-                    deleteClubproc.ExecuteNonQuery();
-                    Response.Write(clubname + " deleted succefully");
+                    deleteStadiumproc.ExecuteNonQuery();
+                    Response.Write(staduimname + " deleted succefully");
                     connection.Close();
                 }
             }
-
         }
 
         protected void Home(object sender, EventArgs e)

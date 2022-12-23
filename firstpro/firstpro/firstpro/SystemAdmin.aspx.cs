@@ -31,12 +31,12 @@ namespace firstpro
 
         protected void DeleteStadium(object sender, EventArgs e)
         {
-
+            Response.Redirect("/deleteStadium.aspx");
         }
 
         protected void BlockFan(object sender, EventArgs e)
         {
-
+            Response.Redirect("/blockFan.aspx");
         }
     }
 }
