@@ -13,7 +13,7 @@ namespace firstpro
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            comment.Text = " ";
         }
 
         protected void addStaduimB_Click(object sender, EventArgs e)
@@ -28,7 +28,7 @@ namespace firstpro
             int staduimCapacity=-1;
             if (staduimName.Length == 0 || staduimLocation.Length == 0)
             {
-                Response.Write("Please enter Staduim Name and Location");
+                comment.Text =  "Please enter Staduim Name and Location";
             }
             else
             {
@@ -40,7 +40,7 @@ namespace firstpro
                 catch (Exception ex)
                 {
                     staduimCapacity = -1;
-                    Response.Write("staduim Capacity must be a positive number");
+                    comment.Text = "staduim Capacity must be a positive number";
                 }
 
                 if (staduimCapacity != -1)
@@ -53,12 +53,12 @@ namespace firstpro
                     try
                     {
                         addStaduimproc.ExecuteNonQuery();
-                        Response.Write(staduimName + " added succefully");
+                        comment.Text = staduimName + " added succefully";
                     }
                     catch (SqlException ex)
                     {
 
-                        Response.Write("Can not insert doublicate staduim names");
+                        comment.Text = "Can not insert doublicate staduim names";
                     }
                     finally
                     {

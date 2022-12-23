@@ -5,24 +5,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Block Fan</title>
-    <style type="text/css">
-        .auto-style1 {
-            height: 131px;
-        }
-    </style>
+   
+    <link rel="stylesheet" href="CSS.css" />
 </head>
-<body>
+<body class="CSS.css">
     <form id="form1" runat="server">
-        <div class="auto-style1">
+        <div>
+            <asp:Label ID="comment" runat="server" Text=" "></asp:Label>
+        </div>
+        <div >
             <br />
             Fan National ID<br />
             <asp:TextBox ID="FanID" runat="server"></asp:TextBox>
+        <br/>
             <br />
-            <br />
+
+            
+            
             <asp:Button ID="blockFanB" runat="server" Text="Block" OnClick="blockFanB_Click" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              
+            &nbsp;&nbsp;&nbsp;&nbsp;
+              
             <asp:Button ID="homeB" runat="server" Text="Home" OnClick="homeB_Click" />
         </div>
+         &nbsp;&nbsp;&nbsp;&nbsp;
+
     </form>
 </body>
 </html>

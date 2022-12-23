@@ -13,7 +13,7 @@ namespace firstpro
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            comment.Text = " ";
         }
 
         protected void AddClub(object sender, EventArgs e)
@@ -27,7 +27,7 @@ namespace firstpro
             string clublocation = clubLocation.Text;
             if (clubname.Length == 0 || clublocation.Length == 0)
             {
-                Response.Write("Please enter Club name and location");
+                comment.Text = "Please enter Club name and location";
             }
             else
             {
@@ -40,11 +40,11 @@ namespace firstpro
                 try
                 {
                     addClubproc.ExecuteNonQuery();
-                    Response.Write(clubname + " added succefully");
+                    comment.Text = clubname + " added succefully";
                 }
                 catch (SqlException ex)
                 {
-                    Response.Write("Can not insert doublicate Club names");
+                    comment.Text = "Can not insert doublicate Club names";
                 }
                 finally
                 {

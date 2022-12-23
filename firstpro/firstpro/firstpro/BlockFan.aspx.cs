@@ -14,20 +14,19 @@ namespace firstpro
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            comment.Text = " ";
         }
 
         protected void blockFanB_Click(object sender, EventArgs e)
         {
+            //System.Diagnostics.Debug.WriteLine("");
             string connString = WebConfigurationManager.ConnectionStrings["MyDB"].ToString();
             SqlConnection connection = new SqlConnection(connString);
             SqlCommand blockFanproc = new SqlCommand("blockFan", connection);
             blockFanproc.CommandType = System.Data.CommandType.StoredProcedure;
             string fanIDs = FanID.Text;
-
-
             if (fanIDs.Length == 0)
-                Response.Write("Please enter Fan National ID");
+                comment.Text = "Please enter Fan National ID";
             else
             {
                 int fanID=-1;
@@ -39,7 +38,7 @@ namespace firstpro
                 catch (Exception ex)
                 {
                     fanID = -1;
-                    Response.Write("Fan ID must be a positive number");
+                    comment.Text =  "Fan ID must be a positive number";
                 }
                 if (fanID != -1)
                 {
@@ -61,16 +60,16 @@ namespace firstpro
                         }
                     }
                     if (exists == 0)
-                        Response.Write("There is no fan with id " + fanID);
+                        comment.Text = "There is no fan with id " + fanID;
                     else
                     {
                         if (status == 0)
-                            Response.Write("Fan with ID " + fanID + " is already Blocked");
+                            comment.Text = "Fan with ID " + fanID + " is already Blocked";
                         else
                         {
                             connection.Open();
                             blockFanproc.ExecuteNonQuery();
-                            Response.Write("Fan with ID " + fanID + " Blocked succefully");
+                            comment.Text = "Fan with ID " + fanID + " Blocked succefully";
                             connection.Close();
                         }
                     }

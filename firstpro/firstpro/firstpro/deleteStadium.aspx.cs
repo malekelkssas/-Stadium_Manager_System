@@ -14,7 +14,7 @@ namespace firstpro
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            comment.Text = " ";
         }
 
         protected void deleteClub(object sender, EventArgs e)
@@ -27,9 +27,8 @@ namespace firstpro
             String staduimname = StaduimNameTB.Text;
 
             if (staduimname.Length == 0)
-            {
-                Response.Write("Please enter Staduim name");
-            }
+                comment.Text = "Please enter Staduim name";
+            
             else
             {
                 deleteStadiumproc.Parameters.Add(new SqlParameter("@stadiumName", staduimname));
@@ -47,12 +46,12 @@ namespace firstpro
                     }
                 }
                 if (exists == 0)
-                    Response.Write(staduimname + " staduim deosn't exist");
+                    comment.Text = staduimname + " staduim deosn't exist";
                 else
                 {
                     connection.Open();
                     deleteStadiumproc.ExecuteNonQuery();
-                    Response.Write(staduimname + " deleted succefully");
+                    comment.Text = staduimname + " deleted succefully";
                     connection.Close();
                 }
             }
