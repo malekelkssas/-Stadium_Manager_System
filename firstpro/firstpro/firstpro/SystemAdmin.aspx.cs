@@ -13,5 +13,30 @@ namespace firstpro
         {
             //(string)Session["UserName"]  <<-- this is how to get the username
         }
+
+        protected void AddClub(object sender, EventArgs e)
+        {
+            Response.Redirect("/Addclub.aspx");
+        }
+
+        protected void Deleteclub(object sender, EventArgs e)
+        {
+            Response.Redirect("/deleteClub.aspx");
+        }
+
+        protected void AddStadium(object sender, EventArgs e)
+        {
+            Response.Redirect("/AddStadium.aspx");
+        }
+
+        protected void DeleteStadium(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void BlockFan(object sender, EventArgs e)
+        {
+
+        }
     }
 }

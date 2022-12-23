@@ -11,7 +11,7 @@ namespace firstpro
 {
 
 
-    public partial class SystemAdmin
+    public partial class Addclub
     {
 
         /// <summary>
@@ -24,6 +24,24 @@ namespace firstpro
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
+        /// clubName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox clubName;
+
+        /// <summary>
+        /// clubLocation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox clubLocation;
+
+        /// <summary>
         /// AddClubB control.
         /// </summary>
         /// <remarks>
@@ -31,41 +49,5 @@ namespace firstpro
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button AddClubB;
-
-        /// <summary>
-        /// DeleteclubB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button DeleteclubB;
-
-        /// <summary>
-        /// AddStadiumB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button AddStadiumB;
-
-        /// <summary>
-        /// DeleteStadiumB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button DeleteStadiumB;
-
-        /// <summary>
-        /// BlockFanB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BlockFanB;
     }
 }

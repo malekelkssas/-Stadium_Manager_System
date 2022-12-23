@@ -67,8 +67,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addclub.aspx" />
+    <Content Include="AddStadium.aspx" />
     <Content Include="alert.aspx" />
     <Content Include="ClubRepresentative.aspx" />
+    <Content Include="deleteClub.aspx" />
     <Content Include="Fan.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="SportsAssociationManager.aspx" />
@@ -77,6 +80,20 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Addclub.aspx.cs">
+      <DependentUpon>Addclub.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addclub.aspx.designer.cs">
+      <DependentUpon>Addclub.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddStadium.aspx.cs">
+      <DependentUpon>AddStadium.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddStadium.aspx.designer.cs">
+      <DependentUpon>AddStadium.aspx</DependentUpon>
+    </Compile>
     <Compile Include="alert.aspx.cs">
       <DependentUpon>alert.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -90,6 +107,13 @@
     </Compile>
     <Compile Include="ClubRepresentative.aspx.designer.cs">
       <DependentUpon>ClubRepresentative.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="deleteClub.aspx.cs">
+      <DependentUpon>deleteClub.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="deleteClub.aspx.designer.cs">
+      <DependentUpon>deleteClub.aspx</DependentUpon>
     </Compile>
     <Compile Include="Fan.aspx.cs">
       <DependentUpon>Fan.aspx</DependentUpon>

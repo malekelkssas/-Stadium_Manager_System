@@ -24,7 +24,7 @@ namespace firstpro
             string password = PasswordTB.Text;
             int exist = -1;
             DataTable Tmp = new DataTable();
-           connection.Open();
+            connection.Open();
             new SqlDataAdapter("select * from SystemUser", connection).Fill(Tmp);
             foreach (DataRow row in Tmp.Rows)
             {
@@ -120,15 +120,15 @@ namespace firstpro
                 }
                 connection.Close();
                 if (exist == 1)
-                    Response.Redirect("/SystemAdmin.aspx?username=" + username);
+                    Response.Redirect("/SystemAdmin.aspx");
                 else if (exist == 2)
-                    Response.Redirect("/SportsAssociationManager.aspx?username=" + username);
+                    Response.Redirect("/SportsAssociationManager.aspx");
                 else if (exist == 3)
-                    Response.Redirect("/ClubRepresentative.aspx?username=" + username);
+                    Response.Redirect("/ClubRepresentative.aspx");
                 else if (exist == 4)
-                    Response.Redirect("/StadiumManager.aspx?username=" + username);
+                    Response.Redirect("/StadiumManager.aspx");
                 else if (exist == 5)
-                    Response.Redirect("/Fan.aspx?username=" + username);
+                    Response.Redirect("/Fan.aspx");
             }
         }
     }

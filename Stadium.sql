@@ -68,6 +68,7 @@ exec clearAllTables
 --insert into Ticket values (1, 1)
 --insert into Ticket values (1, 1)
 --select * from Ticket
+select * from Club
 
 INSERT INTO Stadium values ('stadium1','Cairo',1,20000)
 INSERT INTO Stadium values ('stadium2','Alex',1,30000)
@@ -121,6 +122,7 @@ insert into TicketBuyingTransactions values (1,'1'),(2,'2'),(3,'3')
 
 --2.1 BASic Structure of the DatabASe
 --Part a
+
 GO
 CREATE PROCEDURE createAllTables AS
 
@@ -131,7 +133,7 @@ password VARCHAR(20) NOT NULL
 
 CREATE TABLE Stadium (
 id INT IDENTITY PRIMARY KEY,
-name VARCHAR(20),
+name VARCHAR(20) unique not null,
 location  VARCHAR(20),
 status BIT default 1 ,-- 0 unavailable , 1 available
 capacity INT
@@ -150,7 +152,7 @@ CONSTRAINT SM_FK2 FOREIGN KEY (stadium_id) REFERENCES Stadium(ID) ON DELETE set 
 
 CREATE TABLE Club (
 id INT IDENTITY PRIMARY KEY,
-name VARCHAR(20),
+name VARCHAR(20) unique not null,
 location VARCHAR(20)
 );
 
