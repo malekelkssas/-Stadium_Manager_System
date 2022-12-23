@@ -11,12 +11,33 @@ namespace firstpro
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+            //(string)Session["UserName"]  <<-- this is how to get the username
+            comment.Text = "Welcome "+ (string)Session["UserName"];
         }
 
         protected void AddClub(object sender, EventArgs e)
         {
+            Response.Redirect("/Addclub.aspx");
+        }
 
+        protected void Deleteclub(object sender, EventArgs e)
+        {
+            Response.Redirect("/deleteClub.aspx");
+        }
+
+        protected void AddStadium(object sender, EventArgs e)
+        {
+            Response.Redirect("/AddStadium.aspx");
+        }
+
+        protected void DeleteStadium(object sender, EventArgs e)
+        {
+            Response.Redirect("/deleteStadium.aspx");
+        }
+
+        protected void BlockFan(object sender, EventArgs e)
+        {
+            Response.Redirect("/blockFan.aspx");
         }
     }
 }

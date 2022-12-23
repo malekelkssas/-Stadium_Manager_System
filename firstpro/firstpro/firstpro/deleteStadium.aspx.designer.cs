@@ -11,7 +11,7 @@ namespace firstpro
 {
 
 
-    public partial class SystemAdmin
+    public partial class deleteStadium
     {
 
         /// <summary>
@@ -33,48 +33,30 @@ namespace firstpro
         protected global::System.Web.UI.WebControls.Label comment;
 
         /// <summary>
-        /// AddClubB control.
+        /// StaduimNameTB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button AddClubB;
+        protected global::System.Web.UI.WebControls.TextBox StaduimNameTB;
 
         /// <summary>
-        /// DeleteclubB control.
+        /// deleteB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button DeleteclubB;
+        protected global::System.Web.UI.WebControls.Button deleteB;
 
         /// <summary>
-        /// AddStadiumB control.
+        /// HomeB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button AddStadiumB;
-
-        /// <summary>
-        /// DeleteStadiumB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button DeleteStadiumB;
-
-        /// <summary>
-        /// BlockFanB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BlockFanB;
+        protected global::System.Web.UI.WebControls.Button HomeB;
     }
 }
