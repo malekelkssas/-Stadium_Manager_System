@@ -131,7 +131,7 @@ password VARCHAR(20) NOT NULL
 
 CREATE TABLE Stadium (
 id INT IDENTITY PRIMARY KEY,
-name VARCHAR(20),
+name VARCHAR(20) unique not null,
 location  VARCHAR(20),
 status BIT default 1 ,-- 0 unavailable , 1 available
 capacity INT
@@ -150,7 +150,7 @@ CONSTRAINT SM_FK2 FOREIGN KEY (stadium_id) REFERENCES Stadium(ID) ON DELETE set 
 
 CREATE TABLE Club (
 id INT IDENTITY PRIMARY KEY,
-name VARCHAR(20),
+name VARCHAR(20) unique not null,
 location VARCHAR(20)
 );
 
