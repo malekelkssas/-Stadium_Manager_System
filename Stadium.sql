@@ -969,3 +969,35 @@ CREATE FUNCTION requestsFromClub (@stadium_name varchar(20),@club_name varchar(2
 	end;
 go
 
+--- M3 PROCEDURES/FUNCTIONS ---
+
+GO
+CREATE FUNCTION clubsOfRepresentative (@representativeName VARCHAR(20)) RETURNS TABLE AS
+	RETURN SELECT * FROM allClubs WHERE name = @representativeName
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
