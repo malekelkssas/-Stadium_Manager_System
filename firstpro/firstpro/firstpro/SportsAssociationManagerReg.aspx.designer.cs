@@ -11,7 +11,7 @@ namespace firstpro
 {
 
 
-    public partial class Login
+    public partial class SportsAssociationManagerReg
     {
 
         /// <summary>
@@ -33,31 +33,31 @@ namespace firstpro
         protected global::System.Web.UI.WebControls.Label comment;
 
         /// <summary>
-        /// UsernameTB control.
+        /// nameTB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox UsernameTB;
+        protected global::System.Web.UI.WebControls.TextBox nameTB;
 
         /// <summary>
-        /// PasswordTB control.
+        /// usernameTB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PasswordTB;
+        protected global::System.Web.UI.WebControls.TextBox usernameTB;
 
         /// <summary>
-        /// loginb control.
+        /// passwordTB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button loginb;
+        protected global::System.Web.UI.WebControls.TextBox passwordTB;
 
         /// <summary>
         /// RegisterB control.

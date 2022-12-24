@@ -11,7 +11,7 @@ namespace firstpro
 {
 
 
-    public partial class Login
+    public partial class Register
     {
 
         /// <summary>
@@ -24,48 +24,39 @@ namespace firstpro
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// comment control.
+        /// SportsAssociationManagerB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label comment;
+        protected global::System.Web.UI.WebControls.Button SportsAssociationManagerB;
 
         /// <summary>
-        /// UsernameTB control.
+        /// ClubRepresentativeB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox UsernameTB;
+        protected global::System.Web.UI.WebControls.Button ClubRepresentativeB;
 
         /// <summary>
-        /// PasswordTB control.
+        /// StadiumManagerB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PasswordTB;
+        protected global::System.Web.UI.WebControls.Button StadiumManagerB;
 
         /// <summary>
-        /// loginb control.
+        /// FanB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button loginb;
-
-        /// <summary>
-        /// RegisterB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button RegisterB;
+        protected global::System.Web.UI.WebControls.Button FanB;
     }
 }

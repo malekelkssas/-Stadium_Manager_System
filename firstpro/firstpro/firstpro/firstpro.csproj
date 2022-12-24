@@ -71,13 +71,18 @@
     <Content Include="AddStadium.aspx" />
     <Content Include="BlockFan.aspx" />
     <Content Include="ClubRepresentative.aspx" />
+    <Content Include="ClubRepresentativeReg.aspx" />
     <Content Include="CSS.css" />
     <Content Include="deleteClub.aspx" />
     <Content Include="deleteStadium.aspx" />
     <Content Include="Fan.aspx" />
+    <Content Include="FanReg.aspx" />
     <Content Include="Login.aspx" />
+    <Content Include="Register.aspx" />
     <Content Include="SportsAssociationManager.aspx" />
+    <Content Include="SportsAssociationManagerReg.aspx" />
     <Content Include="StadiumManager.aspx" />
+    <Content Include="StadiumManagerReg.aspx" />
     <Content Include="SystemAdmin.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -110,6 +115,13 @@
     <Compile Include="ClubRepresentative.aspx.designer.cs">
       <DependentUpon>ClubRepresentative.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ClubRepresentativeReg.aspx.cs">
+      <DependentUpon>ClubRepresentativeReg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClubRepresentativeReg.aspx.designer.cs">
+      <DependentUpon>ClubRepresentativeReg.aspx</DependentUpon>
+    </Compile>
     <Compile Include="deleteClub.aspx.cs">
       <DependentUpon>deleteClub.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -131,6 +143,13 @@
     <Compile Include="Fan.aspx.designer.cs">
       <DependentUpon>Fan.aspx</DependentUpon>
     </Compile>
+    <Compile Include="FanReg.aspx.cs">
+      <DependentUpon>FanReg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FanReg.aspx.designer.cs">
+      <DependentUpon>FanReg.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -139,6 +158,13 @@
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Register.aspx.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Register.aspx.designer.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SportsAssociationManager.aspx.cs">
       <DependentUpon>SportsAssociationManager.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -146,12 +172,26 @@
     <Compile Include="SportsAssociationManager.aspx.designer.cs">
       <DependentUpon>SportsAssociationManager.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SportsAssociationManagerReg.aspx.cs">
+      <DependentUpon>SportsAssociationManagerReg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SportsAssociationManagerReg.aspx.designer.cs">
+      <DependentUpon>SportsAssociationManagerReg.aspx</DependentUpon>
+    </Compile>
     <Compile Include="StadiumManager.aspx.cs">
       <DependentUpon>StadiumManager.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="StadiumManager.aspx.designer.cs">
       <DependentUpon>StadiumManager.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StadiumManagerReg.aspx.cs">
+      <DependentUpon>StadiumManagerReg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StadiumManagerReg.aspx.designer.cs">
+      <DependentUpon>StadiumManagerReg.aspx</DependentUpon>
     </Compile>
     <Compile Include="SystemAdmin.aspx.cs">
       <DependentUpon>SystemAdmin.aspx</DependentUpon>

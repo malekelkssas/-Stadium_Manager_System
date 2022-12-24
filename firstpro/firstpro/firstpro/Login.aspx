@@ -16,15 +16,18 @@
         Welcome To our App
         <br />
         <br />
-&nbsp;user name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:TextBox ID="UsernameTB" runat="server"></asp:TextBox>
+
+            <asp:TextBox ID="UsernameTB" runat="server" placeholder="User name" MaxLength="20"></asp:TextBox>
         <br />
         <br />
-        Password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
         
-        <asp:TextBox ID="PasswordTB" runat="server"></asp:TextBox>
+        <asp:TextBox type="password" placeholder= "password" ID="PasswordTB" runat="server" MaxLength="20"></asp:TextBox>
         <p>
+            &nbsp;&nbsp;
             <asp:Button ID="loginb" runat="server" OnClick="login" Text="login" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button ID="RegisterB" runat="server" OnClick="Register" Text="Register" />
         </p>
     </form>
 </body>

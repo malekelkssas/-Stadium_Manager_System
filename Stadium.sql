@@ -672,7 +672,12 @@ RETURN
 	INNER JOIN Club G ON M.guest_id = G.id
 	WHERE H.name = @clubName AND M.stadium_id IS NULL
 
--- (xvii)                           
+-- (xvii)    
+insert into Stadium values('stadium4','El_Arish','0',111);
+select * from StadiumManager
+select * from Stadium
+select * from SystemUser
+delete from SystemUser where username = 'fan2username';
 GO
 CREATE PROCEDURE addStadiumManager
 @name VARCHAR(20),
@@ -683,15 +688,15 @@ AS
 BEGIN
 
 INSERT INTO SystemUser
-VALUES (@userName,@password)
+VALUES (@userName,@password);
 
-DECLARE @stadiumID INT
+DECLARE @stadiumID INT;
 SELECT @stadiumID = Stadium.ID
 FROM Stadium
-WHERE Stadium.Name = @stadiumName
+WHERE Stadium.Name = @stadiumName;
 
 INSERT INTO StadiumManager
-VALUES(@name,@userName,@stadiumID)
+VALUES(@name,@userName,@stadiumID);
 END
 
 -- (xviii)                           

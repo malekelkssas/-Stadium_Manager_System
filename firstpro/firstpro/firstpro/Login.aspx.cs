@@ -22,8 +22,10 @@ namespace firstpro
             SqlConnection connection = new SqlConnection(connString);
             string username = UsernameTB.Text;
             string password = PasswordTB.Text;
-            if (username.Length == 0 || password.Length == 0)
-                comment.Text = "Please enter user name and password";
+            if (username.Length == 0 || password.Length==0)
+            {
+                comment.Text = "Please enter Username and password";
+            }
             else
             {
 
@@ -135,6 +137,11 @@ namespace firstpro
                         Response.Redirect("/Fan.aspx");
                 }
             }
+        }
+
+        protected void Register(object sender, EventArgs e)
+        {
+            Response.Redirect("/Register.aspx");
         }
     }
 }
