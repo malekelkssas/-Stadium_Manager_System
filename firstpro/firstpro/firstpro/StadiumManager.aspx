@@ -17,9 +17,7 @@
         }
         .aspNetHidden{
             display: none;
-        }
-        
-            
+        } 
     </style>
 </head>
 <body>

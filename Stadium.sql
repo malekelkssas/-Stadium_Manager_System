@@ -661,7 +661,7 @@ END
 
 -- (xvi)                           
 GO
-CREATE FUNCTION  allUnassignedMatches
+CREATE FUNCTION allUnassignedMatches
 (@clubName VARCHAR(20))
 RETURNS TABLE
 AS
@@ -673,11 +673,6 @@ RETURN
 	WHERE H.name = @clubName AND M.stadium_id IS NULL
 
 -- (xvii)    
-insert into Stadium values('stadium4','El_Arish','0',111);
-select * from StadiumManager
-select * from Stadium
-select * from SystemUser
-delete from SystemUser where username = 'fan2username';
 GO
 CREATE PROCEDURE addStadiumManager
 @name VARCHAR(20),
