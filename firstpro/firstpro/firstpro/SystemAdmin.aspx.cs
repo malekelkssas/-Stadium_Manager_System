@@ -13,10 +13,5 @@ namespace firstpro
         {
            
         }
-
-        protected void AddClub(object sender, EventArgs e)
-        {
-
-        }
     }
 }

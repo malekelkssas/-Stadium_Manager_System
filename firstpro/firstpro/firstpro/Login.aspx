@@ -8,8 +8,6 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
-        </div>
         Welcome To our App<p>
             <asp:TextBox ID="UsernameTB" runat="server" value="userName"></asp:TextBox>
         </p>

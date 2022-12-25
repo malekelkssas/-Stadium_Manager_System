@@ -24,7 +24,7 @@ namespace firstpro
             string password = PasswordTB.Text;
             int exist = -1;
             DataTable Tmp = new DataTable();
-           connection.Open();
+            connection.Open();
             new SqlDataAdapter("select * from SystemUser", connection).Fill(Tmp);
             foreach (DataRow row in Tmp.Rows)
             {
