@@ -11,6 +11,7 @@
         <div>
             Stadium Manager
         </div>
+        <asp:Button ID="Button1" runat="server" Text="Button" OnClick="Button1_Click" style="height: 26px" />
     </form>
 </body>
 </html>

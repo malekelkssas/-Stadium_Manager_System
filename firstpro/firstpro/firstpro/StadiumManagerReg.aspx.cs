@@ -14,7 +14,7 @@ namespace firstpro
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            comment.Text = " ";
         }
 
         protected void Register(object sender, EventArgs e)
