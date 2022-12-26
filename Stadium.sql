@@ -72,7 +72,7 @@ exec clearAllTables
 INSERT INTO Stadium values ('stadium1','Cairo',1,20000)
 INSERT INTO Stadium values ('stadium2','Alex',1,30000)
 INSERT INTO Stadium values ('stadium3','Suez',0,30000)
-
+select * from manager2username
 insert into SystemUser values ('manager1username',1),('manager2username',1),('manager3username',1)
 insert into StadiumManager values ('manager1', 'manager1username',1)
 insert into StadiumManager values ('manager2', 'manager2username',2)
@@ -709,7 +709,20 @@ RETURN
 	INNER JOIN ClubRepresentative CR ON HR.club_representative_id = CR.id
 	INNER JOIN Club G ON M.guest_id = G.id
 	WHERE SM.username = @stadiumManUsername AND HR.status = 'unhandled'
-
+go
+CREATE FUNCTION [dbo].[allPendingRequestsModified]
+(@stadiumManUsername VARCHAR(20))
+RETURNS TABLE
+AS
+RETURN
+	SELECT H.name AS Host, CR.name AS ClubRepresentative,G.name AS Guest,M.start_time,M.end_time,HR.status
+    FROM HostRequest HR
+    INNER JOIN StadiumManager SM ON HR.stadium_manager_id = SM.id
+	INNER JOIN Match M ON HR.match_id = M.id
+	INNER JOIN ClubRepresentative CR ON HR.club_representative_id = CR.id
+	INNER JOIN Club G ON M.guest_id = G.id
+	INNER JOIN Club H ON CR.club_id = H.id
+	WHERE SM.username = @stadiumManUsername
 -- (xix)
 GO
 CREATE PROCEDURE acceptRequest
