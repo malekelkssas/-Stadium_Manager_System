@@ -23,7 +23,7 @@ namespace firstpro
             creteRequestsTable();
             requests.Attributes.Add("Hidden", "true");
             base.OnInit(e);
-            
+
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -37,18 +37,20 @@ namespace firstpro
             DataRow stadium = null;
             new SqlDataAdapter("SELECT SM.username,S.name,S.location,S.status FROM StadiumManager SM INNER JOIN Stadium S ON SM.stadium_id = S.id",
                 connection).Fill(Tmp);
-            foreach (DataRow row in Tmp.Rows) {
-                if (row[0].Equals(username)) {
+            foreach (DataRow row in Tmp.Rows)
+            {
+                if (row[0].Equals(username))
+                {
                     stadium = row;
                     break;
                 }
             }
             connection.Close();
             string status = stadium[3].Equals(true) ? "available" : "unavailable";
-            stadiumName.InnerText = "Stadium : " + stadium[1]; 
+            stadiumName.InnerText = "Stadium : " + stadium[1];
             stadiumLocation.InnerText = "Location : " + stadium[2];
             stadiumStatus.InnerText = "Status : " + status;
-            
+
         }
 
         private TableHeaderCell createTableHeaderCell(string name)
@@ -70,9 +72,9 @@ namespace firstpro
             return thead;
         }
 
-        
 
-        private TableRow createTableRow(DataRow row,int index)
+
+        private TableRow createTableRow(DataRow row, int index)
         {
             string username = (string)Session["UserName"];
             TableRow trow = new TableRow();
@@ -83,8 +85,8 @@ namespace firstpro
                 {
                     Button accept = new Button(), reject = new Button();
                     accept.Text = "Accept"; reject.Text = "Reject";
-                    accept.Click += (s, args) => acceptReq_Click(s, args, username, row[0].ToString(), row[2].ToString(), row[3],index,i - 1);
-                    reject.Click += (s, args) => rejectReq_Click(s, args, username, row[0].ToString(), row[2].ToString(), row[3],index,i - 1);
+                    accept.Click += (s, args) => acceptReq_Click(s, args, username, row[0].ToString(), row[2].ToString(), row[3], index, i - 1);
+                    reject.Click += (s, args) => rejectReq_Click(s, args, username, row[0].ToString(), row[2].ToString(), row[3], index, i - 1);
                     c.Controls.Add(accept);
                     c.Controls.Add(reject);
                 }
@@ -111,9 +113,9 @@ namespace firstpro
             int rowNum = 1;
             foreach (DataRow row in allRequests.Rows)
             {
-                requests.Controls.Add(createTableRow(row,rowNum++));
+                requests.Controls.Add(createTableRow(row, rowNum++));
             }
-           
+
         }
 
         protected void viewRequests_Click(object sender, EventArgs e)
@@ -126,7 +128,7 @@ namespace firstpro
             requests.Attributes.Add("Hidden", "true");
         }
 
-        protected void acceptReq_Click(object sender, EventArgs e,string username,string host,string guest,object startTime,int row,int col)
+        protected void acceptReq_Click(object sender, EventArgs e, string username, string host, string guest, object startTime, int row, int col)
         {
             string connString = WebConfigurationManager.ConnectionStrings["MyDB"].ToString();
             SqlConnection connection = new SqlConnection(connString);
@@ -141,11 +143,11 @@ namespace firstpro
             connection.Close();
             requests.Rows[row].Cells[col].Controls.RemoveAt(0);
             requests.Rows[row].Cells[col].Controls.RemoveAt(0);
-            requests.Rows[row].Cells[col].Text="accepted";
+            requests.Rows[row].Cells[col].Text = "accepted";
             requests.Attributes.Remove("Hidden");
 
         }
-        protected void rejectReq_Click(object sender, EventArgs e,string username,string host,string guest,object startTime,int row,int col)
+        protected void rejectReq_Click(object sender, EventArgs e, string username, string host, string guest, object startTime, int row, int col)
         {
             string connString = WebConfigurationManager.ConnectionStrings["MyDB"].ToString();
             SqlConnection connection = new SqlConnection(connString);
@@ -154,7 +156,7 @@ namespace firstpro
             reject.Parameters.AddWithValue("@stadiumManUsername", username);
             reject.Parameters.AddWithValue("@hostClubName", host);
             reject.Parameters.AddWithValue("@guestClubName", guest);
-            reject.Parameters.AddWithValue("@startTime", (DateTime) startTime);
+            reject.Parameters.AddWithValue("@startTime", (DateTime)startTime);
             reject.CommandType = CommandType.StoredProcedure;
             reject.ExecuteNonQuery();
             connection.Close();

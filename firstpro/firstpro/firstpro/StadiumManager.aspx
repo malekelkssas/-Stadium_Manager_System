@@ -19,6 +19,7 @@
             display: none;
         } 
     </style>
+    <link rel="stylesheet" href="CSS.css" />
 </head>
 <body>
     <h1 style="text-align:center">
