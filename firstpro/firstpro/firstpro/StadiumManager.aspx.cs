@@ -20,13 +20,10 @@ namespace firstpro
 
         protected override void OnInit(EventArgs e)
         {
-            if (!((bool)Session["IsLoggedIn"]))
-                Response.Redirect("/login.aspx");
-            else {
-                creteRequestsTable();
-                requests.Attributes.Add("Hidden", "true");
-                base.OnInit(e);
-            }
+            creteRequestsTable();
+            requests.Attributes.Add("Hidden", "true");
+            base.OnInit(e);
+
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -38,7 +35,7 @@ namespace firstpro
             connection.Open();
             DataTable Tmp = new DataTable();
             DataRow stadium = null;
-            new SqlDataAdapter("SELECT SM.username,S.name,S.location,S.status FROM StadiumManager SM INNER JOIN Stadium S ON SM.stadium_id = S.id",
+            new SqlDataAdapter("SELECT SM.username,S.name,S.location,S.status,S.capacity FROM StadiumManager SM INNER JOIN Stadium S ON SM.stadium_id = S.id",
                 connection).Fill(Tmp);
             foreach (DataRow row in Tmp.Rows)
             {
@@ -50,16 +47,17 @@ namespace firstpro
             }
             connection.Close();
             string status = stadium[3].Equals(true) ? "available" : "unavailable";
-            stadiumName.InnerText = "Stadium : " + stadium[1];
+            stadiumName.InnerText = "Name : " + stadium[1];
             stadiumLocation.InnerText = "Location : " + stadium[2];
             stadiumStatus.InnerText = "Status : " + status;
-
+            stadiumCapacity.InnerText = "Capacity : " + stadium[4];
         }
 
         private TableHeaderCell createTableHeaderCell(string name)
         {
             TableHeaderCell th = new TableHeaderCell();
             th.Text = name;
+            th.Attributes.Add("class", "theadcell");
             return th;
         }
 
@@ -90,6 +88,8 @@ namespace firstpro
                     accept.Text = "Accept"; reject.Text = "Reject";
                     accept.Click += (s, args) => acceptReq_Click(s, args, username, row[0].ToString(), row[2].ToString(), row[3], index, i - 1);
                     reject.Click += (s, args) => rejectReq_Click(s, args, username, row[0].ToString(), row[2].ToString(), row[3], index, i - 1);
+                    accept.Attributes.Add("class", "accept");
+                    reject.Attributes.Add("class", "reject");
                     c.Controls.Add(accept);
                     c.Controls.Add(reject);
                 }
@@ -97,6 +97,7 @@ namespace firstpro
                 {
                     c.Controls.Add(new LiteralControl(row[i].ToString()));
                 }
+                c.Attributes.Add("class", "tcell");
                 trow.Cells.Add(c);
             }
             return trow;

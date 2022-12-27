@@ -83,6 +83,7 @@
     <Content Include="SportsAssociationManagerReg.aspx" />
     <Content Include="StadiumManager.aspx" />
     <Content Include="StadiumManagerReg.aspx" />
+    <Content Include="Style.css" />
     <Content Include="SystemAdmin.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>

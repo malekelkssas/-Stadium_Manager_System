@@ -5,12 +5,11 @@ DROP DATABASE SportsDB;
 
 --- Create DB ---
 EXEC createAllTables
-
+select * from HostRequest		
 --- Drop DB ---
 EXEC dropAllTables
 EXEC dropAllProceduresFunctionsViews
 exec clearAllTables
-
 
 ---------------- TEST DATA ----------------------
 
@@ -102,9 +101,8 @@ insert into SportAssociationManager values ('manager1', 'managerusername')
 insert into SystemUser values ('adminUsername',1)
 insert into SystemAdmin values ('adminName', 'adminUsername')
 
-
-insert into Match values ('2022-12-15 01:00:00', '2022-12-15 03:00:00', 2, 3,1)
-insert into Match values ('2021-12-15 01:00:00', '2021-12-15 03:00:00', 1, 3,1)
+insert into Match values ('2022-12-15 01:00:00', '2022-12-15 03:00:00', 1, 3,1)
+insert into Match values ('2021-12-15 01:00:00', '2021-12-15 03:00:00', 2, 3,null)
 insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 1, 4,1)
 
 
@@ -626,9 +624,9 @@ RETURN
 	WHERE S.status = 1 AND NOT EXISTS(
 		SELECT S2.name,S2.location,S2.capacity
 		FROM Stadium S2 INNER JOIN Match M ON M.stadium_id = S2.id
-		WHERE S.name = S2.name AND DATEADD(MI,90,@date) BETWEEN M.start_time AND M.end_time
+		WHERE S.name = S2.name AND (DATEADD(MI,90,@date) BETWEEN M.start_time AND M.end_time OR
+									@date BETWEEN M.start_time AND M.end_time) 
 	) 
-
 GO
 
 -- (xv)                           
@@ -662,7 +660,7 @@ END
 
 -- (xvi)                           
 GO
-CREATE FUNCTION  allUnassignedMatches
+CREATE FUNCTION allUnassignedMatches
 (@clubName VARCHAR(20))
 RETURNS TABLE
 AS
@@ -674,7 +672,6 @@ RETURN
 	WHERE H.name = @clubName AND M.stadium_id IS NULL
 
 -- (xvii)    
-
 GO
 CREATE PROCEDURE addStadiumManager
 @name VARCHAR(20),
@@ -698,19 +695,6 @@ END
 
 -- (xviii)                           
 GO
-CREATE FUNCTION allPendingRequests
-(@stadiumManUsername VARCHAR(20))
-RETURNS TABLE
-AS
-RETURN
-	SELECT CR.name AS ClubRepresentative,G.name AS Guest,M.start_time
-	FROM HostRequest HR 
-	INNER JOIN StadiumManager SM ON HR.stadium_manager_id = SM.id
-	INNER JOIN Match M ON HR.match_id = M.id
-	INNER JOIN ClubRepresentative CR ON HR.club_representative_id = CR.id
-	INNER JOIN Club G ON M.guest_id = G.id
-	WHERE SM.username = @stadiumManUsername AND HR.status = 'unhandled'
-go
 CREATE FUNCTION [dbo].[allPendingRequestsModified]
 (@stadiumManUsername VARCHAR(20))
 RETURNS TABLE
@@ -724,6 +708,7 @@ RETURN
 	INNER JOIN Club G ON M.guest_id = G.id
 	INNER JOIN Club H ON CR.club_id = H.id
 	WHERE SM.username = @stadiumManUsername
+
 -- (xix)
 GO
 CREATE PROCEDURE acceptRequest
@@ -749,8 +734,6 @@ SET stadium_id = (SELECT SM.stadium_id FROM StadiumManager SM WHERE SM.username 
 WHERE id = @matchID
 END
 
-
-
 -- (xx)
 GO
 CREATE PROCEDURE rejectRequest
@@ -760,15 +743,22 @@ CREATE PROCEDURE rejectRequest
 @startTime DATETIME
 AS
 BEGIN
+DECLARE @matchID INT
+SELECT @matchID = M.id
+FROM Match M 
+INNER JOIN Club H ON M.host_id = H.id
+INNER JOIN Club G ON M.guest_id = G.id
+WHERE H.name = @hostClubName AND G.name = @guestClubName AND M.start_time = @startTime
+
 UPDATE HostRequest
 SET status = 'rejected'
-WHERE stadium_manager_id = (SELECT SM.id FROM StadiumManager SM WHERE SM.username = @stadiumManUsername)
-AND match_id = (SELECT M.id
-				FROM Match M 
-				INNER JOIN Club H ON M.host_id = H.id
-				INNER JOIN Club G ON M.guest_id = G.id
-				WHERE H.name = @hostClubName AND G.name = @guestClubName AND M.start_time = @startTime)
+WHERE stadium_manager_id = (SELECT SM.id FROM StadiumManager SM WHERE SM.username = @stadiumManUsername) AND match_id = @matchID
+
+UPDATE Match
+SET stadium_id = (SELECT SM.stadium_id FROM StadiumManager SM WHERE SM.username = @stadiumManUsername)
+WHERE id = @matchID
 END
+
 
 
 -- (XXi)	
@@ -797,37 +787,34 @@ CREATE FUNCTION upcomingMatchesOfClub (@club_name varchar(20))
 
 
 -- (XXIII)
+
 go
 CREATE FUNCTION availableMatchesToAttend (@date datetime)
 	returns @table table(
 		host_club_name	varchar(20),
-		 competing_club_name varchar(20),
-		  starting_time datetime,
-		   stadium varchar(20)
+		competing_club_name varchar(20),
+		stadium varchar(20),
+		location varchar(20),
+		startTime DATETIME
 	)
 	as
 		begin
 			insert into @table
-			select  C1.name club_name, C2.name competing_club_name, Match.start_time starting_time, stadium.name stadium from  match,club C1,club C2,Stadium
-			where match.host_id=C1.id and match.guest_id=C2.id and Match.stadium_id=Stadium.id and  Match.start_time>=@date
-					and exists(select T.id from Ticket T
-								where T.match_id=match.id and T.status=1)
+			select  C1.name AS club_name, C2.name AS competing_club_name, stadium.name AS stadium, stadium.location AS Location, match.start_time AS Start_Time from  match,club C1,club C2,Stadium,Ticket T
+			where match.host_id=C1.id and match.guest_id=C2.id and match.stadium_id=Stadium.id and  match.start_time>=@date and T.match_id=match.id and T.status=1					
 		return
 	end;
-go
-
-
 
 -- (xxiv)
-
 go
-
-create procedure purchaseTicket (@national_id int,@hosting_club varchar(20),@competing_club varchar(20),@date datetime) as
+create procedure purchaseTicket (@fan_username varchar(20),@hosting_club varchar(20),@competing_club varchar(20),@date datetime) as
 	declare @hosting_club_id varchar(20);
 	declare @competing_club_id varchar(20);
 	declare @match_id int;
 	declare @ticket_id int;
 	declare @state bit;
+	declare @national_id int;
+	select @national_id = F.national_id from Fan F INNER JOIN SystemUser SU ON F.username = SU.username where F.username = @fan_username
 	select @hosting_club_id = id from Club where name like @hosting_club;
 	select @competing_club_id = id from Club where name like @competing_club;
 	select @match_id=id from match where @date = start_time and @hosting_club_id = host_id and @competing_club_id = guest_id;
