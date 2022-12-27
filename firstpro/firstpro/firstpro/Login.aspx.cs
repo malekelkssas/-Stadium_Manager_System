@@ -121,6 +121,7 @@ namespace firstpro
                                 if (row[0].Equals(username))
                                 {
                                     exist = 5;
+                                    Session["fan"] = row[5];
                                     break;
                                 }
                             }
@@ -132,11 +133,17 @@ namespace firstpro
                     else if (exist == 2)
                         Response.Redirect("/SportsAssociationManager.aspx");
                     else if (exist == 3)
-                        Response.Redirect("/ClubRepresentative.aspx");
+                            Response.Redirect("/ClubRepresentative.aspx");
                     else if (exist == 4)
-                        Response.Redirect("/StadiumManager.aspx");
+                            Response.Redirect("/StadiumManager.aspx");
                     else if (exist == 5)
-                        Response.Redirect("/Fan.aspx");
+                    {
+                        if (!(bool)Session["fan"])
+                            comment.Text = "This fan is blocked";
+                        else
+                            Response.Redirect("/Fan.aspx");
+                         
+                    }
                 }
             }
         }
