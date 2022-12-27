@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.UI;
@@ -29,7 +30,10 @@ namespace firstpro
 
                 int exist = -1;
                 DataTable Tmp = new DataTable();
-                connection.Open();
+
+   
+                    connection.Open();
+
                 new SqlDataAdapter("select * from SystemUser", connection).Fill(Tmp);
                 foreach (DataRow row in Tmp.Rows)
                 {

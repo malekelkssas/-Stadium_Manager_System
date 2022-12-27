@@ -11,6 +11,7 @@ EXEC dropAllTables
 EXEC dropAllProceduresFunctionsViews
 exec clearAllTables
 
+GRANT SELECT, INSERT, UPDATE, DELETE ON SystemUser TO PUBLIC
 ---------------- TEST DATA ----------------------
 
 --INSERT INTO SystemUser VALUES ('Mohammed', 'mopassword'),
@@ -69,6 +70,11 @@ exec clearAllTables
 --insert into Ticket values (1, 1)
 --select * from Ticket
 
+select * from SystemUser
+select * from ClubRepresentative
+select * from Club
+
+
 INSERT INTO Stadium values ('stadium1','Cairo',1,20000)
 INSERT INTO Stadium values ('stadium2','Alex',1,30000)
 INSERT INTO Stadium values ('stadium3','Suez',0,30000)
@@ -77,18 +83,19 @@ insert into SystemUser values ('manager1username',1),('manager2username',1),('ma
 insert into StadiumManager values ('manager1', 'manager1username',1)
 insert into StadiumManager values ('manager2', 'manager2username',2)
 insert into StadiumManager values ('manager3', 'manager3username',3)
+insert into SystemUser values ('rep', 'rep');
 
 INSERT INTO Club values ('club1','Egypt')
 insert into Club values ('club2', 'Egypt')
 insert into Club values ('club3', 'Egypt')
 insert into Club values ('club4', 'Egypt')
 insert into Club values ('club5', 'Egypt')
-
-insert into SystemUser values ('rep1username',1),('rep2username',1),('rep3username',1),('rep4username',1)
-insert into ClubRepresentative values ('representative1', 'rep1username',  1)
-insert into ClubRepresentative values ('representative2', 'rep2username',  3)
-insert into ClubRepresentative values ('representative3', 'rep3username',  2)
-insert into ClubRepresentative values ('representative4', 'rep4username',  4)
+insert into Club values ('club6', 'Rwanda')
+insert into SystemUser values ('rep', 9)
+insert into ClubRepresentative values ('representative1', 'rep',  5)
+insert into ClubRepresentative values ('representative2', 'rep',  6)
+insert into ClubRepresentative values ('representative3', 'rep',  7)
+insert into ClubRepresentative values ('representative4', 'rep',  8)
 
 insert into SystemUser values ('fan1username',1),('fan2username',1),('fan3username',1)
 insert into Fan values ('1','fan1username','fan1',123,'2002-1-2 01:10:59','address1',1)
@@ -101,9 +108,10 @@ insert into SportAssociationManager values ('manager1', 'managerusername')
 insert into SystemUser values ('adminUsername',1)
 insert into SystemAdmin values ('adminName', 'adminUsername')
 
+select * from club
 
-insert into Match values ('2022-12-15 01:00:00', '2022-12-15 03:00:00', 2, 3,1)
-insert into Match values ('2021-12-15 01:00:00', '2021-12-15 03:00:00', 1, 3,1)
+insert into Match values ('2022-12-15 01:00:00', '2022-12-15 03:00:00', 5, 6, 1)
+insert into Match values ('2021-12-15 01:00:00', '2021-12-15 03:00:00', 4, 5,1)
 insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 1, 4,1)
 
 
@@ -119,6 +127,7 @@ insert into Ticket values (0, 1)
 
 insert into TicketBuyingTransactions values (1,'1'),(2,'2'),(3,'3')
 
+select * from SystemUser
 --2.1 BASic Structure of the DatabASe
 --Part a
 GO
@@ -969,3 +978,27 @@ CREATE FUNCTION requestsFromClub (@stadium_name varchar(20),@club_name varchar(2
 	end;
 go
 
+DROP PROC clubsOfRepresentative
+
+----- M3 QUERIES ---
+
+DROP PROC clubsOfRepresentative
+
+GO
+CREATE PROCEDURE clubsOfRepresentative (@username VARCHAR(20)) AS
+SELECT Club.id, Club.name, Club.location
+FROM Club
+INNER JOIN ClubRepresentative
+ON Club.id = ClubRepresentative.club_id
+WHERE ClubRepresentative.username = 'rep'
+
+
+SELECT * FROM CLUB
+SELECT * FROM ClubRepresentative
+
+
+DROP PROC allUpcomingClubMatches
+
+GO 
+CREATE PROCEDURE allUpcomingClubMatches(@clubName VARCHAR(20)) AS
+SELECT * FROM dbo.upcomingMatchesOfClub(@clubName)
