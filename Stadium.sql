@@ -11,6 +11,7 @@ EXEC dropAllTables
 EXEC dropAllProceduresFunctionsViews
 exec clearAllTables
 
+
 ---------------- TEST DATA ----------------------
 
 --INSERT INTO SystemUser VALUES ('Mohammed', 'mopassword'),
@@ -72,7 +73,7 @@ exec clearAllTables
 INSERT INTO Stadium values ('stadium1','Cairo',1,20000)
 INSERT INTO Stadium values ('stadium2','Alex',1,30000)
 INSERT INTO Stadium values ('stadium3','Suez',0,30000)
-select * from manager2username
+
 insert into SystemUser values ('manager1username',1),('manager2username',1),('manager3username',1)
 insert into StadiumManager values ('manager1', 'manager1username',1)
 insert into StadiumManager values ('manager2', 'manager2username',2)

@@ -45,8 +45,6 @@ namespace firstpro
                     break;
                 }
             }
-            connection.Close();
-
             if (exist == 0)
             {
                 comment.Text = "There is no staduim called " + staduimName;
@@ -55,7 +53,6 @@ namespace firstpro
             {
                 exist = 0;
                 Tmp = new DataTable();
-                connection.Open();
                 new SqlDataAdapter("select * from allStadiumManagers", connection).Fill(Tmp);
                 foreach (DataRow row in Tmp.Rows)
                 {
@@ -66,34 +63,38 @@ namespace firstpro
                         break;
                     }
                 }
-                connection.Close();
-
                 if (exist == 1)
                 {
                     comment.Text = "There is a staduim manager for this staduim";
                 }
                 else
                 {
-                    connection.Open();
-                    try
+                    exist = 1;
+                    Tmp = new DataTable();
+                    new SqlDataAdapter("select * from SystemUser", connection).Fill(Tmp);
+                    foreach (DataRow row in Tmp.Rows)
+                    {
+                        if (row[0].Equals(username))
+                        {
+                            exist = 0;
+                            break;
+                        }
+                    }
+                    if (exist == 1)
                     {
                         
                         addStadiumManagerproc.ExecuteNonQuery();
                         Response.Redirect("/login.aspx");
 
                     }
-                    catch (SqlException ex)
+                   else
                     {
-                        connection.Close();
                         comment.Text = "‘User name already exist";
-                    }
-                    finally
-                    {
-                        connection.Close();
                     }
                 }
 
             }
+            connection.Close();
         }
     }
 }

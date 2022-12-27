@@ -14,6 +14,8 @@ namespace firstpro
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Session["IsLoggedIn"] = false;
+            Session["UserName"] = null;
             comment.Text = " ";
         }
         protected void login(object sender, EventArgs e)

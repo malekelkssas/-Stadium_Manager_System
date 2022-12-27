@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -30,22 +31,28 @@ namespace firstpro
             addAssociationManagerproc.Parameters.Add(new SqlParameter("@username", username));
             addAssociationManagerproc.Parameters.Add(new SqlParameter("@password", password));
             connection.Open();
-            try
+            int exist = 1;
+            DataTable Tmp = new DataTable();
+            new SqlDataAdapter("select * from SystemUser", connection).Fill(Tmp);
+            foreach (DataRow row in Tmp.Rows)
+            {
+                if (row[0].Equals(username))
+                {
+                    exist = 0;
+                    break;
+                }
+            }
+            if (exist == 1)
             {
                 addAssociationManagerproc.ExecuteNonQuery();
                 Response.Redirect("/login.aspx");
                
             }
-            catch (SqlException ex)
+            else
             {
                 comment.Text = "‘User name already exist";
             }
-            finally
-            {
                 connection.Close();
-            }
-
-
         }
     }
 }

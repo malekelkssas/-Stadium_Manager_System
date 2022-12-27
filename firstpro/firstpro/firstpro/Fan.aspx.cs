@@ -12,6 +12,8 @@ namespace firstpro
         protected void Page_Load(object sender, EventArgs e)
         {
             //(string)Session["UserName"]  <<-- this is how to get the username
+            if (!((bool)Session["IsLoggedIn"]))
+                Response.Redirect("/login.aspx");
         }
     }
 }
