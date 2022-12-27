@@ -20,9 +20,14 @@ namespace firstpro
 
         protected override void OnInit(EventArgs e)
         {
-            creteRequestsTable();
-            requests.Attributes.Add("Hidden", "true");
-            base.OnInit(e);
+            if (Session == null || Session["UserName"] == null)
+                Response.Redirect("/login.aspx");
+            else
+            {
+                creteRequestsTable();
+                requests.Attributes.Add("Hidden", "true");
+                base.OnInit(e);
+            }
 
         }
 

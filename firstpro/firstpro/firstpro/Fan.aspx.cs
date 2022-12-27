@@ -14,6 +14,8 @@ namespace firstpro
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session == null || Session["UserName"] == null)
+                Response.Redirect("/login.aspx");
             foreach (TableRow r in matches.Rows)
             {
                 matches.Rows.Remove(r);
