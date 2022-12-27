@@ -109,9 +109,11 @@ insert into SystemUser values ('adminUsername',1)
 insert into SystemAdmin values ('adminName', 'adminUsername')
 
 select * from club
+select * from match
+select * from Stadium
 
-insert into Match values ('2022-12-15 01:00:00', '2022-12-15 03:00:00', 5, 6, 1)
-insert into Match values ('2021-12-15 01:00:00', '2021-12-15 03:00:00', 4, 5,1)
+insert into Match values ('2025-12-15 01:00:00', '2025-12-15 03:00:00', 5, 6, 1)
+insert into Match values ('2025-12-15 01:00:00', '2025-12-15 03:00:00', 4, 5,1)
 insert into Match values ('2023-12-15 01:00:00', '2023-12-15 03:00:00', 1, 4,1)
 
 
@@ -215,7 +217,6 @@ CONSTRAINT M_FK1 FOREIGN KEY (stadium_id) REFERENCES Stadium(id) ON DELETE SET N
 CONSTRAINT M_FK2 FOREIGN KEY (host_id) REFERENCES Club(id),--relatiON 1 to many between Club & Match
 CONSTRAINT M_FK3 FOREIGN KEY (guest_id) REFERENCES Club(id)  --relatiON 1 to many between Club & Match
 );
-
 
 
 CREATE TABLE HostRequest (
@@ -624,8 +625,7 @@ END
 
 -- (xiv)
 GO
-CREATE FUNCTION viewAvailableStadiumsOn
-(@date DATETIME)
+CREATE FUNCTION viewAvailableStadiumsOn (@date DATETIME)
 RETURNS TABLE
 AS
 RETURN
@@ -895,7 +895,7 @@ CREATE FUNCTION clubsNeverPlayed (@representing varchar(20))    ---------> NOT T
 				where name <> @representing
 				except (
 				select c3.name from Match , club c2 , club c3
-				where Match.host_id in (c2.id,c3.id) and Match.guest_id in (c2.id,c3.id)
+				where Match.host_id in (c2.id,c3.id) and Match.guest_id in (c2.id,c3.id)	
 				and c2.name = @representing and c3.name <> @representing and CURRENT_TIMESTAMP >= Match.end_time
 				union
 				select c2.name from Match , club c2 , club c3
@@ -962,10 +962,10 @@ CREATE FUNCTION requestsFromClub (@stadium_name varchar(20),@club_name varchar(2
 	)
 	as
 		begin
-			insert into @table 
-			select matches.host_club,matches.guest_club from 
+			INSERT INTO @table 
+			SELECT matches.host_club,matches.guest_club from 
 			(select ma.id match_id , C1.name host_club , C2.name guest_club, Sta.name Stadium_name from match ma,Club C1 , Club C2 , Stadium sta
-			where ma.host_id=C1.id and ma.guest_id = C2.id and ma.stadium_id = Sta.id) matches
+			WHERE ma.host_id=C1.id and ma.guest_id = C2.id and ma.stadium_id = Sta.id) matches
 			
 			inner join 
 
@@ -1002,3 +1002,40 @@ DROP PROC allUpcomingClubMatches
 GO 
 CREATE PROCEDURE allUpcomingClubMatches(@clubName VARCHAR(20)) AS
 SELECT * FROM dbo.upcomingMatchesOfClub(@clubName)
+
+SELECT * FROM ClubRepresentative
+SELECT * FROM Match
+SELECT * FROM Club 
+
+GO
+CREATE PROCEDURE stadiumsAvailableStartingFrom(@date DATETIME) AS
+	  SELECT DISTINCT name, location, capacity
+	  FROM Stadium
+	  LEFT OUTER JOIN Match
+	  ON Stadium.id = Match.stadium_id
+	  EXCEPT  (
+				SELECT name, location, capacity
+				FROM Stadium
+				INNER JOIN Match 
+				ON Stadium.id = Match.stadium_id
+				WHERE start_time IS NOT NULL AND start_time > @date
+				AND Stadium.status = 1
+				)
+
+
+
+DROP PROC matchesClubHosts
+
+GO 
+CREATE PROCEDURE matchesClubHosts(@username VARCHAR(20)) AS
+	SELECT Match.id, Match.start_time, Match.end_time, C1.name AS HostClubName, C2.name AS GuestClubName, Stadium.name AS StadiumName, Stadium.location AS StadiumLocation, Stadium.capacity AS StadiumCapacity
+	FROM Match 
+	INNER JOIN Club C1
+	ON Match.host_id = C1.id
+	INNER JOIN Club C2 
+	ON Match.guest_id = C2.id
+	INNER JOIN Stadium 
+	ON Match.stadium_id = Stadium.id
+	INNER JOIN ClubRepresentative
+	ON  C1.id = ClubRepresentative.club_id
+	WHERE ClubRepresentative.username = @username
