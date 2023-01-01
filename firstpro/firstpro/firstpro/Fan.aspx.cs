@@ -21,7 +21,9 @@ namespace firstpro
                 matches.Rows.Remove(r);
             }
             createMathchesTable();
+            //createTicketsTable();
             matches.Attributes.Add("Hidden", "true");
+            done.Attributes.Add("Hidden", "true");
             //(string)Session["UserName"]  <<-- this is how to get the username
         }
 
@@ -91,6 +93,43 @@ namespace firstpro
             }
         }
 
+        private TableHeaderRow createTableHeaderRow2()
+        {
+            TableHeaderRow thead = new TableHeaderRow();
+            thead.Controls.Add(createTableHeaderCell("Host Club"));
+            thead.Controls.Add(createTableHeaderCell("Guest Club"));
+            thead.Controls.Add(createTableHeaderCell("Count"));
+            return thead;
+        }
+        protected void createTicketsTable()
+        {
+            Tickets.Controls.Add(createTableHeaderRow2());
+            string connString = WebConfigurationManager.ConnectionStrings["MyDB"].ToString();
+            SqlConnection connection = new SqlConnection(connString);
+            //(string)Session["UserName"]  <<-- this is how to get the username
+            string username = (string)Session["UserName"];
+            DataTable allTickets = new DataTable();
+            SqlCommand getTickets = new SqlCommand("ticketsBuyedbyFan", connection);
+            getTickets.Parameters.AddWithValue("@username", username);
+            getTickets.CommandType = CommandType.StoredProcedure;
+            connection.Open();
+            getTickets.ExecuteNonQuery();
+            connection.Close();
+            new SqlDataAdapter(getTickets).Fill(allTickets);
+            foreach (DataRow row in allTickets.Rows)
+            {
+                TableRow trow = new TableRow();
+                for (int i = 0; i < 3; i++)
+                {
+                    TableCell c = new TableCell();
+                    c.Controls.Add(new LiteralControl(row[i].ToString()));
+                    c.Attributes.Add("class", "tcell");
+                    trow.Cells.Add(c);
+                }
+                Tickets.Controls.Add(trow);
+            }
+        }
+
         protected void purchase_Click(object sender, EventArgs e, string username, string host, string guest, object startTime, TableRow row)
         {
             string connString = WebConfigurationManager.ConnectionStrings["MyDB"].ToString();
@@ -105,6 +144,7 @@ namespace firstpro
             purchase.ExecuteNonQuery();
             connection.Close();
             matches.Rows.Remove(row);
+            done.Attributes.Remove("Hidden");
         }
 
         protected void viewMatches_Click(object sender, EventArgs e)
@@ -117,7 +157,6 @@ namespace firstpro
             {
                 errorMessage.Attributes.Add("Hidden","true");
                 matches.Attributes.Remove("Hidden");
-               
             }
         }
     }

@@ -12,10 +12,11 @@ namespace firstpro
         protected void Page_Load(object sender, EventArgs e)
         {
             //(string)Session["UserName"]  <<-- this is how to get the username
-            if (!((bool)Session["IsLoggedIn"]))
+            if (Session["IsLoggedIn"] == null || !((string)Session["IsLoggedIn"]).Equals("SystemAdmin"))
                 Response.Redirect("/login.aspx");
             else
                 comment.Text = "Welcome "+ (string)Session["UserName"];
+            
         }
 
         protected void AddClub(object sender, EventArgs e)
@@ -40,7 +41,7 @@ namespace firstpro
 
         protected void BlockFan(object sender, EventArgs e)
         {
-            Response.Redirect("/blockFan.aspx");
+            Response.Redirect("/BlockFan.aspx");
         }
     }
 }

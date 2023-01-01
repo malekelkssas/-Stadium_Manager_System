@@ -24,11 +24,11 @@ namespace firstpro
                 Response.Redirect("/login.aspx");
             else
             {
-                creteRequestsTable();
+                createRequestsTable();
                 requests.Attributes.Add("Hidden", "true");
+                done.Attributes.Add("Hidden", "true");
                 base.OnInit(e);
             }
-
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -108,7 +108,7 @@ namespace firstpro
             return trow;
         }
 
-        protected void creteRequestsTable()
+        protected void createRequestsTable()
         {
             requests.Controls.Add(createTableHeaderRow());
             string connString = WebConfigurationManager.ConnectionStrings["MyDB"].ToString();
@@ -150,11 +150,7 @@ namespace firstpro
             accept.CommandType = CommandType.StoredProcedure;
             accept.ExecuteNonQuery();
             connection.Close();
-            requests.Rows[row].Cells[col].Controls.RemoveAt(0);
-            requests.Rows[row].Cells[col].Controls.RemoveAt(0);
-            requests.Rows[row].Cells[col].Text = "accepted";
-            requests.Attributes.Remove("Hidden");
-
+            done.Attributes.Remove("Hidden");
         }
         protected void rejectReq_Click(object sender, EventArgs e, string username, string host, string guest, object startTime, int row, int col)
         {
@@ -169,10 +165,7 @@ namespace firstpro
             reject.CommandType = CommandType.StoredProcedure;
             reject.ExecuteNonQuery();
             connection.Close();
-            requests.Rows[row].Cells[col].Controls.RemoveAt(0);
-            requests.Rows[row].Cells[col].Controls.RemoveAt(0);
-            requests.Rows[row].Cells[col].Text = "rejected";
-            requests.Attributes.Remove("Hidden");
+            done.Attributes.Remove("Hidden");
         }
     }
 }

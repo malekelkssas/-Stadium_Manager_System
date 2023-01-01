@@ -13,7 +13,10 @@ namespace firstpro
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            comment.Text = " ";
+            if (Session["IsLoggedIn"] == null || !((string)Session["IsLoggedIn"]).Equals("SystemAdmin"))
+                Response.Redirect("/login.aspx");
+            else
+                comment.Text = " ";
         }
 
         protected void addStaduimB_Click(object sender, EventArgs e)

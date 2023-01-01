@@ -14,7 +14,7 @@ namespace firstpro
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Session["IsLoggedIn"] = false;
+            Session["IsLoggedIn"] = "";
             Session["UserName"] = null;
             comment.Text = " ";
         }
@@ -60,7 +60,7 @@ namespace firstpro
                 }
                 if (exist == 1)
                 {
-                    Session["IsLoggedIn"] = true;
+                    
                     Session["UserName"] = username;
                     exist = 0;
                     connection.Open();
@@ -71,6 +71,7 @@ namespace firstpro
                         if (row[2].Equals(username))
                         {
                             exist = 1;
+                            Session["IsLoggedIn"] = "SystemAdmin";
                             break;
                         }
                     }
@@ -83,6 +84,7 @@ namespace firstpro
                             if (row[0].Equals(username))
                             {
                                 exist = 2;
+                                Session["IsLoggedIn"] = "SportsAssociationManager";
                                 break;
                             }
                         }
@@ -95,6 +97,7 @@ namespace firstpro
                                 if (row[0].Equals(username))
                                 {
                                     exist = 3;
+                                    Session["IsLoggedIn"] = "ClubRepresentative";
                                     break;
                                 }
                             }
@@ -108,6 +111,7 @@ namespace firstpro
                                 if (row[0].Equals(username))
                                 {
                                     exist = 4;
+                                    Session["IsLoggedIn"] = "StadiumManager";
                                     break;
                                 }
                             }
@@ -122,6 +126,7 @@ namespace firstpro
                                 {
                                     exist = 5;
                                     Session["fan"] = row[5];
+                                    Session["IsLoggedIn"] = "Fan";
                                     break;
                                 }
                             }

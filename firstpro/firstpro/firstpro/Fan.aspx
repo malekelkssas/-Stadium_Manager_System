@@ -15,6 +15,7 @@
     <form id="form1" runat="server">
         <div class="controls">
             <div id="Info" style="width:30%">
+                <asp:Table ID="Tickets" runat="server"></asp:Table>
             </div>
             <div class="reqContainer" style="width:70%">
                 <div class="selectDate">
@@ -22,6 +23,7 @@
                     <div class="veButtons">
                         <asp:Button ID="viewMatch" runat="server" Text="View Matches" OnClick="viewMatches_Click" />
                         <asp:Label ID="errorMessage" runat="server" Style="color: red" Hidden>Please Enter a valid Date</asp:Label>
+                        <label id="done" runat="server" style="color:darkgreen;margin: 0px 12px;padding:12px 16px;">Completed Successfully!</label>
                     </div>
                 </div>
                 <div class="wraptable">

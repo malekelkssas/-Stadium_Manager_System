@@ -11,7 +11,7 @@ namespace firstpro
 {
 
 
-    public partial class Fan
+    public partial class NeverMatches
     {
 
         /// <summary>
@@ -24,57 +24,48 @@ namespace firstpro
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// Tickets control.
+        /// comment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Table Tickets;
+        protected global::System.Web.UI.WebControls.Label comment;
 
         /// <summary>
-        /// Text1 control.
+        /// Label1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl Text1;
+        protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// viewMatch control.
+        /// Label2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button viewMatch;
+        protected global::System.Web.UI.WebControls.Label Label2;
 
         /// <summary>
-        /// errorMessage control.
+        /// Label3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label errorMessage;
+        protected global::System.Web.UI.WebControls.Label Label3;
 
         /// <summary>
-        /// done control.
+        /// Label4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl done;
-
-        /// <summary>
-        /// matches control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Table matches;
+        protected global::System.Web.UI.WebControls.Label Label4;
     }
 }

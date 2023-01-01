@@ -27,6 +27,7 @@
                 <div class="vcButtons">
                     <input runat="server" onserverclick="viewRequests_Click" type="button" value="View Requests" />
                     <input runat="server" onserverclick="hideRequests_Click" type="button" value="Close Requests" />
+                    <label id="done" runat="server" style="color:darkgreen;margin: 0px 24px;padding:12px 16px;">Completed Successfully!</label>
                 </div>
                 <div class="wraptable">
                     <asp:Table ID="requests" runat="server"></asp:Table>
