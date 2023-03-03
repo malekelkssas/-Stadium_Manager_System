@@ -11,6 +11,8 @@ EXEC dropAllTables
 EXEC dropAllProceduresFunctionsViews
 exec clearAllTables
 
+select * from SystemUser
+
 ---------------- TEST DATA ----------------------
 
 --INSERT INTO SystemUser VALUES ('Mohammed', 'mopassword'),

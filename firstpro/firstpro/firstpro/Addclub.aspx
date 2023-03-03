@@ -5,40 +5,42 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Add Club</title>
-    <style type="text/css">
-        .auto-style2 {
-            width: 498px;
-            height: 118px;
-            margin-left: 0px;
-        }
-        </style>
     <link rel="stylesheet" href="CSS.css" />
     </head>
 <body>
-    <form id="form1" runat="server">
-        <div class="auto-style3">
-            <asp:Label ID="comment" runat="server" Text=" "></asp:Label>
-            </div>
-        <div class="auto-style2">
-             
-          
-            Club Name<br />
-        <asp:TextBox ID="clubName" runat="server"></asp:TextBox>
-            <br/>
-        
-        <br />
-        Club Location<br />
-        <asp:TextBox ID="clubLocation" runat="server"></asp:TextBox>
-        <br />
-            <br />
-
-            
-        <asp:Button ID="AddClubB" runat="server" Text="Add" OnClick="AddClub" />
-   
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:Button ID="HomeB" runat="server" OnClick="Home" Text="Home" />
+    <nav class="navbar">
+        <h1>Add club</h1>
+        <div class="links">
+            <a href="SystemAdmin.aspx">Home</a>
+            <a href="/create" style ="color: beige;background-color: red;border-radius: 8px;">Info</a>
         </div>
+    </nav>
+
+    <div class="neon-border">
+        <form id="form1" runat="server">
+            
+            <div class="lab">
+                <asp:Label ID="comment" runat="server" Text=" "></asp:Label>
+            </div>
+            <br />
+            
+            <div class="divitext">
+                <asp:TextBox ID="clubName" runat="server" placeholder="Club Name"></asp:TextBox>
+                <br />
+                <asp:TextBox ID="clubLocation" runat="server" placeholder="Club Location"></asp:TextBox>
+            </div>
+            
+        
+
+            <div class="content2">
+                <asp:Button ID="AddClubB" runat="server" Text="Add" OnClick="AddClub" />
+                <asp:Button ID="HomeB" runat="server" OnClick="Home" Text="Home" />
+            </div>
+        
+        
     </form>
+    
+    </div>
         
 </body>
 </html>

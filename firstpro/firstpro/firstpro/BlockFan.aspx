@@ -8,28 +8,34 @@
    
     <link rel="stylesheet" href="CSS.css" />
 </head>
-<body class="CSS.css">
-    <form id="form1" runat="server">
-        <div>
+<body>
+    <nav class="navbar">
+        <h1>Block Fan</h1>
+        <div class="links">
+            <a href="SystemAdmin.aspx">Home</a>
+            <a href="/create" style ="color: beige;background-color: red;border-radius: 8px;">Info</a>
+        </div>
+    </nav>
+
+    <div class="neon-border">
+        <form id="form1" runat="server">
+        <div class="lab">
             <asp:Label ID="comment" runat="server" Text=" "></asp:Label>
         </div>
-        <div >
             <br />
-            Fan National ID<br />
-            <asp:TextBox ID="FanID" runat="server"></asp:TextBox>
-        <br/>
-            <br />
-
+        
+        <div class="divitext">
+                <asp:TextBox ID="FanID" runat="server" placeholder="Fan National ID"></asp:TextBox>
+         </div>
             
-            
+        <div class="content2">
             <asp:Button ID="blockFanB" runat="server" Text="Block" OnClick="blockFanB_Click" />
-              
-            &nbsp;&nbsp;&nbsp;&nbsp;
-              
             <asp:Button ID="homeB" runat="server" Text="Home" OnClick="homeB_Click" />
         </div>
-         &nbsp;&nbsp;&nbsp;&nbsp;
+         
 
     </form>
+    </div>
+    
 </body>
 </html>

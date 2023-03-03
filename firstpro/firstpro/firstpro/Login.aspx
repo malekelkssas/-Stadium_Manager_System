@@ -19,7 +19,7 @@
     <div class="neon-border">
         <form id="form1" runat="server" >
         
-            <div style="text-align:center; max-height:10px;">
+            <div class ="lab">
                 <asp:Label ID="comment" runat="server" Text=" "></asp:Label>
             </div>
                 <br />

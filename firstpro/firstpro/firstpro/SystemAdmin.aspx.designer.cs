@@ -15,6 +15,15 @@ namespace firstpro
     {
 
         /// <summary>
+        /// Lab control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Lab;
+
+        /// <summary>
         /// form1 control.
         /// </summary>
         /// <remarks>
@@ -24,15 +33,6 @@ namespace firstpro
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// comment control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label comment;
-
-        /// <summary>
         /// AddClubB control.
         /// </summary>
         /// <remarks>
@@ -40,6 +40,15 @@ namespace firstpro
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button AddClubB;
+
+        /// <summary>
+        /// BlockFanB control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BlockFanB;
 
         /// <summary>
         /// DeleteclubB control.
@@ -67,14 +76,5 @@ namespace firstpro
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button DeleteStadiumB;
-
-        /// <summary>
-        /// BlockFanB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BlockFanB;
     }
 }

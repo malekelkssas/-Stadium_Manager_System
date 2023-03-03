@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.UI.HtmlControls;
 
 namespace firstpro
 {
@@ -15,7 +16,14 @@ namespace firstpro
             if (Session["IsLoggedIn"] == null || !((string)Session["IsLoggedIn"]).Equals("SystemAdmin"))
                 Response.Redirect("/login.aspx");
             else
-                comment.Text = "Welcome "+ (string)Session["UserName"];
+            {
+                //Lab.Text = "Welcome " + (string)Session["UserName"];
+                HtmlGenericControl p = new HtmlGenericControl("h1");
+                p.InnerText = "Welcome " + Session["UserName"];
+                Lab.Controls.Add(p);
+                
+            }
+            
             
         }
 

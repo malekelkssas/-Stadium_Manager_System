@@ -8,26 +8,31 @@
     <link rel="stylesheet" href="CSS.css" />
 </head>
 <body>
+    <nav class="navbar">
+        <h1>delete Stadium</h1>
+        <div class="links">
+            <a href="SystemAdmin.aspx">Home</a>
+            <a href="/create" style ="color: beige;background-color: red;border-radius: 8px;">Info</a>
+        </div>
+    </nav>
+
+    <div class="neon-border">
+        
     <form id="form1" runat="server">
-        <div>
+        <div class="lab">
             <asp:Label ID="comment" runat="server" Text=" "></asp:Label>
         </div>
-        <div>
+        <br />
+        <div class="divitext">
 
-
-            <br />
-            Staduim Name<br />
-            <asp:TextBox ID="StaduimNameTB" runat="server"></asp:TextBox>
-            <br />
-            <br />
+            <asp:TextBox ID="StaduimNameTB" runat="server" placeholder="Staduim Name"></asp:TextBox>
+        </div>
+        <div class="content2">
             <asp:Button ID="deleteB" runat="server" OnClick="deleteClub" Text="Delete" />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <asp:Button ID="HomeB" runat="server" OnClick="Home" Text="Home" />
-            <br />
-            <br />
-
-
         </div>
     </form>
+    </div>
+
 </body>
 </html>
