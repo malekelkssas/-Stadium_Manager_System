@@ -8,17 +8,24 @@
     <link rel="stylesheet" href="CSS.css" />
 </head>
 <body>
-    <form id="form1" runat="server">
-        <div>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:Button ID="SportsAssociationManagerB" runat="server" OnClick="SportsAssociationManagerReg" Text="Sports Association Manager" />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="ClubRepresentativeB" runat="server" OnClick="ClubRepresentativeReg" Text="Club Representative" />
-        <br />
-            <br />
-        <asp:Button ID="StadiumManagerB" runat="server" OnClick="StadiumManagerReg" Text="Stadium Manager" />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:Button ID="FanB" runat="server" OnClick="FanReg" Text="Fan" />
+    <nav class="navbar">
+        <h1>Welcome</h1>
+        <div class="links">
+            <a href="Login.aspx">Home</a>
+            <a href="/create" style ="color: beige;background-color: red;border-radius: 8px;">Info</a>
         </div>
-    </form>
+    </nav>
+
+    <div class ="neon-border2">
+        <form id="form1" runat="server">
+             <div class="content2">
+                    <asp:Button ID="FanB" runat="server" OnClick="FanReg" Text="Fan" />
+                    <asp:Button ID="StadiumManagerB" runat="server" OnClick="StadiumManagerReg" Text="Stadium Manager" />
+                        <br />
+                    <asp:Button ID="ClubRepresentativeB" runat="server" OnClick="ClubRepresentativeReg" Text="Club Representative" />
+                    <asp:Button ID="SportsAssociationManagerB" runat="server" OnClick="SportsAssociationManagerReg" Text="Sports Association Manager" />
+            </div>
+        </form>
+    </div>
 </body>
 </html>

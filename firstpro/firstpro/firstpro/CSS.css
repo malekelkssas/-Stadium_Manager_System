@@ -1,23 +1,77 @@
-﻿body {
-    background-color: black;
-    color: white;
-}
-input{
-        margin:0;
+﻿@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
+
+* {
+    margin: 0;
+    font-family: "Quicksand";
+    color: #333;
 }
-form {
-    background: linear-gradient(to bottom, red, black);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-    color: white;
-    border: 2px solid white;
-    border-radius: 5px;
+
+
+/*----------------------*/
+.navbar {
     padding: 20px;
-    width: 500px;
-    margin: 0 auto;
-    text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    max-width: 600px;
+    margin: 10px auto;
+    border-bottom: 1px solid black;
 }
+
+    .navbar .links {
+        margin-left: auto;
+    }
+
+    .navbar a {
+        margin-left: 16px;
+        text-decoration: none;
+        padding: 6px;
+    }
+.navbar a:hover {
+      color: blueviolet;
+
+              }
+
+/*--------------------------------*/
+
+.neon-border {
+    max-width: 600px;
+    margin: 20px auto;
+    align-content: center;
+
+    border: 3px solid red;
+    border-radius: 5px;
+    box-shadow: 0 0 5px red, 0 0 10px red, 0 0 15px red, 0 0 20px red;
+}
+.neon-border2 {
+    max-width: 600px;
+    margin: 20px auto;
+    align-content: center;
+    border: 3px solid red;
+    border-radius: 100px;
+    box-shadow: 0 0 5px red, 0 0 10px red, 0 0 15px red, 0 0 20px red;
+}
+    .neon-border .divitext {
+        margin-left: 200px;
+    }
+    .neon-border .divitext input{
+        margin :10px
+    }
+
+
+
+.content2 {
+    margin: 10px 210px;
+    align-items: center
+}
+
+    .content2 input {
+        color: beige;
+        background-color: red;
+        border-radius: 8px;
+        margin:10px;
+    }
+
+
+
+

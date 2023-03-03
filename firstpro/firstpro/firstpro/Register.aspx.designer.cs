@@ -24,22 +24,13 @@ namespace firstpro
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// SportsAssociationManagerB control.
+        /// FanB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SportsAssociationManagerB;
-
-        /// <summary>
-        /// ClubRepresentativeB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ClubRepresentativeB;
+        protected global::System.Web.UI.WebControls.Button FanB;
 
         /// <summary>
         /// StadiumManagerB control.
@@ -51,12 +42,21 @@ namespace firstpro
         protected global::System.Web.UI.WebControls.Button StadiumManagerB;
 
         /// <summary>
-        /// FanB control.
+        /// ClubRepresentativeB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button FanB;
+        protected global::System.Web.UI.WebControls.Button ClubRepresentativeB;
+
+        /// <summary>
+        /// SportsAssociationManagerB control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SportsAssociationManagerB;
     }
 }

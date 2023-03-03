@@ -1,0 +1,6 @@
+D:\Github\DataBase_project\firstpro\firstpro\obj\Debug\netcoreapp3.1\firstpro.csproj.AssemblyReference.cache
+D:\Github\DataBase_project\firstpro\firstpro\obj\Debug\netcoreapp3.1\firstpro.GeneratedMSBuildEditorConfig.editorconfig
+D:\Github\DataBase_project\firstpro\firstpro\obj\Debug\netcoreapp3.1\firstpro.AssemblyInfoInputs.cache
+D:\Github\DataBase_project\firstpro\firstpro\obj\Debug\netcoreapp3.1\firstpro.AssemblyInfo.cs
+D:\Github\DataBase_project\firstpro\firstpro\obj\Debug\netcoreapp3.1\firstpro.csproj.CoreCompileInputs.cache
+D:\Github\DataBase_project\firstpro\firstpro\obj\Debug\netcoreapp3.1\firstpro.MvcApplicationPartsAssemblyInfo.cache

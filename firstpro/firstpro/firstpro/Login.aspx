@@ -8,27 +8,36 @@
     <link rel="stylesheet" href="CSS.css" />
 </head>
 <body>
-    <form id="form1" runat="server">
-        <div>
-            <asp:Label ID="comment" runat="server" Text=" "></asp:Label>
+       <nav class="navbar">
+        <h1>Welcome</h1>
+        <div class="links">
+            <a href="Login.aspx">Home</a>
+            <a href="/create" style ="color: beige;background-color: red;border-radius: 8px;">Info</a>
         </div>
-        <br />
-        Welcome To our App
-        <br />
-        <br />
+    </nav>
 
-            <asp:TextBox ID="UsernameTB" runat="server" placeholder="User name" MaxLength="20"></asp:TextBox>
-        <br />
-        <br />
-
+    <div class="neon-border">
+        <form id="form1" runat="server" >
         
-        <asp:TextBox type="password" placeholder= "password" ID="PasswordTB" runat="server" MaxLength="20"></asp:TextBox>
-        <p>
-            &nbsp;&nbsp;
-            <asp:Button ID="loginb" runat="server" OnClick="login" Text="login" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <asp:Button ID="RegisterB" runat="server" OnClick="Register" Text="Register" />
-        </p>
+            <div style="text-align:center; max-height:10px;">
+                <asp:Label ID="comment" runat="server" Text=" "></asp:Label>
+            </div>
+                <br />
+            
+            <div class="divitext">
+                <asp:TextBox ID="UsernameTB" runat="server" placeholder="User name" MaxLength="20"></asp:TextBox>
+                <br />
+                <asp:TextBox type="password" placeholder= "password" ID="PasswordTB" runat="server" MaxLength="20" ></asp:TextBox>
+            </div>
+        
+
+           <div class="content2" style="display:flex">
+                <asp:Button ID="loginb" runat="server" OnClick="login" Text="login"  />
+                 <asp:Button ID="RegisterB" runat="server" OnClick="Register" Text="Register" />
+           </div>
+        
+        
     </form>
+    </div>
 </body>
 </html>

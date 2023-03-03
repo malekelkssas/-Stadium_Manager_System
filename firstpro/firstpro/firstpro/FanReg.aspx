@@ -8,35 +8,39 @@
     <link rel="stylesheet" href="CSS.css" />
 </head>
 <body>
-    <form id="form1" runat="server">
-        <div>
-            <asp:Label ID="comment" runat="server" Text=" "></asp:Label>
+    <nav class="navbar">
+        <h1>Welcome</h1>
+        <div class="links">
+            <a href="Login.aspx">Home</a>
+            <a href="/create" style ="color: beige;background-color: red;border-radius: 8px;">Info</a>
         </div>
-        <asp:TextBox ID="nameTB" runat="server" placeholder="Name" required = "True" MaxLength="20"></asp:TextBox>
-        <br />
-        <br />
+    </nav>
 
-        <asp:TextBox ID="usernameTB" runat="server" placeholder="User name" required = "True" MaxLength="20"></asp:TextBox>
-        <br />
-        <br />
-        <asp:TextBox ID="passwordTB" runat="server" placeholder="Password" required = "True" type="password" MaxLength="20"></asp:TextBox>
-         <br />
-        <br />
-
-        <asp:TextBox ID="nationalIDNTB" runat="server" placeholder="National ID" required = "True" MaxLength="20"></asp:TextBox>
-        <br />
-        <br />
-        <asp:TextBox ID="phoneNumberTB" runat="server" placeholder="phone Number" required = "True" MaxLength="20"></asp:TextBox>
-        <br />
-        <br />
-        <asp:TextBox ID="birthDateTB" runat="server" placeholder="birth Date" required = "True" MaxLength="20" type="date"></asp:TextBox>
-        <br />
-        <br />
-        <asp:TextBox ID="addressTB" runat="server" placeholder="address" required = "True" MaxLength="20"></asp:TextBox>
-        <br />
-        <br />
-
-        <asp:Button ID="RegisterB" runat="server" OnClick="Register" Text="Register" />
+    <div class="neon-border">
+        <form id="form1" runat="server">
+            <div class="divitext">
+                <asp:Label ID="comment" runat="server" Text=" "></asp:Label>
+                <br />
+            <asp:TextBox ID="nameTB" runat="server" placeholder="Name" required = "True" MaxLength="20"></asp:TextBox>
+                <br />
+            <asp:TextBox ID="usernameTB" runat="server" placeholder="User name" required = "True" MaxLength="20"></asp:TextBox>
+                <br />
+            <asp:TextBox ID="passwordTB" runat="server" placeholder="Password" required = "True" type="password" MaxLength="20"></asp:TextBox>
+                <br />
+            <asp:TextBox ID="nationalIDNTB" runat="server" placeholder="National ID" required = "True" MaxLength="20"></asp:TextBox>
+                <br />
+            <asp:TextBox ID="phoneNumberTB" runat="server" placeholder="phone Number" required = "True" MaxLength="20"></asp:TextBox>
+                <br />
+            <asp:TextBox ID="birthDateTB" runat="server" placeholder="birth Date" required = "True" MaxLength="20" type="date"></asp:TextBox>
+                <br />
+            <asp:TextBox ID="addressTB" runat="server" placeholder="address" required = "True" MaxLength="20"></asp:TextBox>
+                <br />
+            </div>
+            <div class="content2">
+                <asp:Button ID="RegisterB" runat="server" OnClick="Register" Text="Register" />
+            </div>
     </form>
+    </div>
+
 </body>
 </html>

@@ -8,25 +8,31 @@
     <link rel="stylesheet" href="CSS.css" />
 </head>
 <body>
-    <form id="form1" runat="server">
-        <div>
-            <asp:Label ID="comment" runat="server" Text=" "></asp:Label>
+    <nav class="navbar">
+        <h1>Welcome</h1>
+        <div class="links">
+            <a href="Login.aspx">Home</a>
+            <a href="/create" style ="color: beige;background-color: red;border-radius: 8px;">Info</a>
         </div>
+    </nav>
+    <div class="neon-border">
+        <form id="form1" runat="server">
+        <div class="divitext">
+            <asp:Label ID="comment" runat="server" Text=" "></asp:Label>
+            <br />
         <asp:TextBox ID="nameTB" runat="server" placeholder="Name" required = "True" MaxLength="20"></asp:TextBox>
-        <br />
-        <br />
-
+            <br />
         <asp:TextBox ID="usernameTB" runat="server" placeholder="User name" required = "True" MaxLength="20"></asp:TextBox>
-        <br />
-        <br />
-
+            <br />
         <asp:TextBox ID="clubnameTB" runat="server" placeholder="Club name" required = "True" MaxLength="20"></asp:TextBox>
-        <br />
-        <br />
+            <br />
         <asp:TextBox ID="passwordTB" runat="server" placeholder="Password" required = "True" type="password" MaxLength="20"></asp:TextBox>
-        <br />
-        <br />
-        <asp:Button ID="RegisterB" runat="server" OnClick="Register" Text="Register" />
+        </div>
+            <br />
+        <div class="content2">
+            <asp:Button ID="RegisterB" runat="server" OnClick="Register" Text="Register" />
+        </div>
     </form>
+    </div>
 </body>
 </html>
