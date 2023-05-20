@@ -8,6 +8,8 @@
 }
 
 
+
+
 /*----------------------*/
 .navbar {
     padding: 20px;
@@ -16,6 +18,7 @@
     max-width: 600px;
     margin: 10px auto;
     border-bottom: 1px solid black;
+    
 }
 
     .navbar .links {
@@ -76,5 +79,32 @@
     text-align: center;
     max-height: 10px;
 }
+
+
+.content {
+    max-width: 600px;
+    /* margin:0 0 0 500px; */
+    margin: 20px auto;
+    width: auto;
+    padding: 20px;
+}
+
+.Inf {
+    padding: 10px;
+    margin: 20px 0;
+    border-bottom: 1px solid black;
+}
+
+    .Inf:hover {
+        box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .Inf h2 {
+        font-size: 20px;
+        color: palevioletred;
+        margin-bottom: 10px;
+        text-align: center
+    }
+
 
 

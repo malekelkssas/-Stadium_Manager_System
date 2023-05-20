@@ -80,8 +80,14 @@
     <Content Include="deleteStadium.aspx" />
     <Content Include="Fan.aspx" />
     <Content Include="FanReg.aspx" />
+    <Content Include="Info.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="NeverMatches.aspx" />
+    <Content Include="pic1.png" />
+    <Content Include="pic2.png" />
+    <Content Include="pic3.png" />
+    <Content Include="pic4.png" />
+    <Content Include="pic5.png" />
     <Content Include="PlayedMatches.aspx" />
     <Content Include="Register.aspx" />
     <Content Include="SportsAssociationManager.aspx" />
@@ -176,6 +182,13 @@
     </Compile>
     <Compile Include="FanReg.aspx.designer.cs">
       <DependentUpon>FanReg.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Info.aspx.cs">
+      <DependentUpon>Info.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Info.aspx.designer.cs">
+      <DependentUpon>Info.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>

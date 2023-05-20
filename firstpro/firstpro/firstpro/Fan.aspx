@@ -5,13 +5,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Fan</title>
-    <link rel="stylesheet" href="Style.css">
+    
+    <link rel="stylesheet" href="Style.css" />
+    <link rel="stylesheet" href="CSS.css" />
+
 </head>
 <body>
     <div class="navbar">
-        <a href="Login.aspx">Login</a>
-        <a href="Register.aspx">Register</a>
+        <div class="links">
+            
+        <a href="Fan.aspx">Home</a>
+        <a href="/create" style ="color: beige;background-color: red;border-radius: 8px;">Info</a>
+
+        </div>
     </div>
+
     <form id="form1" runat="server">
         <div class="controls">
             <div id="Info" style="width:30%">

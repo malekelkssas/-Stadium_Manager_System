@@ -12,7 +12,7 @@
         <h1>Welcome</h1>
         <div class="links">
             <a href="Login.aspx">Home</a>
-            <a href="/create" style ="color: beige;background-color: red;border-radius: 8px;">Info</a>
+            <a href="Info.aspx" style ="color: beige;background-color: red;border-radius: 8px;">Info</a>
         </div>
     </nav>
 
